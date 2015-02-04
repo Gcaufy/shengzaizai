@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Put this file at: .git/hooks/post-meger
+# and make it executable
+# You can install it system wide too, see http://stackoverflow.com/a/2293578/685587
+
+#
+NOCOLOR='\033[0m'
+REDCOLOR='\033[37;41m'
+if [[ -f composer.lock ]]; then
+    DIFF=`git log -n 1 --stat | grep 'composer.lock'`
+    if [[ $DIFF != "" ]]; then
+        echo -e "$REDCOLOR composer.lock has changed. You must run composer install$NOCOLOR"
+    fi
+fi
