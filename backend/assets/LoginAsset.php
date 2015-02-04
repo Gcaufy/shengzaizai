@@ -18,8 +18,15 @@ class LoginAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/login.css',
-        'css/reset.css',
+        'css/style.css',
+        'css/style-responsive.css',
+    ];
+    public $js = [
+        'js/modernizr.min.js',
+        'js/jquery-1.10.2.min.js',
+        'js/bootstrap.min.js',
+        'js/jquery-1.10.2.min.js',
+        'js/jquery-1.10.2.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

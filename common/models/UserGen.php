@@ -1,39 +1,40 @@
 <?php
+
 namespace common\models;
 
 use Yii;
-use common\components\MyActiveRecord;
+
 /**
- * This is the model class for table "sys_user".
+ * This is the model class for table "{{%user}}".
  *
- * @property integer $id
- * @property string $username
+ * @property string $id
  * @property string $realname
- * @property integer $gender
- * @property string $qq
  * @property string $mobile
- * @property string $tel
  * @property string $email
- * @property string $birth
- * @property string $portrait
- * @property string $authkey
+ * @property string $auth_key
  * @property string $password
- * @property string $note
+ * @property string $payment_password
+ * @property integer $pregnant
  * @property integer $role
  * @property integer $status
- * @property integer $uid
  * @property integer $utime
- * @property integer $cid
+ * @property integer $uid
  * @property integer $ctime
+ * @property integer $cid
+ *
+ * @property SystemFeedback[] $systemFeedbacks
+ * @property UserBalance[] $userBalances
+ * @property UserFavor[] $userFavors
+ * @property UserPayment[] $userPayments
  */
-class UserGen extends MyActiveRecord
+class UserGen extends \common\components\MyActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'sys_user';
+        return '{{%user}}';
     }
 
     /**
@@ -42,16 +43,11 @@ class UserGen extends MyActiveRecord
     public function rules()
     {
         return [
-            [['gender', 'role', 'status', 'uid', 'utime', 'cid', 'ctime'], 'integer'],
-            [['username', 'tel'], 'string', 'max' => 20],
-            [['realname', 'birth'], 'string', 'max' => 10],
-            [['qq'], 'string', 'max' => 15],
-            [['mobile'], 'string', 'max' => 11],
-            [['email'], 'string', 'max' => 45],
-            [['portrait', 'note'], 'string', 'max' => 200],
-            [['authkey'], 'string', 'max' => 32],
-            [['password'], 'string', 'max' => 60],
-            [['username'], 'unique']
+            [['pregnant', 'role', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['realname', 'email'], 'string', 'max' => 50],
+            [['mobile'], 'string', 'max' => 20],
+            [['auth_key'], 'string', 'max' => 32],
+            [['password', 'payment_password'], 'string', 'max' => 60]
         ];
     }
 
@@ -62,26 +58,51 @@ class UserGen extends MyActiveRecord
     {
         return [
             'id' => '用户ID',
-            'username' => '用户名',
             'realname' => '真实姓名',
-            'gender' => '性别',
-            'qq' => 'QQ号码',
-            'mobile' => '手机号码',
-            'tel' => '联系座机',
-            'email' => '电子邮件',
-            'birth' => '生日',
-            'portrait' => '头像',
-            'authkey' => '检验码',
-            'password' => '密码',
-            'note' => '备注',
-            'role' => '角色',
-            'status' => '状态',
-            'uid' => '更新人',
-            'utime' => '更新时间',
-            'cid' => '创建人',
-            'ctime' => '创建时间',
-
-            'displayGender' => '性别',
+            'mobile' => '手机号',
+            'email' => '邮箱',
+            'auth_key' => '密钥',
+            'password' => '登陆密码',
+            'payment_password' => '支付密码',
+            'pregnant' => '1: 备孕',
+            'role' => '1: 管理员',
+            'status' => 'Status',
+            'utime' => 'Utime',
+            'uid' => 'Uid',
+            'ctime' => 'Ctime',
+            'cid' => 'Cid',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSystemFeedbacks()
+    {
+        return $this->hasMany(SystemFeedback::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserBalances()
+    {
+        return $this->hasMany(UserBalance::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserFavors()
+    {
+        return $this->hasMany(UserFavor::className(), ['user_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserPayments()
+    {
+        return $this->hasMany(UserPayment::className(), ['user_id' => 'id']);
     }
 }

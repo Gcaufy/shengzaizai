@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aea1020b1da9d45a5b355b9c931dfc69",
+    "hash": "bc6cb3f02a9c2c7a961e95aafaea8c72",
     "packages": [
         {
             "name": "3ch3r46/yii2-tinymce",
@@ -2514,6 +2514,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.4.0"
     },

@@ -12,7 +12,7 @@ class PhpManager extends \yii\rbac\PhpManager {
     {
         parent::init();
         if (!Yii::$app->user->isGuest) {
-            $this->assignMe($this->roleMap[Yii::$app->user->identity->role]);
+            //$this->assignMe($this->roleMap[Yii::$app->user->identity->role]);
         }
     }
 

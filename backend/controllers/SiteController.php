@@ -4,7 +4,7 @@ namespace backend\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use common\models\LoginAdmin;
+use common\models\User;
 use yii\filters\VerbFilter;
 
 use backend\modules\message\models\Note;
@@ -53,12 +53,8 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        $unReadNote = Note::find()->joinWith('unReadNote')->count('DISTINCT `t`.`id`');
-
         $this->layout = 'main';
-        return $this->render('index', array(
-            'unReadNote' => $unReadNote,
-        ));
+        return $this->render('index');
     }
 
     public function actionLogin()
@@ -67,37 +63,35 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $model = new LoginAdmin();
+        $user = new User();
 
-        if ($model->load(Yii::$app->request->post())) {
-            $model->getUser();
+        if ($user->load(Yii::$app->request->post())) {
+            $user = User::findByMobile($user->mobile);
             $logintimes = intval(Yii::$app->session->get('logintimes'));
-            if(isset($model->user)){
-                if(false && ($model->user->status == 9 || $logintimes>2)){
-                    $model->addError('password',Yii::t('app','Login failed 3 times, locked'));
-                    return $this->render('login', ['model' => $model]);
+            if(isset($user)){
+                if(false && ($user->status == 9 || $logintimes>2)){
+                    $user->addError('password',Yii::t('app','Login failed 3 times, locked'));
+                    return $this->render('login', ['model' => $user]);
                 }else{
                     $encrypt = new \common\controllers\EncryptController();
-                    $model->password = $encrypt->admin($model->password,$model->user->authkey);
-                    if($model->login()){
+                    $user->password = $encrypt->admin($user->password,$user->authkey);
+                    if($user->login()){
                         Yii::$app->session->set('logintimes',0);
-                        $model->loginlog(['m'=>'login','aid'=>$model->user->id, 'c'=>'登录成功']);
                         return $this->goHome();
                     }else{
                         $logintimes++;
                         Yii::$app->session->set('logintimes',$logintimes);
-                        $model->loginlog(['m'=>'login','aid'=>$model->user->id, 'c'=>'登录失败'.$logintimes.'次']);
-                        return $this->render('login', ['model' => $model]);
+                        return $this->render('login', ['model' => $user]);
                     }
                 }
             }else{
-                $model->addError('username','用户名不存在');
-                return $this->render('login', ['model' => $model]);
+                $user->addError('mobile','手机号不存在');
+                return $this->render('login', ['model' => $user]);
             }
         } else {
-            $model->rememberMe = 0;
+            $user->rememberMe = 0;
             return $this->render('login', [
-                'model' => $model,
+                'model' => $user,
             ]);
         }
     }

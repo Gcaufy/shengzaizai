@@ -11,7 +11,7 @@ use backend\modules\user\models\Teacher;
  * User model
  *
  * @property integer $id
- * @property string $username
+ * @property string $mobile
  * @property string $password
  * @property string $password_reset_token
  * @property string $email
@@ -31,6 +31,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     const ROLE_SUPPORT  = 5; // 客服
 
     const SCENARIO_TEACHER_CREATE = 'TEACHER_CREATE';
+    public $rememberMe = false;
 
     /**
      * @inheritdoc
@@ -38,7 +39,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['username', 'required']; 
+        $rules[] = ['mobile', 'required']; 
         $rules[] = ['realname', 'required', 'on' => self::SCENARIO_TEACHER_CREATE]; 
         return $rules;
     }
@@ -55,11 +56,8 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
 
     public static function getRoleMap() {
         return [
+            '0' => '用户',
             '1' => '管理员',
-            '2' => '老师',
-            '3' => '家长',
-            '4' => '学生',
-            '5' => '客服',
         ];
     }
 
@@ -86,29 +84,13 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     }
 
     public function getDisplayName() {
-        return $this->realname ? $this->realname : $this->username;
+        return $this->realname ? $this->realname : $this->mobile;
     }
 
     public function getDisplayGender() {
         return ($this->gender == 0 || $this->gender == 1) ? Yii::$app->params['gender'][$this->gender] : '';
     }
 
-    public function getTeacher()
-    {
-        return $this->hasOne(Teacher::className(), ['user_id' => 'id'])
-            ->from(Teacher::tableName() . ' teacher');
-    }
-
-    public function getParent()
-    {
-        return Parents::find()->andWhere(['id' => $this->id]);
-    }
-
-    public function getStudent()
-    {
-        return $this->hasOne(Student::className(), ['user_id' => 'id'])
-            ->from(Student::tableName() . ' student');
-    }
 
     public static function checkAction($url) {
         if (substr($url, 0, 2) === '//') {
@@ -122,6 +104,16 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
             $action = substr($action, 0, $i);
         return Yii::$app->user->can($action);
     }
+    public function login() {
+        if ($this->validate()) {
+            $yiiuser = Yii::$app->user;
+
+            return $yiiuser->login($this, $this->rememberMe ? 3600 * 24 * 30 : 0);
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * @inheritdoc
@@ -149,14 +141,14 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     }
 
     /**
-     * Finds user by username
+     * Finds user by mobile
      *
-     * @param string $username
+     * @param string $mobile
      * @return static|null
      */
-    public static function findByUsername($username)
+    public static function findByMobile($mobile)
     {
-        $user = static::findOne(['username' => $username]);
+        $user = static::findOne(['mobile' => $mobile]);
         return $user;
     }
 
@@ -207,7 +199,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
      */
     public function getAuthKey()
     {
-        return $this->authkey;
+        return $this->auth_key;
     }
 
     /**
