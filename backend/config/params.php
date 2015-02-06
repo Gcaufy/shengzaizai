@@ -29,7 +29,7 @@ return [
     ],
     'rules'=>[
         ['n'=>'系统模块','m'=>'system','i'=>'fa fa-cogs','s'=>[
-            ['n'=>'管理员列表','c'=>'admin','m'=>'index','i'=>'fa fa-user','s'=>[
+            /*['n'=>'管理员列表','c'=>'admin','m'=>'index','i'=>'fa fa-user','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
@@ -40,16 +40,16 @@ return [
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
                 ['n'=>'删除','m'=>'delete'],
-            ]],
+            ]],*/
             ['n'=>'用户反馈','c'=>'feedback','m'=>'index','i'=>'fa fa-mail-reply-all','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
                 ['n'=>'删除','m'=>'delete'],
             ]],
-            ['n'=>'修改密码','c'=>'admin','m'=>'password','i'=>'fa fa-unlock-alt'],
+            /*['n'=>'修改密码','c'=>'admin','m'=>'password','i'=>'fa fa-unlock-alt'],*/
             ['n'=>'系统配置','c'=>'config','m'=>'index','i'=>'fa fa-cog'],
-            ['n'=>'管理操作日志','c'=>'log','m'=>'index','i'=>'fa fa-line-chart'],
+            /*['n'=>'管理操作日志','c'=>'log','m'=>'index','i'=>'fa fa-line-chart'],*/
         ]],
         ['n'=>'个人中心','m'=>'cms','i'=>'fa fa-newspaper-o','s'=>[
             ['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[

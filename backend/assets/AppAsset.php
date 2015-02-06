@@ -25,9 +25,16 @@ class AppAsset extends AssetBundle
         'css/clndr.css',
         'css/style.css',
         'css/style-responsive.css',
+        'css/alertify.core.css',
     ];
     public $js = [
-        'js/jquery-1.10.2.min.js',
+        //'js/jquery-1.10.2.min.js',
+        'js/jquery-migrate-1.2.1.min.js',
+        'js/jquery-ui-1.9.2.custom.min.js',
+        'js/jquery.nicescroll.js',
+        'js/bootstrap.min.js',
+        'js/alertify.min.js',
+        'js/scripts.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

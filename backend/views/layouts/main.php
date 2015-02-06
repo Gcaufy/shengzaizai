@@ -1,6 +1,7 @@
 <?php
 use backend\assets\AppAsset;
 use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -42,11 +43,11 @@ AppAsset::register($this);
 
         <!--logo and iconic logo start-->
         <div class="logo">
-            <a href="index.html"><img src="images/logo.png" alt=""></a>
+            <a href="/"><img src="/img/logo.png" alt=""></a>
         </div>
 
         <div class="logo-icon text-center">
-            <a href="index.html"><img src="images/logo_icon.png" alt=""></a>
+            <a href="/"><img src="/img/logo_icon.png" alt=""></a>
         </div>
         <!--logo and iconic logo end-->
 
@@ -55,17 +56,17 @@ AppAsset::register($this);
             <!-- visible to small devices only -->
             <div class="visible-xs hidden-sm hidden-md hidden-lg">
                 <div class="media logged-user">
-                    <img alt="" src="images/photos/user-avatar.png" class="media-object">
+                    <img alt="" src="/img/user-avatar.png" class="media-object">
                     <div class="media-body">
-                        <h4><a href="#">John Doe</a></h4>
+                        <h4><a href="#"><?=Yii::$app->user->identity->displayName;?></a></h4>
                         <span>"Hello There..."</span>
                     </div>
                 </div>
 
                 <h5 class="left-nav-title">Account Information</h5>
                 <ul class="nav nav-pills nav-stacked custom-nav">
-                  <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
-                  <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+                  <!--li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
+                  <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li-->
                   <li><a href="#"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
                 </ul>
             </div>
@@ -76,24 +77,22 @@ AppAsset::register($this);
             		if (!empty(Yii::$app->params['rules'])) {
                 		$cururl = $this->context->module->id . '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
 		                foreach (Yii::$app->params['rules'] as $k => $v) {
-		                    $collapse = 'collapsed';
 		                    $expand = '';
 		                    if ($v['m'] == $this->context->module->id) {
-		                        $collapse = '';
-		                        $expand = 'in';
+		                        $expand = ' nav-active';
 		                    }
-		                        echo '<li class="menu-list"><a href="#m'.$k.'" data-toggle="collapse" data-parent="#accordion">'.
+		                        echo '<li class="menu-list' . $expand . '"><a href="#m'.$k.'" data-toggle="collapse" data-parent="#accordion">'.
 		                        	(isset($v['i']) ? '<i class="'.$v['i'].'"></i> ' : '').
-		                        	Yii::t('app',$v['n']).
-		                        	'<span class="fa fa-chevron-right"></span></a>' . 
+		                        	'<span>' . Yii::t('app',$v['n']) . '</span>' .
+		                        	'</a>' . 
 		                        	'<ul id="m'.$k.'" class="sub-menu-list">';
 		                        foreach ($v['s'] as $kk=>$vv) {
 		                                $url = $v['m'].'/'.$vv['c'].'/'.$vv['m'];
 		                                $active = '';
 		                                if($url==$cururl){
-		                                    $active = ' active';
+		                                    $active = ' class ="active"';
 		                                }
-		                                echo '<li>' . Html::a((isset($vv['i']) ? '<i class="'.$vv['i'].'"></i> ' : '').Yii::t('app',$vv['n']), ['/'.$url], ['class' => 'list-group-item'.$active]) . '</li>';
+		                                echo '<li' . $active . '>' . Html::a((isset($vv['i']) ? '<i class="'.$vv['i'].'"></i> ' : '').Yii::t('app',$vv['n']), ['/'.$url]) . '</li>';
 		                        }
 		                        echo '</ul></li>';
 		                }
@@ -101,10 +100,10 @@ AppAsset::register($this);
             	?>
 
 
-                <!--li class="menu-list nav-active"><a href="index.html"><i class="fa fa-home"></i> <span>Dashboard</span></a>
+                <!--li class="menu-list nav-active"><a href="/"><i class="fa fa-home"></i> <span>Dashboard</span></a>
                     <ul class="sub-menu-list">
                         <li><a href="index_alt.html"> Dashboard 1</a></li>
-                        <li class="active"><a href="index.html"> Dashboard 2</a></li>
+                        <li class="active"><a href="/"> Dashboard 2</a></li>
                     </ul>
                 </li>
 
@@ -220,7 +219,7 @@ AppAsset::register($this);
             <!--toggle button end-->
 
             <!--search start-->
-            <form class="searchform" action="http://view.jqueryfuns.com/2014/4/10/7_df25ceea231ba5f44f0fc060c943cdae/index.html" method="post">
+            <form class="searchform" action="http://view.jqueryfuns.com/2014/4/10/7_df25ceea231ba5f44f0fc060c943cdae//" method="post">
                 <input type="text" class="form-control" name="keyword" placeholder="Search here..." />
             </form>
             <!--search end-->
@@ -310,7 +309,7 @@ AppAsset::register($this);
                             <ul class="dropdown-list normal-list">
                                 <li class="new">
                                     <a href="">
-                                        <span class="thumb"><img src="images/photos/user1.png" alt="" /></span>
+                                        <span class="thumb"><img src="/img/user1.png" alt="" /></span>
                                         <span class="desc">
                                           <span class="name">John Doe <span class="badge badge-success">new</span></span>
                                           <span class="msg">Lorem ipsum dolor sit amet...</span>
@@ -319,7 +318,7 @@ AppAsset::register($this);
                                 </li>
                                 <li>
                                     <a href="">
-                                        <span class="thumb"><img src="images/photos/user2.png" alt="" /></span>
+                                        <span class="thumb"><img src="/img/user2.png" alt="" /></span>
                                         <span class="desc">
                                           <span class="name">Jonathan Smith</span>
                                           <span class="msg">Lorem ipsum dolor sit amet...</span>
@@ -328,7 +327,7 @@ AppAsset::register($this);
                                 </li>
                                 <li>
                                     <a href="">
-                                        <span class="thumb"><img src="images/photos/user3.png" alt="" /></span>
+                                        <span class="thumb"><img src="/img/user3.png" alt="" /></span>
                                         <span class="desc">
                                           <span class="name">Jane Doe</span>
                                           <span class="msg">Lorem ipsum dolor sit amet...</span>
@@ -337,7 +336,7 @@ AppAsset::register($this);
                                 </li>
                                 <li>
                                     <a href="">
-                                        <span class="thumb"><img src="images/photos/user4.png" alt="" /></span>
+                                        <span class="thumb"><img src="/img/user4.png" alt="" /></span>
                                         <span class="desc">
                                           <span class="name">Mark Henry</span>
                                           <span class="msg">Lorem ipsum dolor sit amet...</span>
@@ -346,7 +345,7 @@ AppAsset::register($this);
                                 </li>
                                 <li>
                                     <a href="">
-                                        <span class="thumb"><img src="images/photos/user5.png" alt="" /></span>
+                                        <span class="thumb"><img src="/img/user5.png" alt="" /></span>
                                         <span class="desc">
                                           <span class="name">Jim Doe</span>
                                           <span class="msg">Lorem ipsum dolor sit amet...</span>
@@ -399,14 +398,14 @@ AppAsset::register($this);
                     </li>
                     <li>
                         <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <img src="images/photos/user-avatar.png" alt="" />
-                            John Doe
+                            <img src="/img/user-avatar.png" alt="" />
+                            <?= Yii::$app->user->identity->displayName; ?>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-                            <li><a href="#"><i class="fa fa-user"></i>  Profile</a></li>
-                            <li><a href="#"><i class="fa fa-cog"></i>  Settings</a></li>
-                            <li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
+                            <!--li><a href="#"><i class="fa fa-user"></i>  Profile</a></li>
+                            <li><a href="#"><i class="fa fa-cog"></i>  Settings</a></li-->
+                            <li><a href="#"><i class="fa fa-sign-out"></i> 退出</a></li>
                         </ul>
                     </li>
 
@@ -421,503 +420,54 @@ AppAsset::register($this);
 
         <!--body wrapper start-->
         <div class="wrapper">
-            <div class="row states-info">
-            <div class="col-md-3">
-                <div class="panel red-bg">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <i class="fa fa-money"></i>
-                            </div>
-                            <div class="col-xs-8">
-                                <span class="state-title"> Dollar Profit Today </span>
-                                <h4>$ 23,232</h4>
-                            </div>
-                        </div>
+            <?php if (isset($this->params['breadcrumbs'])):?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--breadcrumbs start -->
+                        <?php echo Breadcrumbs::widget([
+                            'options' => ['class' => 'breadcrumb panel'],
+                            'homeLink' => [
+                                'label' => Yii::t('yii', 'Home'),
+                                'url' => Yii::$app->homeUrl,
+                                'template' => '<li>{link}</li>',
+                            ],
+                            'links' => $this->params['breadcrumbs'],
+                        ]);
+                        ?>
+                        <!--breadcrumbs end -->
                     </div>
                 </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel blue-bg">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <i class="fa fa-tag"></i>
-                            </div>
-                            <div class="col-xs-8">
-                                <span class="state-title">  Copy Sold Today  </span>
-                                <h4>2,980</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel green-bg">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <i class="fa fa-gavel"></i>
-                            </div>
-                            <div class="col-xs-8">
-                                <span class="state-title">  New Order  </span>
-                                <h4>5980</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="panel yellow-bg">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-xs-4">
-                                <i class="fa fa-eye"></i>
-                            </div>
-                            <div class="col-xs-8">
-                                <span class="state-title">  Unique Visitors  </span>
-                                <h4>10,000</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-            <div class="row">
-                <div class="col-md-8">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            Area Chart
-                        <span class="tools pull-right">
-                            <a href="javascript:;" class="fa fa-chevron-down"></a>
-                            <a href="javascript:;" class="fa fa-times"></a>
-                         </span>
-                        </header>
-                        <div class="panel-body">
-                            <div id="visitors-chart">
-                                <div id="visitors-container" style="width: 100%;height:358px; text-align: center; margin:0 auto;">
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <div class="col-md-4">
-                    <div class="wdgt-profile">
-                        <div class="profile">
-                            <img src="images/gallery/wdgt-img.jpg" alt=""/>
-                            <div class="profile-social">
-                                <a href="#" ><i class="fa fa-pinterest"></i></a>
-                                <a href="#" ><i class="fa fa-twitter"></i></a>
-                                <a href="#" ><i class="fa fa-facebook"></i></a>
-                            </div>
-                            <ul class="profile-tab">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-camera"></i>
-                                        Photo
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="fa fa-user"></i>
-                                        Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-music"></i>
-                                        Music
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-comments"></i>
-                                        Comments
-                                    </a>
-                                </li>
-                            </ul>
-
-                        </div>
-                        <div class="profile-info">
-                            <h5>Margarita Rose</h5>
-                            <span>Creative Designer</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php endif;?>
 
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="panel widget-info-one">
-                        <div class="avatar-img">
-                            <img src="images/gallery/image3.jpg" alt=""/>
-                        </div>
-                        <div class="inner">
-                            <div class="avatar"><img alt="" src="images/photos/userprofile.png"></div>
-                            <h5>Margarita Rose</h5>
-                            <span class="subtitle">
-                                Praesent magna nunc, tincidunt pretium.
-                            </span>
-                        </div>
-                        <div class="panel-footer">
-                            <ul class="post-view">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    109
-                                </li>
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="fa fa-comment"></i>
-                                    </a>
-                                    233
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-heart"></i>
-                                    </a>
-                                    34
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel">
-                                <div class="panel-body extra-pad">
-                                    <h4 class="pros-title">prospective <span>leads</span></h4>
-                                    <div class="row">
-                                        <div class="col-sm-4 col-xs-4">
-                                            <div id="p-lead-1"></div>
-                                            <p class="p-chart-title">Laptop</p>
-                                        </div>
-                                        <div class="col-sm-4 col-xs-4">
-                                            <div id="p-lead-2"></div>
-                                            <p class="p-chart-title">iPhone</p>
-                                        </div>
-                                        <div class="col-sm-4 col-xs-4">
-                                            <div id="p-lead-3"></div>
-                                            <p class="p-chart-title">iPad</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel">
-                                <div class="panel-body extra-pad">
-                                    <div class="col-sm-6 col-xs-6">
-                                        <div class="v-title">Visits</div>
-                                        <div class="v-value">10,090</div>
-                                        <div id="visit-1"></div>
-                                        <div class="v-info">Pages/Visit</div>
-                                    </div>
-                                    <div class="col-sm-6 col-xs-6">
-                                        <div class="v-title">Unique Visitors</div>
-                                        <div class="v-value">8,173</div>
-                                        <div id="visit-2"></div>
-                                        <div class="v-info">Avg. Visit Duration</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="iconic-list">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-heart"></i>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a href="#">
-                                        <i class="fa fa-camera-retro"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-calendar"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="last" href="#">
-                                        <i class="fa fa-crosshairs"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+        <!--ul class="breadcrumb"><li><i><a href="/">首页</a></i></li>
+<li><b><a href="//man.shengzaizai.dev/system/post-category/view?id=10">Post Category</a></b></li>
+<li><i><a href="//man.shengzaizai.dev/system/post/edit?id=1">Sample Post</a></i></li>
+<li class="active">Edit</li>
+</ul-->
 
 
-
-                </div>
-
-                <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="dir-info">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="images/photos/user2.png" alt=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h5>Wild Awake</h5>
-                                        <span>
-                                            <a href="#" class="small"> katy Perry</a>
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <a class="dir-like" href="#">
-                                            <span class="small">434</span>
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="images/photos/user1.png" alt=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h5>Bulet Proof</h5>
-                                        <span>
-                                            <a href="#" class="small"> Bruno Mars</a>
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <a class="dir-like" href="#">
-                                            <span class="small">441</span>
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="images/photos/user3.png" alt=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h5>Bit it</h5>
-                                        <span>
-                                            <a href="#" class="small"> Jackson</a>
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <a class="dir-like" href="#">
-                                            <span class="small">124</span>
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="images/photos/user4.png" alt=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h5>Its my life</h5>
-                                        <span>
-                                            <a href="#" class="small"> Bon jovi</a>
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <a class="dir-like" href="#">
-                                            <span class="small">334</span>
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <div class="avatar">
-                                            <img src="images/photos/user1.png" alt=""/>
-                                        </div>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <h5>Bulet Proof</h5>
-                                        <span>
-                                            <a href="#" class="small"> Bruno Mars</a>
-                                        </span>
-                                    </div>
-                                    <div class="col-xs-3">
-                                        <a class="dir-like" href="#">
-                                            <span class="small">44</span>
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="panel">
-                        <header class="panel-heading">
-                            Chat
-                        </header>
-                        <div class="panel-body">
-                            <ul class="chats cool-chat">
-                                <li class="in">
-                                    <img src="images/photos/user1.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Jone Doe</a>
-                                        <span class="datetime">at Mar 12, 2014 6:12</span>
-                                        <span class="body">
-                                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="out">
-                                    <img src="images/photos/user2.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Margarita Rose</a>
-                                        <span class="datetime">at Mar 12, 2014 6:13</span>
-                                        <span class="body">
-                                            sed diam nonummy nibh euismod tincidunt ut
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="in">
-                                    <img src="images/photos/user1.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Jone Doe</a>
-                                        <span class="datetime">at Mar 12, 2014 6:12</span>
-                                        <span class="body">
-                                            aoreet dolore magna aliquam erat volutpat.
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="out">
-                                    <img src="images/photos/user2.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Margarita Rose</a>
-                                        <span class="datetime">at Mar 12, 2014 6:13</span>
-                                        <span class="body">
-                                            sed diam nonummy nibh euismod tincidunt ut
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="in">
-                                    <img src="images/photos/user1.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Jone Doe</a>
-                                        <span class="datetime">at Mar 12, 2014 6:12</span>
-                                        <span class="body">
-                                            aoreet dolore magna aliquam erat volutpat.
-                                        </span>
-                                    </div>
-                                </li>
-                                <li class="out">
-                                    <img src="images/photos/user2.png" alt="" class="avatar">
-                                    <div class="message">
-                                        <span class="arrow"></span>
-                                        <a class="name" href="#">Margarita Rose</a>
-                                        <span class="datetime">at Mar 12, 2014 6:13</span>
-                                        <span class="body">
-                                            sed diam nonummy nibh
-                                        </span>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div class="chat-form ">
-                                <form role="form" class="form-inline">
-                                    <div class="form-group">
-                                        <input type="text" style="width: 100%" placeholder="Type a message here..." class="form-control">
-                                    </div>
-                                    <button class="btn btn-primary" type="submit">Send</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <section class="panel post-wrap pro-box">
-                        <aside class="post-highlight purple v-align">
-                            <div class="panel-body">
-                                <h2>AdminEx in Excelent templates <a href="javascript:;"> http://themebucket.net/</a> 1 days ago  by John Doe</h2>
-                            </div>
-                        </aside>
-                        <aside>
-                            <div class="post-info">
-                                <span class="arrow-pro left"></span>
-                                <div class="panel-body">
-                                    <div class="text-center twite">
-                                        <i class="fa fa-twitter"></i>
-                                        <h1>Twitter Feed</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
-                    </section>
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="media usr-info">
-                                <a href="#" class="pull-left">
-                                    <img class="thumb" src="images/photos/user2.png" alt=""/>
-                                </a>
-                                <div class="media-body">
-                                    <h4 class="media-heading">Mila Watson</h4>
-                                    <span>Senior UI Designer</span>
-                                    <p>I use to design websites and applications for the web.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-footer custom-trq-footer">
-                            <ul class="user-states">
-                                <li>
-                                    <i class="fa fa-heart"></i> 127
-                                </li>
-                                <li>
-                                    <i class="fa fa-eye"></i> 853
-                                </li>
-                                <li>
-                                    <i class="fa fa-user"></i> 311
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="panel blue-box twt-info">
-                        <div class="panel-body">
-                            <h3>19 Februay 2014</h3>
-
-                            <p>AdminEx is new model of admin
-                                dashboard <a href="#">http://t.co/3laCVziTw4</a>
-                                4 days ago by John Doe</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <?php  Breadcrumbs::widget([
+            'itemTemplate' => "<li><i>{link}</i></li>\n", // template for all links
+            'links' => [
+                [
+                    'label' => 'Post Category',
+                    'url' => ['post-category/view', 'id' => 10],
+                    'template' => "<li><b>{link}</b></li>\n", // template for this link only
+                ],
+                ['label' => 'Sample Post', 'url' => ['post/edit', 'id' => 1]],
+                'Edit',
+            ],
+        ]);
+        ?>
+            <?=$content?>
         </div>
         <!--body wrapper end-->
 
         <!--footer section start-->
-        <footer>
-            2014 &copy; AdminEx by ThemeBucket
-        </footer>
+        <!--footer>
+            2014 &copy; Shengzaizai by Gcaufy
+        </footer-->
         <!--footer section end-->
 
 
@@ -929,6 +479,12 @@ AppAsset::register($this);
 
 
 <?php $this->endBody() ?>
+<?php
+      $arr = Yii::$app->session->getAllFlashes();
+      foreach ($arr as $key => $value) {
+          echo '<script>alertify.log("' . $value . '", "' . $key . '"' . (($key === 'error') ? ', 0' : '') . ')</script>'; 
+      }
+?>
 </body>
 </html>
 

@@ -13,12 +13,6 @@ return [
     'bootstrap' => ['log'],
     'modules' => [
         'system' => ['class' => 'backend\modules\system\System'],
-        'cms' => ['class' => 'backend\modules\cms\CMS'],
-        'user' => ['class' => 'backend\modules\user\User'],
-        'school' => ['class' => 'backend\modules\school\School'],
-        'message' => ['class' => 'backend\modules\message\Message'],
-
-        'academic' => ['class' => 'backend\modules\academic\Academic'],
     ],
     'components' => [
         'log' => [

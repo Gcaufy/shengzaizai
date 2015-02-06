@@ -34,3 +34,5 @@ phpunit.phar
 
 # sublime project files
 *.sublime-workspace
+backend/runtime/*
+frontend/runtime/*

@@ -114,8 +114,7 @@ class SiteController extends Controller
         return $this->render('come');
     }
 
-    public function actionError()
-    {
+    public function actionError() {
         echo 'site/error';
         exit;
     }
