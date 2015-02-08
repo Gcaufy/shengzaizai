@@ -13,6 +13,11 @@ return [
     'bootstrap' => ['log'],
     'modules' => [
         'system' => ['class' => 'backend\modules\system\System'],
+        'cms' => ['class' => 'backend\modules\cms\Cms'],
+        'hospital' => ['class' => 'backend\modules\hospital\Hospital'],
+        'doctor' => ['class' => 'backend\modules\doctor\Doctor'],
+        'operation' => ['class' => 'backend\modules\operation\Operation'],
+        'inspection' => ['class' => 'backend\modules\inspection\Inspection'],
     ],
     'components' => [
         'log' => [

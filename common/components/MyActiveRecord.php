@@ -4,9 +4,11 @@ namespace common\components;
 
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
-class MyActiveRecord extends \yii\db\ActiveRecord
+class MyActiveRecord extends ActiveRecord
 {
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
@@ -16,14 +18,39 @@ class MyActiveRecord extends \yii\db\ActiveRecord
      */
     public function behaviors()
     {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
+        $behaviors = parent::behaviors();
+        if ($this->hasAttribute('cid') && $this->hasAttribute('uid')) {
+            $behaviors[] = [
+                'class' => AttributeBehavior::className(),
                 'attributes' => [
-                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['ctime', 'utime'],
-                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['utime'],
+                    self::EVENT_BEFORE_INSERT => ['cid', 'uid'],
+                    self::EVENT_BEFORE_UPDATE => 'uid',
                 ],
-            ],
+                'value' => function ($event) {
+                    return Yii::$app->user->isGuest ? null : Yii::$app->user->identity->id;
+                },
+            ];
+        }
+        if ($this->hasAttribute('ctime') && $this->hasAttribute('utime')) {
+            $behaviors[] = [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'ctime',
+                'updatedAtAttribute' => 'utime',
+            ];
+        }
+        return $behaviors;
+    }
+
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'status' => '状态',
+            'utime' => '修改时间',
+            'uid' => '修改人',
+            'ctime' => '创建时间',
+            'cid' => '创建人',
         ];
     }
 
