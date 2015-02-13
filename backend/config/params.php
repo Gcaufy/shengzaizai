@@ -53,7 +53,7 @@ return [
             /*['n'=>'管理操作日志','c'=>'log','m'=>'index','i'=>'fa fa-line-chart'],*/
         ]],
         ['n'=>'个人中心','m'=>'cms','i'=>'fa fa-newspaper-o','s'=>[
-            ['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[
+            /*['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
@@ -76,7 +76,7 @@ return [
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
                 ['n'=>'删除','m'=>'delete'],
-            ]],
+            ]],*/
         ]],
         ['n'=>'医院模块','m'=>'hospital','i'=>'fa fa-h-square','s'=>[
             ['n'=>'医院列表','c'=>'hospital','m'=>'index','i'=>'fa fa-hospital-o'],
@@ -168,7 +168,7 @@ return [
             ]],*/
         ]],
         ['n'=>'用户模块','m'=>'user','i'=>'fa fa-users','s'=>[
-            ['n'=>'客服列表','c'=>'support','m'=>'index','i'=>'fa fa-mortar-board','s'=>[
+            /*['n'=>'客服列表','c'=>'support','m'=>'index','i'=>'fa fa-mortar-board','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
@@ -193,7 +193,7 @@ return [
                 ['n'=>'删除','m'=>'delete'],
             ]],
             ['n'=>'用户导入','c'=>'import','m'=>'index','i'=>'fa fa-child','s'=>[
-            ]],
+            ]],*/
         ]],
         /*['n'=>'学校模块','m'=>'school','i'=>'fa fa-university','s'=>[
             ['n'=>'学校列表','c'=>'school','m'=>'index','i'=>'fa fa-cc','s'=>[

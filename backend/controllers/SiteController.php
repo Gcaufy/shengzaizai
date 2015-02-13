@@ -63,10 +63,10 @@ class SiteController extends Controller
             return $this->goHome();
         }
 
-        $user = new User();
+        $model = new User();
 
-        if ($user->load(Yii::$app->request->post())) {
-            $user = User::findByMobile($user->mobile);
+        if ($model->load(Yii::$app->request->post())) {
+            $user = User::findByMobile($model->mobile);
             $logintimes = intval(Yii::$app->session->get('logintimes'));
             if(isset($user)){
                 if(false && ($user->status == 9 || $logintimes>2)){
@@ -85,13 +85,13 @@ class SiteController extends Controller
                     }
                 }
             }else{
-                $user->addError('mobile','手机号不存在');
-                return $this->render('login', ['model' => $user]);
+                $model->addError('mobile','手机号不存在');
+                return $this->render('login', ['model' => $model]);
             }
         } else {
             $user->rememberMe = 0;
             return $this->render('login', [
-                'model' => $user,
+                'model' => $model,
             ]);
         }
     }
