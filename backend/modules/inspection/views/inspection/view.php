@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\inspection\models\Inspection */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Inspections', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '检查列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="inspection-view">

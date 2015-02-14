@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\doctor\models\DoctorSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Doctors';
+$this->title = '医生列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="doctor-index">

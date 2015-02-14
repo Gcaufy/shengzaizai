@@ -2,6 +2,10 @@
 
 use yii\helpers\Html;
 use backend\components\ActiveForm;
+use yii\web\JsExpression;
+use kartik\widgets\Select2;
+use kartik\rating\StarRating;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\Doctor */
@@ -12,13 +16,15 @@ use backend\components\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'hosp_id')->textInput(['maxlength' => 10]) ?>
+    <?= $form->field($model, 'hosp_id')->ajaxSelect(Url::to('hospsearch'), ['options' => ['placeholder' => '请选择医院']]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 20]) ?>
 
     <?= $form->field($model, 'desc')->textInput(['maxlength' => 2000]) ?>
 
-    <?= $form->field($model, 'feedback_score')->textInput(['maxlength' => 10]) ?>
+    <?= $form->field($model, 'feedback_score')->widget(StarRating::classname(), [
+        'pluginOptions' => ['step' => 1, 'showCaption' => false, 'showClear' => false, 'size' => 'xs', 'hoverEnabled' => 'false']
+    ]); ?>
 
     <?= $form->field($model, 'normal_reg_cost')->textInput(['maxlength' => 10]) ?>
 
@@ -34,19 +40,9 @@ use backend\components\ActiveForm;
 
     <?= $form->field($model, 'note')->textInput(['maxlength' => 500]) ?>
 
-    <?= $form->field($model, 'isvip')->textInput() ?>
+    <?= $form->field($model, 'isvip')->checkbox() ?>
 
-    <?= $form->field($model, 'type')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'utime')->textInput(['maxlength' => 10]) ?>
-
-    <?= $form->field($model, 'uid')->textInput(['maxlength' => 10]) ?>
-
-    <?= $form->field($model, 'ctime')->textInput(['maxlength' => 10]) ?>
-
-    <?= $form->field($model, 'cid')->textInput(['maxlength' => 10]) ?>
+    <?= $form->field($model, 'type')->radioList(['0' => '可预约医生', '1' => '手术主治医生']) ?>
 
     <div class="form-group right">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '保存', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

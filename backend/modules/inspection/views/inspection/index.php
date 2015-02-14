@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\inspection\models\InspectionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Inspections';
+$this->title = '检查列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="inspection-index">

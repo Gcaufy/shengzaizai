@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\operation\models\Operation */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Operations', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '手术列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="operation-view">

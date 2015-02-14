@@ -58,8 +58,8 @@ class Doctor extends \common\components\MyActiveRecord
      */
     public function attributeLabels() {
         $arr = parent::attributeLabels();
-        $arr['hosp_id'] = '医院ID';
-        $arr['name'] = '医院名';
+        $arr['hosp_id'] = '医院';
+        $arr['name'] = '医生名';
         $arr['desc'] = '描述';
         $arr['feedback_score'] = '评分';
         $arr['normal_reg_cost'] = '普通挂号费';
@@ -70,7 +70,7 @@ class Doctor extends \common\components\MyActiveRecord
         $arr['experience'] = '从业经验';
         $arr['note'] = '医生贴士';
         $arr['isvip'] = '是否为特约';
-        $arr['type'] = '0: 可预约医生, 1: 手术主治医生';
+        $arr['type'] = '类型';
         return $arr;
     }
 

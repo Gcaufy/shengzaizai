@@ -89,7 +89,7 @@ class SiteController extends Controller
                 return $this->render('login', ['model' => $model]);
             }
         } else {
-            $user->rememberMe = 0;
+            $model->rememberMe = 0;
             return $this->render('login', [
                 'model' => $model,
             ]);
