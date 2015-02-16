@@ -41,7 +41,7 @@ return [
             ],
         ],
         'urlManager' => [
-            'baseUrl' => '//' . DOMAIN_USER_CENTER,
+            'baseUrl' => '//' . DOMAIN_HOME,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
