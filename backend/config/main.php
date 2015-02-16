@@ -20,7 +20,7 @@ return [
         'inspection' => ['class' => 'backend\modules\inspection\Inspection'],
     ],
     'components' => [
-        'log' => [
+        /*'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
@@ -28,7 +28,7 @@ return [
                     'levels' => ['error', 'warning'],
                 ],
             ],
-        ],
+        ],*/
         'authManager' => [
             'class' => 'app\components\PhpManager',
             'defaultRoles' => ['guest'],
