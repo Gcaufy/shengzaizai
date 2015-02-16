@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\operation\models\OperationHospitalMap */
 
 $this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Operation Hospital Maps', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '医院手术列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="operation-hospital-map-view">

@@ -8,14 +8,14 @@ use yii\helpers\Json;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\doctor\models\Doctor;
 use backend\modules\doctor\models\DoctorSearch;
-use yii\web\Controller;
+use backend\controllers\ShiroController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * DoctorController implements the CRUD actions for Doctor model.
  */
-class DoctorController extends Controller
+class DoctorController extends ShiroController
 {
     public function behaviors()
     {
@@ -111,33 +111,6 @@ class DoctorController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
-    }
-
-    public function actionHospsearch($search = null, $id = null)
-    {
-        $output = ['results' => [], 'more' => false];
-        if ($search !== null) {
-            $hosps = Hospital::find()
-                ->andFilterWhere(['like', 't.name', $search])
-                ->limit(20)
-                ->all();
-        } elseif (strlen($id) > 0) {
-            $hosp = Hospital::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
-            $output['results'] = [
-                'id' => $hosp->id,
-                'text' => $hosp->name,
-            ];
-
-        }
-        if (!empty($hosps)) {
-            $output['results'] = ArrayHelper::getColumn($hosps, function($hosp) {
-                return [
-                    'id' => $hosp->id,
-                    'text' => $hosp->name,
-                ];
-            });
-        }
-        return Json::encode($output);
     }
 
     /**

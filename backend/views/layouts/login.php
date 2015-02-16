@@ -12,7 +12,7 @@ LoginAsset::register($this);
     <meta name="author" content="ThemeBucket">
     <link rel="shortcut icon" href="#" type="image/png">
 
-    <title>Login</title>
+    <title>登陆</title>
 
     <!-- CSS -->
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->

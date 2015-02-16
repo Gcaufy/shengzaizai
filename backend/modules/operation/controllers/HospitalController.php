@@ -5,14 +5,14 @@ namespace backend\modules\operation\controllers;
 use Yii;
 use backend\modules\operation\models\OperationHospitalMap;
 use backend\modules\operation\models\OperationHospitalMapSearch;
-use yii\web\Controller;
+use backend\controllers\ShiroController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * HospitalController implements the CRUD actions for OperationHospitalMap model.
  */
-class HospitalController extends Controller
+class HospitalController extends ShiroController
 {
     public function behaviors()
     {

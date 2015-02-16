@@ -2,8 +2,6 @@
 
 use yii\helpers\Html;
 use backend\components\ActiveForm;
-use yii\web\JsExpression;
-use kartik\widgets\Select2;
 use kartik\rating\StarRating;
 use yii\helpers\Url;
 

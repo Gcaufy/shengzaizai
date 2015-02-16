@@ -3,6 +3,10 @@ namespace backend\controllers;
 
 use Yii;
 use yii\web\Controller;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use backend\modules\hospital\models\Hospital;
+use backend\modules\operation\models\Operation;
 
 class ShiroController extends Controller
 {
@@ -184,6 +188,62 @@ class ShiroController extends Controller
     			return ;
     			break;
     	}
+    }
+
+
+
+
+    public function actionHospsearch($search = null, $id = null)
+    {
+        $output = ['results' => [], 'more' => false];
+        if ($search !== null) {
+            $hosps = Hospital::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $hosp = Hospital::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
+            $output['results'] = [
+                'id' => $hosp->id,
+                'text' => $hosp->name,
+            ];
+
+        }
+        if (!empty($hosps)) {
+            $output['results'] = ArrayHelper::getColumn($hosps, function($hosp) {
+                return [
+                    'id' => $hosp->id,
+                    'text' => $hosp->name,
+                ];
+            });
+        }
+        return Json::encode($output);
+    }
+    public function actionOperasearch($search = null, $id = null)
+    {
+        $output = ['results' => [], 'more' => false];
+        if ($search !== null) {
+            $operas = Operation::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $opera = Operation::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
+            $output['results'] = [
+                'id' => $opera->id,
+                'text' => $opera->name,
+            ];
+
+        }
+        if (!empty($operas)) {
+            $output['results'] = ArrayHelper::getColumn($operas, function($opera) {
+                return [
+                    'id' => $opera->id,
+                    'text' => $opera->name,
+                ];
+            });
+        }
+        return Json::encode($output);
     }
 }
 ?>

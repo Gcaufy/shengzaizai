@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\operation\models\OperationHospitalMapSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Operation Hospital Maps';
+$this->title = '医院手术列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="operation-hospital-map-index">

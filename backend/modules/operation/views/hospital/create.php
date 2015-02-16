@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\operation\models\OperationHospitalMap */
 
-$this->title = '添加 Operation Hospital Map';
-$this->params['breadcrumbs'][] = ['label' => 'Operation Hospital Maps', 'url' => ['index']];
+$this->title = '添加医院手术';
+$this->params['breadcrumbs'][] = ['label' => '医院手术列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

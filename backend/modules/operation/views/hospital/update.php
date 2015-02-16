@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\operation\models\OperationHospitalMap */
 
-$this->title = '修改 Operation Hospital Map #' . ' ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Operation Hospital Maps', 'url' => ['index']];
+$this->title = '修改医院手术 #' . ' ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => '医院手术列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
