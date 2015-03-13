@@ -42,7 +42,10 @@ class DoctorSearch extends Doctor
      */
     public function search($params)
     {
-        $query = Doctor::find();
+        //$query = Doctor::find()->joinWith('hospital');
+
+        //$query = Doctor::find()->joinWith(['hospital' => function ($q) { $q->from(\backend\modules\hospital\models\Hospital::tableName() . ' u'); }]);
+        $query = Doctor::find()->joinWith('hospital');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -55,7 +58,6 @@ class DoctorSearch extends Doctor
             // $query->where('0=1');
             return $dataProvider;
         }
-
         $query->andFilterWhere([
             'id' => $this->id,
             'hosp_id' => $this->hosp_id,

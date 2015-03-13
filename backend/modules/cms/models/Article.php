@@ -71,6 +71,7 @@ class Article extends \common\components\MyActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getCategory() {
-        return $this->hasOne(CmsCategory::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::className(), ['id' => 'category_id'])
+            ->from(Category::tableName() . ' cateogry');
     }
 }

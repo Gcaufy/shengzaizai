@@ -3,6 +3,7 @@
 namespace backend\modules\doctor\models;
 
 use Yii;
+use \backend\modules\hospital\models\Hospital;
 
 /**
  * This is the model class for table "{{%doctor}}".
@@ -86,5 +87,12 @@ class Doctor extends \common\components\MyActiveRecord
      */
     public function getDoctorTitleMaps() {
         return $this->hasMany(DoctorTitleMap::className(), ['doctor_id' => 'id']);
+    }
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHospital() {
+        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id'])
+            ->from(Hospital::tableName() . ' hospital');
     }
 }

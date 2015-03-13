@@ -2,6 +2,8 @@
 
 namespace common\components;
 
+use Yii;
+
 class ActiveQuery extends \yii\db\ActiveQuery
 {
 
@@ -27,6 +29,9 @@ class ActiveQuery extends \yii\db\ActiveQuery
             if (is_array($this->where)) {
                 $this->updateCondition($this->where, "{$this->tableAlias}.", "{$matches[1]}.");
             }
+            if (is_array($this->on)) {
+                $this->updateCondition($this->on, "{$this->tableAlias}.", "{$matches[1]}.");
+            }
             $this->tableAlias = $matches[1];
         }
         return parent::from($tables);
@@ -38,18 +43,36 @@ class ActiveQuery extends \yii\db\ActiveQuery
     public function prepare($builder)
     {
         $query = parent::prepare($builder);
+        return $query;
         if (is_array($query->join)) {
-            foreach ($query->join as &$join) {
+            $allTables = [$this->tableAlias];
+            foreach ($query->join as $i => &$join) {
                 $tables = [];
-                foreach ($join[1] as $table) {
-                    if (preg_match('/^(?:[^\s]+\s+)?([^\s]+)/', $table, $matches)) {
-                        $tables[] = $matches[1];
+                foreach ((array) $join[1] as $table) {
+                    if (preg_match('/^(?:([^\s]+)\s+)?([^\s]+)/', $table, $matches)) {
+                        if (in_array($matches[2], $allTables)) {
+                            // do not join to a table which is already in the query
+                            unset($query->join[$i]);
+                            continue 2;
+                        } else {
+                            $tables[$matches[1]] = $matches[2];
+                            $allTables[] = $matches[2];
+                        }
                     }
                 }
-                $statusColumns = array_map(function($table) {
-                    return "{$table}.status";
-                }, $tables);
-                $join[2] = ['and', $join[2], array_combine($statusColumns, array_fill(0, count($statusColumns), MyActiveRecord::STATUS_ACTIVE))];
+                // join to active members only by default
+                $statusCondition = [];
+                foreach ($tables as $name => $alias) {
+                    if ($name === '')
+                        $name = $alias;
+                    $tableSchema = Yii::$app->db->getTableSchema($name);
+                    if ($tableSchema !== null && $tableSchema->getColumn('status') !== null) {
+                        $statusCondition["{$alias}.status"] = MyActiveRecord::STATUS_ACTIVE;
+                    }
+                }
+                if (count($statusCondition) > 0) {
+                    $join[2] = ['and', $join[2], $statusCondition];
+                }
             }
         }
         if (is_array($query->where)) {

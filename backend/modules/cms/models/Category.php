@@ -57,8 +57,9 @@ class Category extends \common\components\MyActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCmsArticles()
+    public function getArticles()
     {
-        return $this->hasMany(CmsArticle::className(), ['category_id' => 'id']);
+        return $this->hasMany(Article::className(), ['category_id' => 'id'])
+            ->from(Article::tableName() . ' articles');
     }
 }

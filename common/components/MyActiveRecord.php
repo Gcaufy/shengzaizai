@@ -3,15 +3,55 @@
 namespace common\components;
 
 use Yii;
+use yii\base\UnknownPropertyException;
+use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use common\models\User;
 
 class MyActiveRecord extends ActiveRecord
 {
     const STATUS_ACTIVE = 1;
     const STATUS_DELETED = 0;
+
+    const SCENARIO_CREATE = 'create';
+    const SCENARIO_UPDATE = 'update';
+
+    /**
+     * @inheritdoc
+     */
+    public function __get($name)
+    {
+        try {
+            return parent::__get($name);
+        } catch (UnknownPropertyException $e) {
+            Yii::$app->db->schema->refresh();
+            return parent::__get($name);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function __set($name, $value)
+    {
+        try {
+            parent::__set($name, $value);
+        } catch (UnknownPropertyException $e) {
+            Yii::$app->db->schema->refresh();
+            parent::__set($name, $value);
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        //$this->loadDefaultValues();
+    }
 
     /**
      * @inheritdoc
@@ -19,12 +59,12 @@ class MyActiveRecord extends ActiveRecord
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        if ($this->hasAttribute('cid') && $this->hasAttribute('uid')) {
+        if ($this->hasAttribute('cid') && $this->hasAttribute('uid') && isset(Yii::$app->session)) {
             $behaviors[] = [
                 'class' => AttributeBehavior::className(),
                 'attributes' => [
-                    self::EVENT_BEFORE_INSERT => ['cid', 'uid'],
-                    self::EVENT_BEFORE_UPDATE => 'uid',
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['cid', 'uid'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => 'uid',
                 ],
                 'value' => function ($event) {
                     return Yii::$app->user->isGuest ? null : Yii::$app->user->identity->id;
@@ -41,17 +81,9 @@ class MyActiveRecord extends ActiveRecord
         return $behaviors;
     }
 
-
-    public function attributeLabels()
+    public static function createQuery()
     {
-        return [
-            'id' => 'ID',
-            'status' => '状态',
-            'utime' => '修改时间',
-            'uid' => '修改人',
-            'ctime' => '创建时间',
-            'cid' => '创建人',
-        ];
+        return parent::createQuery()->andWhere(['t.status' => 1]);
     }
 
     /**
@@ -66,7 +98,7 @@ class MyActiveRecord extends ActiveRecord
     /**
      * @inheritdoc
      */
-    protected static function findByCondition($condition, $one)
+    protected static function findByCondition($condition)
     {
         $query = static::find();
 
@@ -87,7 +119,7 @@ class MyActiveRecord extends ActiveRecord
             }
         }
 
-        return $one ? $query->andWhere($condition)->one() : $query->andWhere($condition)->all();
+        return $query->andWhere($condition);
     }
 
     /**
@@ -99,6 +131,20 @@ class MyActiveRecord extends ActiveRecord
         $command->update(static::tableName(), ['status' => self::STATUS_DELETED], $condition, $params);
 
         return $command->execute();
+    }
+
+    public function getCreatedBy()
+    {
+        return $this->hasAttribute('cid') ?
+            $this->hasOne(User::className(), ['id' => 'cid'])->from(User::tableName() . ' created_by') :
+            null;
+    }
+
+    public function getUpdatedBy()
+    {
+        return $this->hasAttribute('uid') ?
+            $this->hasOne(User::className(), ['id' => 'uid'])->from(User::tableName() . ' updated_by') :
+            null;
     }
 
     public function formatDate($time)

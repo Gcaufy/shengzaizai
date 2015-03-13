@@ -1,6 +1,5 @@
 <?php
-
-namespace api\modules\v1\controllers;
+namespace api\controllers;
 
 use Yii;
 use yii\base\InvalidParamException;
@@ -17,7 +16,7 @@ use common\models\UserToken;
  *
  * @author Budi Irawan <deerawan@gmail.com>
  */
-class ShiroController extends \yii\rest\ActiveController
+class BaseController extends \yii\rest\ActiveController
 {
 
     public $serializer = [
