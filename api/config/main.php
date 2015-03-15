@@ -15,6 +15,7 @@ return [
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -31,11 +32,19 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST register' => 'site/register',
+                'POST register/captcha' => 'site/captcha',
+                'POST login' => 'site/login',
+                'GET finance/balance' => 'finance/balance',
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'login',
+                    'controller' => 'user',
                     'pluralize' => false,
-                    'patterns' => ['GET' => 'index'],
+                    'patterns' => [
+                        'POST captcha' => 'captcha',
+                        'POST register' => 'register',
+                        'POST login' => 'login',
+                    ],
                 ],
                 [
                     'class' => 'yii\rest\UrlRule',
@@ -53,15 +62,10 @@ return [
                         'class',
                         'homework',
                         'note',
-                        'site',
+                        'register',
+                        'finance',
                     ],
                     'pluralize' => false,
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
-                    'controller' => ['message'],
-                    'pluralize' => false,
-                    'extraPatterns' => ['GET user' => 'user'],
                 ],
             ],
         ]

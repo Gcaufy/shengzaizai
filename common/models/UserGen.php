@@ -47,7 +47,8 @@ class UserGen extends \common\components\MyActiveRecord
             [['realname', 'email'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
-            [['password', 'payment_password'], 'string', 'max' => 60]
+            [['password', 'payment_password'], 'string', 'max' => 60],
+            [['mobile'], 'unique']
         ];
     }
 
@@ -64,7 +65,7 @@ class UserGen extends \common\components\MyActiveRecord
             'auth_key' => '密钥',
             'password' => '登陆密码',
             'payment_password' => '支付密码',
-            'pregnant' => '1: 备孕',
+            'pregnant' => '怀孕状态',
             'role' => '1: 管理员',
             'status' => 'Status',
             'utime' => 'Utime',

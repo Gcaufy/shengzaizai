@@ -1,5 +1,5 @@
 <?php
-namespace common\models;
+namespace backend\modules\member\models;
 
 use Yii;
 use yii\base\Model;
@@ -9,27 +9,9 @@ use common\models\User;
 /**
  * UserSearch represents the model behind the search form about `common\models\User`.
  */
-class UserSearch extends User
+class UserSearch extends \common\models\UserSearch
 {
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['id', 'gender', 'role', 'status', 'uid', 'utime', 'cid', 'ctime'], 'integer'],
-            [['username', 'realname', 'qq', 'mobile', 'tel', 'email', 'birth', 'portrait', 'authkey', 'password', 'note'], 'safe'],
-        ];
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
-    }
 
     /**
      * Creates data provider instance with search query applied
@@ -40,7 +22,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = User::find()->andWhere(['t.role' => self::ROLE_NORMAL]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

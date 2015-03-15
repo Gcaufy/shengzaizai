@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\inspection\models\InspectionHospitalMap */
+/* @var $model common\models\User */
 
-$this->title = '添加 医院检查';
-$this->params['breadcrumbs'][] = ['label' => '医院检查列表', 'url' => ['index']];
+$this->title = '添加 注册用户 (默认密码123123123)';
+$this->params['breadcrumbs'][] = ['label' => '用户列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

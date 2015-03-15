@@ -95,7 +95,7 @@ class DoctorController extends ShiroController
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
         }
-        return $this->render('create', [
+        return $this->render('update', [
             'model' => $model,
         ]);
     }

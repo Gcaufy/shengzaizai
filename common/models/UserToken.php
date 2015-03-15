@@ -3,62 +3,43 @@
 namespace common\models;
 
 use Yii;
-use yii\behaviors\TimestampBehavior;
+use common\components\IpHelper;
 
 /**
- * This is the model class for table "user_token".
+ * This is the model class for table "{{%user_token}}".
  *
- * @property integer $id
- * @property integer $user_id
- * @property string $access_token
+ * @property string $id
+ * @property string $user_id
+ * @property string $token
+ * @property integer $ip
+ * @property string $agent
  * @property integer $ctime
- * @property integer $utime
- * @property boolean $status
  */
-class UserToken extends \yii\db\ActiveRecord
+class UserToken extends \common\components\MyActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'user_token';
+        return '{{%user_token}}';
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors() {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['ctime', 'utime'],
-                    \yii\db\ActiveRecord::EVENT_BEFORE_UPDATE => ['utime'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
-            [['user_id', 'ctime', 'utime'], 'integer'],
-            [['access_token'], 'string', 'max' => 32],
-            [['last_login_ip'], 'string', 'max' => 39],
-            [['user_agent'], 'string', 'max' => 255],
-            [['status'], 'boolean'],
+               [['user_id', 'ip', 'ctime'], 'integer'],
+               [['agent'], 'string', 'max' => 200],
+               [['token'], 'string', 'max' => 50]
         ];
     }
 
     protected function setAccessInfo()
     {
-        $this->last_login_ip = Yii::$app->request->userIP;
-        $this->user_agent = Yii::$app->request->userAgent;
+        $this->ip = IpHelper::ip2int(Yii::$app->request->userIP);
+        $this->agent = Yii::$app->request->userAgent;
     }
 
     protected static function findByUserId($user_id)
@@ -74,10 +55,11 @@ class UserToken extends \yii\db\ActiveRecord
     public static function updateToken($user_id)
     {
         $token = static::findByUserId($user_id);
-        $token->access_token = Yii::$app->security->generateRandomString();
+        $token->token = Yii::$app->security->generateRandomString();
         $token->setAccessInfo();
+        $token->ctime = time();
         $token->save();
-        return $token->access_token;
+        return $token->token;
     }
 
     public static function updateAccessInfo($user_id)
@@ -86,5 +68,4 @@ class UserToken extends \yii\db\ActiveRecord
         $token->setAccessInfo();
         return $token->save();
     }
-
 }

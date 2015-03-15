@@ -11,18 +11,12 @@ use common\models\SmsCaptcha;
 use api\components\MsgHelper;
 
 /**
- * Register controller
+ * Site controller
  */
-class SiteController extends BaseController
+class UserController extends BaseController
 {
     public $modelClass = '';
     protected $loginRequired = false;
-
-
-    public function actions()
-    {
-        return [];
-    }
 
     public function actionCaptcha() {
         $params = Yii::$app->getRequest()->getBodyParams();
@@ -49,6 +43,7 @@ class SiteController extends BaseController
     }
 
     public function actionRegister() {
+
         $params = Yii::$app->getRequest()->getBodyParams();
         if (!isset($params['captcha'])) {
             return MsgHelper::faile('验证码不能为空.');
@@ -98,4 +93,5 @@ class SiteController extends BaseController
             return MsgHelper::faile('用户名或者密码错误.');
         }
     }
+
 }

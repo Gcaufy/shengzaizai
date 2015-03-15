@@ -52,14 +52,15 @@ return [
             ['n'=>'地区配置','c'=>'region','m'=>'index','i'=>'fa fa-map-marker'],
             /*['n'=>'管理操作日志','c'=>'log','m'=>'index','i'=>'fa fa-line-chart'],*/
         ]],
-        ['n'=>'个人中心','m'=>'cms','i'=>'fa fa-newspaper-o','s'=>[
-            /*['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[
-                ['n'=>'创建','m'=>'create'],
+        ['n'=>'个人中心','m'=>'user','i'=>'fa fa-newspaper-o','s'=>[
+            ['n'=>'我的资料','c'=>'profile','m'=>'index','i'=>'fa fa-newspaper-o','s'=>[
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
-                ['n'=>'删除','m'=>'delete'],
             ]],
-            ['n'=>'我的信息','c'=>'article','m'=>'index','i'=>'fa fa-newspaper-o','s'=>[
+            ['n'=>'我的账户','c'=>'account','m'=>'index','i'=>'fa fa-newspaper-o','s'=>[
+                ['n'=>'查看','m'=>'view'],
+            ]],
+            /*['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],
                 ['n'=>'更新','m'=>'update'],
@@ -91,6 +92,7 @@ return [
             ['n'=>'医院手术列表','c'=>'hospital','m'=>'index','i'=>'fa fa-hospital-o'],
         ]],
         ['n'=>'检查模块','m'=>'inspection','i'=>'fa fa-h-square','s'=>[
+            ['n'=>'检查列表','c'=>'inspection','m'=>'index','i'=>'fa fa-hospital-o'],
             ['n'=>'医院检查列表','c'=>'hospital','m'=>'index','i'=>'fa fa-hospital-o'],
         ]],
         /*['n'=>'消息中心','m'=>'message','i'=>'fa fa-wechat','s'=>[
@@ -167,7 +169,8 @@ return [
                 ['n'=>'删除','m'=>'delete'],
             ]],*/
         ]],
-        ['n'=>'用户模块','m'=>'user','i'=>'fa fa-users','s'=>[
+        ['n'=>'用户模块','m'=>'member','i'=>'fa fa-users','s'=>[
+            ['n'=>'注册用户列表','c'=>'member','m'=>'index','i'=>'fa fa-map-marker'],
             /*['n'=>'客服列表','c'=>'support','m'=>'index','i'=>'fa fa-mortar-board','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],

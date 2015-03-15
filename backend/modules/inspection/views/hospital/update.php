@@ -5,10 +5,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\inspection\models\InspectionHospitalMap */
 
-$this->title = '修改 Inspection Hospital Map #' . ' ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Inspection Hospital Maps', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'Update';
+$this->title = '修改 Inspection Hospital Map #' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => '医院检查列表', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = '修改';
 ?>
 <div class="row" id="inspection-hospital-map-update">
     <div class="col-lg-12">

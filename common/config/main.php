@@ -39,6 +39,12 @@ return [
             'cookieParams' => array('domain' => '.' . DOMAIN, 'lifetime' => 0),
             'timeout' => 3600,
         ),
+        'sms' => [
+            'class' => 'backend\components\Sms',
+            'sn' => '<sn>',
+            'password' => '<password>',
+            'sign' => '生仔仔',
+        ],
         'urlManager' => [
             'class' => 'common\components\MutilpleDomainUrlManager',
             'domains' => [
@@ -52,6 +58,15 @@ return [
             'baseUrl' => '//' . DOMAIN_HOME,
             'showScriptName' => false,
             'enablePrettyUrl' => true,
+        ],
+        'authManager' => [
+            'class' => 'common\components\PhpManager',
+            'itemFile' => '@common/rbac/items.php',
+            'defaultRoles' => ['guest'],
+            'roleMap' => [
+                '1' => 'admin',
+                '2' => 'normal',
+            ],
         ],
     ],
 ];

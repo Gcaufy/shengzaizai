@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\modules\inspection\models\InspectionHospitalMapSearch */
+/* @var $searchModel common\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = '医院检查列表';
+$this->title = '注册用户列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row" id="inspection-hospital-map-index">
+<div class="row" id="user-index">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
@@ -31,19 +31,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'insp_id',
-            'hosp_id',
-            'contact',
-            'feedback_score',
-            // 'isleaf',
-            // 'status',
-            // 'utime',
-            // 'uid',
-            // 'ctime',
-            // 'cid',
-
+            'realname',
+            'mobile',
+            'email:email',
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

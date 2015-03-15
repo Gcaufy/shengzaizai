@@ -1,18 +1,18 @@
 <?php
 
-namespace backend\modules\inspection\controllers;
+namespace backend\modules\member\controllers;
 
 use Yii;
-use backend\modules\inspection\models\InspectionHospitalMap;
-use backend\modules\inspection\models\InspectionHospitalMapSearch;
+use common\models\User;
+use backend\modules\member\models\UserSearch;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use backend\controllers\ShiroController;
 
 /**
- * HospitalController implements the CRUD actions for InspectionHospitalMap model.
+ * MemberController implements the CRUD actions for User model.
  */
-class HospitalController extends ShiroController
+class MemberController extends Controller
 {
     public function behaviors()
     {
@@ -27,12 +27,12 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Lists all InspectionHospitalMap models.
+     * Lists all User models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InspectionHospitalMapSearch();
+        $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -42,7 +42,7 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Displays a single InspectionHospitalMap model.
+     * Displays a single User model.
      * @param string $id
      * @return mixed
      */
@@ -54,14 +54,17 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Creates a new InspectionHospitalMap model.
+     * Creates a new User model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new InspectionHospitalMap();
+        $model = new User();
         if ($model->load(Yii::$app->request->post())) {
+            $model->auth_key = 'm6h2avrDBawpVGxnya4Wqq1SYS2W5NZg';
+            $model->password = '$2y$13$uqdkNWOF/Sfuz6TlNXuRneKT2Mu5tXgkXvB9E56rx1AJjzyEgH7KC';
+            $model->role = User::ROLE_NORMAL;
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -75,7 +78,7 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Updates an existing InspectionHospitalMap model.
+     * Updates an existing User model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -98,7 +101,7 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Deletes an existing InspectionHospitalMap model.
+     * Deletes an existing User model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -111,15 +114,15 @@ class HospitalController extends ShiroController
     }
 
     /**
-     * Finds the InspectionHospitalMap model based on its primary key value.
+     * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return InspectionHospitalMap the loaded model
+     * @return User the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InspectionHospitalMap::findOne($id)) !== null) {
+        if (($model = User::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

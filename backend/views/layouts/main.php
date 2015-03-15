@@ -77,24 +77,28 @@ AppAsset::register($this);
             		if (!empty(Yii::$app->params['rules'])) {
                 		$cururl = $this->context->module->id . '/' . Yii::$app->controller->id . '/' . Yii::$app->controller->action->id;
 		                foreach (Yii::$app->params['rules'] as $k => $v) {
-		                    $expand = '';
+                            if (!Yii::$app->user->can("menu.{$v['m']}.view")) continue;
+
+                            $expand = '';
 		                    if ($v['m'] == $this->context->module->id) {
 		                        $expand = ' nav-active';
 		                    }
-		                        echo '<li class="menu-list' . $expand . '"><a href="#m'.$k.'" data-toggle="collapse" data-parent="#accordion">'.
-		                        	(isset($v['i']) ? '<i class="'.$v['i'].'"></i> ' : '').
-		                        	'<span>' . Yii::t('app',$v['n']) . '</span>' .
-		                        	'</a>' . 
-		                        	'<ul id="m'.$k.'" class="sub-menu-list">';
-		                        foreach ($v['s'] as $kk=>$vv) {
-		                                $url = $v['m'].'/'.$vv['c'].'/'.$vv['m'];
-		                                $active = '';
-		                                if($url==$cururl){
-		                                    $active = ' class ="active"';
-		                                }
-		                                echo '<li' . $active . '>' . Html::a((isset($vv['i']) ? '<i class="'.$vv['i'].'"></i> ' : '').Yii::t('app',$vv['n']), ['/'.$url]) . '</li>';
-		                        }
-		                        echo '</ul></li>';
+	                        echo '<li class="menu-list' . $expand . '"><a href="#m'.$k.'" data-toggle="collapse" data-parent="#accordion">'.
+	                        	(isset($v['i']) ? '<i class="'.$v['i'].'"></i> ' : '').
+	                        	'<span>' . Yii::t('app',$v['n']) . '</span>' .
+	                        	'</a>' .
+	                        	'<ul id="m'.$k.'" class="sub-menu-list">';
+	                        foreach ($v['s'] as $kk=>$vv) {
+                                if (!Yii::$app->user->can("menu.{$v['m']}.{$vv['c']}.{$vv['m']}.view")) continue;
+
+                                $url = $v['m'].'/'.$vv['c'].'/'.$vv['m'];
+                                $active = '';
+                                if($url==$cururl){
+                                    $active = ' class ="active"';
+                                }
+                                echo '<li' . $active . '>' . Html::a((isset($vv['i']) ? '<i class="'.$vv['i'].'"></i> ' : '').Yii::t('app',$vv['n']), ['/'.$url]) . '</li>';
+	                        }
+	                        echo '</ul></li>';
 		                }
 		            }
             	?>
@@ -207,7 +211,7 @@ AppAsset::register($this);
         </div>
     </div>
     <!-- left side end-->
-    
+
     <!-- main content start-->
     <div class="main-content" >
 
@@ -482,7 +486,7 @@ AppAsset::register($this);
 <?php
       $arr = Yii::$app->session->getAllFlashes();
       foreach ($arr as $key => $value) {
-          echo '<script>alertify.log("' . $value . '", "' . $key . '"' . (($key === 'error') ? ', 0' : '') . ')</script>'; 
+          echo '<script>alertify.log("' . $value . '", "' . $key . '"' . (($key === 'error') ? ', 0' : '') . ')</script>';
       }
 ?>
 </body>

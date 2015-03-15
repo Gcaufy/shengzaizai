@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\inspection\models\InspectionHospitalMap */
+/* @var $model common\models\User */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '医院检查列表', 'url' => ['index']];
+$this->title = $model->realname;
+$this->params['breadcrumbs'][] = ['label' => '注册用户列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row" id="inspection-hospital-map-view">
+<div class="row" id="user-view">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
@@ -32,15 +32,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-            'insp_id',
-            'hosp_id',
-            'contact',
-            'feedback_score',
-            'isleaf',
+            'realname',
+            'mobile',
+            'email:email',
+            'pregnant',
+            'role',
             'status',
-            'utime',
+            'utime:datetime',
             'uid',
-            'ctime',
+            'ctime:datetime',
             'cid',
                 ],
             ]) ?>

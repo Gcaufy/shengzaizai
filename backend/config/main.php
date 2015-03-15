@@ -14,6 +14,8 @@ return [
     'modules' => [
         'system' => ['class' => 'backend\modules\system\System'],
         'cms' => ['class' => 'backend\modules\cms\Cms'],
+        'member' => ['class' => 'backend\modules\member\Member'],
+        'user' => ['class' => 'backend\modules\user\User'],
         'hospital' => ['class' => 'backend\modules\hospital\Hospital'],
         'doctor' => ['class' => 'backend\modules\doctor\Doctor'],
         'operation' => ['class' => 'backend\modules\operation\Operation'],
@@ -29,17 +31,6 @@ return [
                 ],
             ],
         ],*/
-        'authManager' => [
-            'class' => 'app\components\PhpManager',
-            'defaultRoles' => ['guest'],
-            'roleMap' => [
-                '1' => 'admin',
-                '2' => 'teacher',
-                '3' => 'parent',
-                '4' => 'student',
-                '5' => 'support',
-            ],
-        ],
         'urlManager' => [
             'baseUrl' => '//' . DOMAIN_HOME,
         ],

@@ -58,6 +58,7 @@ class BaseController extends \yii\rest\ActiveController
         if ($this->loginRequired) {
             $behaviors['authenticator'] = [
                 'class' => QueryParamAuth::className(),
+                'tokenParam' => 'token',
             ];
         } else {
             unset($behaviors['authenticator']);
@@ -71,11 +72,11 @@ class BaseController extends \yii\rest\ActiveController
     public function checkAccess($action, $model = null, $params = [])
     {
         if ($this->loginRequired) {
-            $token = UserToken::findOne(['user_id' => Yii::$app->user->identity->id]);
+            /*$token = UserToken::findOne(['user_id' => Yii::$app->user->identity->id]);
             // 24 * 60 * 60 = 86400
             if (time() - $token->utime > 86400) {
                 throw new ForbiddenHttpException('Token expired');
-            }
+            }*/
         }
         if (in_array($action, $this->deniedActions)) {
             throw new ForbiddenHttpException("You are not allowed to perform {$action} action");
@@ -93,15 +94,22 @@ class BaseController extends \yii\rest\ActiveController
         return parent::afterAction($action, $result);
     }
 
+
+    protected function getQuery() {
+        $modelClass = $this->modelClass;
+        $model = new $modelClass();
+        $query = $model::find();
+
+        return $query;
+    }
+
     /**
      * implement this method to change the default dataProvider for IndexAction
      * @return yii\data\ActiveDataProvider
      */
     public function prepareDataProvider()
     {
-        $modelClass = $this->modelClass;
-        $model = new $modelClass();
-        $query = $model::find();
+        $query = $this->getQUery();
 
         $filter = Yii::$app->request->get('filter');
         if (is_string($filter)) {

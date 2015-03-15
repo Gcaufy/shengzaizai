@@ -8,11 +8,14 @@ use backend\modules\inspection\models\InspectionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
+use backend\controllers\ShiroController;
 
 /**
  * InspectionController implements the CRUD actions for Inspection model.
  */
-class InspectionController extends Controller
+class InspectionController extends ShiroController
 {
     public function behaviors()
     {
@@ -61,7 +64,17 @@ class InspectionController extends Controller
     public function actionCreate()
     {
         $model = new Inspection();
+        $model->parent_id = 0;
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->parent_id == 0) {
+                $model->parent_id = null;
+                $model->level = 0;
+            } else {
+                $model->level = 1;
+                $parent = $this->findModel($model->parent_id);
+                $parent->isleaf = 0;
+                $parent->save();
+            }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
                 return $this->redirect(['view', 'id' => $model->id]);
@@ -92,6 +105,8 @@ class InspectionController extends Controller
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
         }
+        if ($model->parent_id == null)
+            $model->parent_id = 0;
         return $this->render('create', [
             'model' => $model,
         ]);
@@ -108,6 +123,38 @@ class InspectionController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+
+
+    public function actionParentsearch($search = null, $id = null)
+    {
+        $output = ['results' => [['id' => '0', 'text' => '父级项目']]];
+        if ($id === '0') {
+            return Json::encode(['results' => ['id' => '0', 'text' => '父级项目'], 'more' => false]);
+        }
+        if ($search !== null) {
+            $ps = Inspection::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $p = Inspection::find()->andWhere(['in', 't.id', explode(',', $id)])->andWhere('t.parent_id is null')->one();
+            $output['results'] = [
+                'id' => $p->id,
+                'text' => $p->name,
+            ];
+
+        }
+        if (!empty($ps)) {
+            foreach ($ps as $key => $p) {
+                $output['results'][] = [
+                    'id' => $p->id,
+                    'text' => $p->name,
+                ];
+            }
+        }
+        return Json::encode($output);
     }
 
     /**

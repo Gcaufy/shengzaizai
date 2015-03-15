@@ -25,12 +25,14 @@ use backend\modules\user\models\Teacher;
 class User extends \common\models\UserGen implements \yii\web\IdentityInterface
 {
     const ROLE_ADMIN    = 1; // 管理员
-    const ROLE_TEACHER  = 2; // 老师
-    const ROLE_PARENT   = 3; // 家长
-    const ROLE_STUDENT  = 4; // 学生
-    const ROLE_SUPPORT  = 5; // 客服
+    const ROLE_NORMAL  = 2; // 注册用户
 
-    const SCENARIO_TEACHER_CREATE = 'TEACHER_CREATE';
+    const TYPE_FOR_PREGNANT = 1;
+    const TYPE_PREGNANT = 2;
+    const TYPE_EXPECTANT = 3;
+    const TYPE_POSTPARTUM = 4;
+    const TYPE_OTHER = 5;
+
     public $rememberMe = false;
 
     /**
@@ -39,8 +41,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['mobile', 'required']; 
-        $rules[] = ['realname', 'required', 'on' => self::SCENARIO_TEACHER_CREATE]; 
+        $rules[] = ['mobile', 'required'];
         return $rules;
     }
 
@@ -56,8 +57,18 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
 
     public static function getRoleMap() {
         return [
-            '0' => '用户',
-            '1' => '管理员',
+            self::ROLE_ADMIN => '管理员',
+            self::ROLE_NORMAL => '注册用户',
+        ];
+    }
+
+    public static function getTypeMap() {
+        return [
+            self::TYPE_FOR_PREGNANT => '备孕中',
+            self::TYPE_PREGNANT => '怀孕中',
+            self::TYPE_EXPECTANT => '待产',
+            self::TYPE_POSTPARTUM => '产后',
+            self::TYPE_OTHER => '其它',
         ];
     }
 
@@ -70,8 +81,8 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function isAdmin() {
         return $this->getRole() == self::ROLE_ADMIN;
     }
-    public function isSupport() {
-        return $this->getRole() == self::ROLE_SUPPORT;
+    public function isMember() {
+        return $this->getRole() == self::ROLE_NORMAL;
     }
     public function isTeacher() {
         return $this->getRole() == self::ROLE_TEACHER;
@@ -136,7 +147,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $token = UserToken::findOne(['access_token' => $token]);
+        $token = UserToken::findOne(['token' => $token]);
         return is_null($token) ? null : static::findOne($token->user_id);
     }
 
@@ -200,6 +211,10 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function getAuthKey()
     {
         return $this->auth_key;
+    }
+    public function setAuthKey($v)
+    {
+        return $this->auth_key = $v;
     }
 
     /**

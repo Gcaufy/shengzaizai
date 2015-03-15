@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\operation\models\Operation;
+use backend\modules\inspection\models\Inspection;
 
 class ShiroController extends Controller
 {
@@ -240,6 +241,32 @@ class ShiroController extends Controller
                 return [
                     'id' => $opera->id,
                     'text' => $opera->name,
+                ];
+            });
+        }
+        return Json::encode($output);
+    }
+    public function actionInspsearch($search = null, $id = null)
+    {
+        $output = ['results' => [], 'more' => false];
+        if ($search !== null) {
+            $insps = Inspection::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $insp = Inspection::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
+            $output['results'] = [
+                'id' => $insp->id,
+                'text' => $insp->name,
+            ];
+
+        }
+        if (!empty($insps)) {
+            $output['results'] = ArrayHelper::getColumn($insps, function($insp) {
+                return [
+                    'id' => $insp->id,
+                    'text' => $insp->name,
                 ];
             });
         }
