@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Controller;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use backend\modules\doctor\models\Doctor;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\operation\models\Operation;
 use backend\modules\inspection\models\Inspection;
@@ -215,6 +216,32 @@ class ShiroController extends Controller
                 return [
                     'id' => $hosp->id,
                     'text' => $hosp->name,
+                ];
+            });
+        }
+        return Json::encode($output);
+    }
+    public function actionDoctorsearch($search = null, $id = null)
+    {
+        $output = ['results' => [], 'more' => false];
+        if ($search !== null) {
+            $doctors = Doctor::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $doctor = Doctor::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
+            $output['results'] = [
+                'id' => $doctor->id,
+                'text' => $doctor->name,
+            ];
+
+        }
+        if (!empty($doctors)) {
+            $output['results'] = ArrayHelper::getColumn($doctors, function($doctor) {
+                return [
+                    'id' => $doctor->id,
+                    'text' => $doctor->name,
                 ];
             });
         }

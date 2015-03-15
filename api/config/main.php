@@ -39,16 +39,6 @@ return [
                 'GET system/info' => 'system/info',
                 [
                     'class' => 'yii\rest\UrlRule',
-                    'controller' => 'user',
-                    'pluralize' => false,
-                    'patterns' => [
-                        'POST captcha' => 'captcha',
-                        'POST register' => 'register',
-                        'POST login' => 'login',
-                    ],
-                ],
-                [
-                    'class' => 'yii\rest\UrlRule',
                     'controller' => 'article',
                     'pluralize' => false,
                     'patterns' => [
@@ -60,9 +50,6 @@ return [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => [
                         'article',
-                        'class',
-                        'homework',
-                        'note',
                         'register',
                         'finance',
                         'region',

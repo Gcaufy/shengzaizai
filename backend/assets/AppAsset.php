@@ -30,7 +30,7 @@ class AppAsset extends AssetBundle
     public $js = [
         //'js/jquery-1.10.2.min.js',
         'js/jquery-migrate-1.2.1.min.js',
-        'js/jquery-ui-1.9.2.custom.min.js',
+        //'js/jquery-ui-1.9.2.custom.min.js',
         'js/jquery.nicescroll.js',
         'js/bootstrap.min.js',
         'js/alertify.min.js',

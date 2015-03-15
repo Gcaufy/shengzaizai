@@ -1,24 +1,18 @@
 <?php
 
-namespace backend\modules\hospital\controllers;
+namespace backend\modules\order\controllers;
 
 use Yii;
-use backend\modules\hospital\models\Hospital;
-use backend\modules\hospital\models\HospitalSearch;
-use backend\modules\doctor\models\Doctor;
-
-use backend\modules\doctor\models\DoctorSearch;
-use backend\modules\inspection\models\InspectionHospitalMapSearch;
-use backend\modules\operation\models\OperationHospitalMapSearch;
-
+use backend\modules\order\models\Order;
+use backend\modules\order\models\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * HospitalController implements the CRUD actions for Hospital model.
+ * OrderController implements the CRUD actions for Order model.
  */
-class HospitalController extends Controller
+class OrderController extends Controller
 {
     public function behaviors()
     {
@@ -33,12 +27,12 @@ class HospitalController extends Controller
     }
 
     /**
-     * Lists all Hospital models.
+     * Lists all Order models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new HospitalSearch();
+        $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,55 +42,25 @@ class HospitalController extends Controller
     }
 
     /**
-     * Displays a single Hospital model.
+     * Displays a single Order model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-
-        $p = Yii::$app->request->queryParams;
-        if (!isset($p['DoctorSearch']))
-            $p['DoctorSearch'] = [];
-        $p['DoctorSearch']['hosp_id'] = $id;
-
-        if (!isset($p['InspectionHospitalMap']))
-            $p['InspectionHospitalMap'] = [];
-        $p['InspectionHospitalMap']['hosp_id'] = $id;
-
-
-        if (!isset($p['OperationHospitalMap']))
-            $p['OperationHospitalMap'] = [];
-        $p['OperationHospitalMap']['hosp_id'] = $id;
-
-
-
-        $searchDoctor = new DoctorSearch();
-        $doctorProvider = $searchDoctor->search($p);
-        $searchInsp = new InspectionHospitalMapSearch();
-        $inspProvider = $searchInsp->search($p);
-        $searchOpera = new OperationHospitalMapSearch();
-        $operaProvider = $searchOpera->search($p);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'doctorProvider' => $doctorProvider,
-            'searchDoctor' => $searchDoctor,
-            'inspProvider' => $inspProvider,
-            'searchInsp' => $searchInsp,
-            'operaProvider' => $operaProvider,
-            'searchOpera' => $searchOpera,
         ]);
     }
 
     /**
-     * Creates a new Hospital model.
+     * Creates a new Order model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Hospital();
+        $model = new Order();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
@@ -111,7 +75,7 @@ class HospitalController extends Controller
     }
 
     /**
-     * Updates an existing Hospital model.
+     * Updates an existing Order model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -134,7 +98,7 @@ class HospitalController extends Controller
     }
 
     /**
-     * Deletes an existing Hospital model.
+     * Deletes an existing Order model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -147,15 +111,15 @@ class HospitalController extends Controller
     }
 
     /**
-     * Finds the Hospital model based on its primary key value.
+     * Finds the Order model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Hospital the loaded model
+     * @return Order the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Hospital::findOne($id)) !== null) {
+        if (($model = Order::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

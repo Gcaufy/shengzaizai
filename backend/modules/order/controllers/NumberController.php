@@ -1,24 +1,18 @@
 <?php
 
-namespace backend\modules\hospital\controllers;
+namespace backend\modules\order\controllers;
 
 use Yii;
-use backend\modules\hospital\models\Hospital;
-use backend\modules\hospital\models\HospitalSearch;
-use backend\modules\doctor\models\Doctor;
-
-use backend\modules\doctor\models\DoctorSearch;
-use backend\modules\inspection\models\InspectionHospitalMapSearch;
-use backend\modules\operation\models\OperationHospitalMapSearch;
-
-use yii\web\Controller;
+use backend\modules\order\models\Order;
+use backend\modules\order\models\Number;
+use backend\modules\order\models\NumberSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * HospitalController implements the CRUD actions for Hospital model.
+ * NumberController implements the CRUD actions for Number model.
  */
-class HospitalController extends Controller
+class NumberController extends \backend\controllers\ShiroController
 {
     public function behaviors()
     {
@@ -33,91 +27,90 @@ class HospitalController extends Controller
     }
 
     /**
-     * Lists all Hospital models.
+     * Lists all Number models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new HospitalSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $request = Yii::$app->request;
+        $ptype = $request->getQueryParam('ptype');
+        $pid = $request->getQueryParam('pid');
+        $hosp_id = $request->getQueryParam('hosp_id');
+
+        $searchModel = new NumberSearch();
+        $searchModel->load($request->queryParams);
+        $dataProvider = $searchModel->search(NumberSearch::buildQuery($ptype, $pid, $hosp_id));
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'ptype' => $ptype,
+            'pid' => $pid,
+            'hosp_id' => $hosp_id,
         ]);
     }
 
     /**
-     * Displays a single Hospital model.
+     * Displays a single Number model.
      * @param string $id
      * @return mixed
      */
     public function actionView($id)
     {
-
-        $p = Yii::$app->request->queryParams;
-        if (!isset($p['DoctorSearch']))
-            $p['DoctorSearch'] = [];
-        $p['DoctorSearch']['hosp_id'] = $id;
-
-        if (!isset($p['InspectionHospitalMap']))
-            $p['InspectionHospitalMap'] = [];
-        $p['InspectionHospitalMap']['hosp_id'] = $id;
-
-
-        if (!isset($p['OperationHospitalMap']))
-            $p['OperationHospitalMap'] = [];
-        $p['OperationHospitalMap']['hosp_id'] = $id;
-
-
-
-        $searchDoctor = new DoctorSearch();
-        $doctorProvider = $searchDoctor->search($p);
-        $searchInsp = new InspectionHospitalMapSearch();
-        $inspProvider = $searchInsp->search($p);
-        $searchOpera = new OperationHospitalMapSearch();
-        $operaProvider = $searchOpera->search($p);
-
         return $this->render('view', [
             'model' => $this->findModel($id),
-            'doctorProvider' => $doctorProvider,
-            'searchDoctor' => $searchDoctor,
-            'inspProvider' => $inspProvider,
-            'searchInsp' => $searchInsp,
-            'operaProvider' => $operaProvider,
-            'searchOpera' => $searchOpera,
         ]);
     }
 
     /**
-     * Creates a new Hospital model.
+     * Creates a new Number model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Hospital();
+        $request = Yii::$app->request;
+        $ptype = $request->getQueryParam('ptype');
+        $pid = $request->getQueryParam('pid');
+        $hosp_id = $request->getQueryParam('hosp_id');
+
+        $model = new Number();
+        if ($ptype && $pid && $hosp_id) {
+            $keyMap = Order::getTypeKeyMap();
+            $key = $keyMap[$ptype];
+            $model->$key = $pid;
+            $model->hosp_id = $hosp_id;
+        }
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
+                var_dump($model->getErrors());exit;
                 Yii::$app->session->setFlash('error', '创建失败.');
             }
         }
         return $this->render('create', [
             'model' => $model,
+            'ptype' => $ptype,
+            'pid' => $pid,
+            'hosp_id' => $hosp_id,
         ]);
     }
 
     /**
-     * Updates an existing Hospital model.
+     * Updates an existing Number model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
+        $request = Yii::$app->request;
+        $ptype = $request->getQueryParam('ptype');
+        $pid = $request->getQueryParam('pid');
+        $hosp_id = $request->getQueryParam('hosp_id');
+
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post())) {
@@ -130,11 +123,14 @@ class HospitalController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'ptype' => $ptype,
+            'pid' => $pid,
+            'hosp_id' => $hosp_id,
         ]);
     }
 
     /**
-     * Deletes an existing Hospital model.
+     * Deletes an existing Number model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -147,18 +143,20 @@ class HospitalController extends Controller
     }
 
     /**
-     * Finds the Hospital model based on its primary key value.
+     * Finds the Number model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Hospital the loaded model
+
+     * @return Number the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Hospital::findOne($id)) !== null) {
+        if (($model = Number::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }
+

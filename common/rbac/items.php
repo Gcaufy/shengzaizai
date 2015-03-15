@@ -88,6 +88,17 @@ return [
     'menu.inspection.hospital.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '检查模块-医院检查列表'],
 
 
+    'menu.order.viewall' => ['type' => Item::TYPE_PERMISSION, 'description' => '订单模块', 'children' => [
+        'menu.order.view',
+        'menu.order.number.index.view',
+        'menu.order.order.index.view',
+    ]],
+    'menu.order.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '订单模块'],
+    'menu.order.number.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '订单模块-订单号管理'],
+    'menu.order.order.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '订单模块-订单管理'],
+
+
+
     // Roles
     'guest' => ['type' => Item::TYPE_ROLE, 'description' => 'Guest'],
     'admin' => [
@@ -102,6 +113,7 @@ return [
             'menu.doctor.viewall',
             'menu.operation.viewall',
             'menu.inspection.viewall',
+            'menu.order.viewall',
 
             'action.message.note.all',
             'action.academic.homework.all',

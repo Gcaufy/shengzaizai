@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\doctor\models\Doctor */
+/* @var $model backend\modules\order\models\Number */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Numbers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row" id="doctor-view">
+<div class="row" id="number-view">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
@@ -33,18 +33,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attributes' => [
                     'id',
                     'hosp_id',
-                    'name',
-                    'desc',
-                    'feedback_score',
-                    'normal_reg_cost',
-                    'expert_reg_cost',
+                    'opera_id',
+                    'insp_id',
+                    'doctor_id',
                     'order_num',
                     'active_order_num',
-                    'major',
-                    'experience',
-                    'note',
-                    'isvip',
+                    'date',
+                    'start_time',
+                    'end_time',
                     'type',
+                    'cost',
                 ],
             ]) ?>
             </div>

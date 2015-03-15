@@ -20,6 +20,7 @@ return [
         'doctor' => ['class' => 'backend\modules\doctor\Doctor'],
         'operation' => ['class' => 'backend\modules\operation\Operation'],
         'inspection' => ['class' => 'backend\modules\inspection\Inspection'],
+        'order' => ['class' => 'backend\modules\order\Order'],
     ],
     'components' => [
         /*'log' => [

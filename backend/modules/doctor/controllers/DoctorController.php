@@ -8,6 +8,7 @@ use yii\helpers\Json;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\doctor\models\Doctor;
 use backend\modules\doctor\models\DoctorSearch;
+use backend\modules\order\models\NumberSearch;
 use backend\controllers\ShiroController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -39,6 +40,25 @@ class DoctorController extends ShiroController
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    /**
+     * Lists all Doctor models.
+     * @return mixed
+     */
+    public function actionOum($id)
+    {
+        $p = Yii::$app->request->queryParams;
+        if (!isset($p['NumberSearch']))
+            $p['NumberSearch'] = [];
+        $p['NumberSearch']['doctor_id'] = $id;
+
+        $searchModel = new NumberSearch();
+        $dataProvider = $searchModel->search();
+
+        return $this->render('oum', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

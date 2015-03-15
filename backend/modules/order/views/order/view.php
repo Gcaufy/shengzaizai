@@ -4,13 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model backend\modules\doctor\models\Doctor */
+/* @var $model backend\modules\order\models\Order */
 
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+$this->title = $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Orders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="row" id="doctor-view">
+<div class="row" id="order-view">
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
@@ -32,19 +32,30 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-                    'hosp_id',
-                    'name',
-                    'desc',
-                    'feedback_score',
-                    'normal_reg_cost',
-                    'expert_reg_cost',
-                    'order_num',
-                    'active_order_num',
-                    'major',
-                    'experience',
-                    'note',
-                    'isvip',
-                    'type',
+            'order_no',
+            'hosp_id',
+            'opera_id',
+            'opera_name',
+            'insp_id',
+            'insp_name',
+            'doctor_id',
+            'doctor_job_title',
+            'doctor_name',
+            'address',
+            'date',
+            'start_time',
+            'end_time',
+            'type',
+            'payment_method',
+            'payment_id',
+            'refund_id',
+            'cost',
+            'process',
+            'status',
+            'utime:datetime',
+            'uid',
+            'ctime:datetime',
+            'cid',
                 ],
             ]) ?>
             </div>

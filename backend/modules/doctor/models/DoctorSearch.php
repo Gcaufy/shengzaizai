@@ -59,27 +59,27 @@ class DoctorSearch extends Doctor
             return $dataProvider;
         }
         $query->andFilterWhere([
-            'id' => $this->id,
-            'hosp_id' => $this->hosp_id,
-            'feedback_score' => $this->feedback_score,
-            'normal_reg_cost' => $this->normal_reg_cost,
-            'expert_reg_cost' => $this->expert_reg_cost,
-            'order_num' => $this->order_num,
-            'active_order_num' => $this->active_order_num,
-            'isvip' => $this->isvip,
-            'type' => $this->type,
-            'status' => $this->status,
-            'utime' => $this->utime,
-            'uid' => $this->uid,
-            'ctime' => $this->ctime,
-            'cid' => $this->cid,
+            't.id' => $this->id,
+            't.hosp_id' => $this->hosp_id,
+            't.feedback_score' => $this->feedback_score,
+            't.normal_reg_cost' => $this->normal_reg_cost,
+            't.expert_reg_cost' => $this->expert_reg_cost,
+            't.order_num' => $this->order_num,
+            't.active_order_num' => $this->active_order_num,
+            't.isvip' => $this->isvip,
+            't.type' => $this->type,
+            't.status' => $this->status,
+            't.utime' => $this->utime,
+            't.uid' => $this->uid,
+            't.ctime' => $this->ctime,
+            't.cid' => $this->cid,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'desc', $this->desc])
-            ->andFilterWhere(['like', 'major', $this->major])
-            ->andFilterWhere(['like', 'experience', $this->experience])
-            ->andFilterWhere(['like', 'note', $this->note]);
+        $query->andFilterWhere(['like', 't.name', $this->name])
+            ->andFilterWhere(['like', 't.desc', $this->desc])
+            ->andFilterWhere(['like', 't.major', $this->major])
+            ->andFilterWhere(['like', 't.experience', $this->experience])
+            ->andFilterWhere(['like', 't.note', $this->note]);
 
         return $dataProvider;
     }

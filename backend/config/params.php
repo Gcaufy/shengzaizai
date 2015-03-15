@@ -90,10 +90,15 @@ return [
         ['n'=>'手术模块','m'=>'operation','i'=>'fa fa-h-square','s'=>[
             ['n'=>'手术列表','c'=>'operation','m'=>'index','i'=>'fa fa-hospital-o'],
             ['n'=>'医院手术列表','c'=>'hospital','m'=>'index','i'=>'fa fa-hospital-o'],
+            ['n'=>'医院手术订单号管理','c'=>'doctor','m'=>'index','i'=>'fa fa-hospital-o'],
         ]],
         ['n'=>'检查模块','m'=>'inspection','i'=>'fa fa-h-square','s'=>[
             ['n'=>'检查列表','c'=>'inspection','m'=>'index','i'=>'fa fa-hospital-o'],
             ['n'=>'医院检查列表','c'=>'hospital','m'=>'index','i'=>'fa fa-hospital-o'],
+            ['n'=>'医生订单号管理','c'=>'doctor','m'=>'index','i'=>'fa fa-hospital-o'],
+        ]],
+        ['n'=>'订单模块','m'=>'order','i'=>'fa fa-h-square','s'=>[
+            ['n'=>'预约号管理','c'=>'number','m'=>'index','i'=>'fa fa-hospital-o'],
         ]],
         /*['n'=>'消息中心','m'=>'message','i'=>'fa fa-wechat','s'=>[
             ['n'=>'发送短信','c'=>'sms','m'=>'index','i'=>'fa fa-exchange','s'=>[
