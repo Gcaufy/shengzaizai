@@ -18,6 +18,8 @@ class MyActiveRecord extends ActiveRecord
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
 
+    protected $_initColumn = true;
+
     /**
      * @inheritdoc
      */
@@ -51,35 +53,32 @@ class MyActiveRecord extends ActiveRecord
     {
         parent::init();
         //$this->loadDefaultValues();
+        $this->initColumn();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        $behaviors = parent::behaviors();
-        if ($this->hasAttribute('cid') && $this->hasAttribute('uid') && isset(Yii::$app->session)) {
-            $behaviors[] = [
-                'class' => AttributeBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['cid', 'uid'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => 'uid',
-                ],
-                'value' => function ($event) {
-                    return Yii::$app->user->isGuest ? null : Yii::$app->user->identity->id;
-                },
-            ];
-        }
-        if ($this->hasAttribute('ctime') && $this->hasAttribute('utime')) {
-            $behaviors[] = [
-                'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'ctime',
-                'updatedAtAttribute' => 'utime',
-            ];
-        }
-        return $behaviors;
+    protected function initColumn() {
+        if (!$this->_initColumn)
+            return;
+        $this->on(self::EVENT_BEFORE_INSERT, function ($event) {
+            $userId = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->id;
+            if ($this->hasAttribute('cid'))
+                $this->cid = $userId;
+            if ($this->hasAttribute('uid'))
+                $this->uid = $userId;
+            if ($this->hasAttribute('utime'))
+                $this->utime = time();
+            if ($this->hasAttribute('ctime'))
+                $this->ctime = time();
+        });
+        $this->on(self::EVENT_BEFORE_UPDATE, function ($event) {
+            $userId = Yii::$app->user->isGuest ? null : Yii::$app->user->identity->id;
+            if ($this->hasAttribute('uid'))
+                $this->uid = $userId;
+            if ($this->hasAttribute('utime'))
+                $this->utime = time();
+        });
     }
+
 
     public static function createQuery()
     {

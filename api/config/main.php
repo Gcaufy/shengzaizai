@@ -36,6 +36,7 @@ return [
                 'POST register/captcha' => 'site/captcha',
                 'POST login' => 'site/login',
                 'GET finance/balance' => 'finance/balance',
+                'GET system/info' => 'system/info',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'user',
@@ -64,6 +65,7 @@ return [
                         'note',
                         'register',
                         'finance',
+                        'region',
                     ],
                     'pluralize' => false,
                 ],
