@@ -71,8 +71,16 @@ class DoctorController extends ShiroController
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $hospital = null;
+        $hosp_id = Yii::$app->request->getQueryParam('hosp_id');
+        if ($hosp_id) {
+            $model->hosp_id = $hosp_id;
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'hospital' => $hospital,
         ]);
     }
 
@@ -83,17 +91,24 @@ class DoctorController extends ShiroController
      */
     public function actionCreate()
     {
+        $hosp_id = Yii::$app->request->getQueryParam('hosp_id');
         $model = new Doctor();
+        $hospital = null;
+        if ($hosp_id) {
+            $model->hosp_id = $hosp_id;
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+        }
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, 'hosp_id' => $hosp_id]);
             } else {
                 Yii::$app->session->setFlash('error', '创建失败.');
             }
         }
         return $this->render('create', [
             'model' => $model,
+            'hospital' => $hospital,
         ]);
     }
 
@@ -106,17 +121,24 @@ class DoctorController extends ShiroController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $hospital = null;
+        $hosp_id = Yii::$app->request->getQueryParam('hosp_id');
+        if ($hosp_id) {
+            $model->hosp_id = $hosp_id;
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '更新成功.');
-                return $this->redirect(['view', 'id' => $model->id]);
+                return $this->redirect(['view', 'id' => $model->id, 'hosp_id' => $hosp_id]);
             } else {
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
         }
         return $this->render('update', [
             'model' => $model,
+            'hospital' => $hospital,
         ]);
     }
 

@@ -3,6 +3,10 @@
 namespace backend\modules\order\controllers;
 
 use Yii;
+use backend\modules\hospital\models\Hospital;
+use backend\modules\doctor\models\Doctor;
+use backend\modules\inspection\models\Inspection;
+use backend\modules\operation\models\Operation;
 use backend\modules\order\models\Order;
 use backend\modules\order\models\Number;
 use backend\modules\order\models\NumberSearch;
@@ -37,6 +41,25 @@ class NumberController extends \backend\controllers\ShiroController
         $pid = $request->getQueryParam('pid');
         $hosp_id = $request->getQueryParam('hosp_id');
 
+        $hospital = null;
+        $doctor = null;
+        $inspection = null;
+        $operation = null;
+        if ($hosp_id && $ptype && $pid) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+            switch ($ptype) {
+                case Order::TYPE_DOCTOR:
+                    $doctor = Doctor::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_INSPECTION:
+                    $inspection = Inspection::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_OPERATION:
+                    $operation = Operation::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+            }
+        }
+
         $searchModel = new NumberSearch();
         $searchModel->load($request->queryParams);
         $dataProvider = $searchModel->search(NumberSearch::buildQuery($ptype, $pid, $hosp_id));
@@ -47,6 +70,10 @@ class NumberController extends \backend\controllers\ShiroController
             'ptype' => $ptype,
             'pid' => $pid,
             'hosp_id' => $hosp_id,
+            'hospital' => $hospital,
+            'doctor' => $doctor,
+            'inspection' => $inspection,
+            'operation' => $operation,
         ]);
     }
 

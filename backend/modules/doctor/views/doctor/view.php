@@ -2,12 +2,20 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use backend\modules\order\models\Order;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\Doctor */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+
+if ($hospital) {
+    $this->params['breadcrumbs'][] = ['label' => '医院列表', 'url' => ['/hospital/hospital/']];
+    $this->params['breadcrumbs'][] = ['label' => '医院信息 - ' . $hospital->name, 'url' => ['/hospital/hospital/view', 'id' => $hospital->id]];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+}
+
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="doctor-view">
@@ -18,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             </header>
             <div class="panel-body">
             <p>
+                <?= Html::a('添加预约号', ['/order/number/create', 'pid' => $model->id, 'hosp_id' => $hospital->id, 'ptype' => Order::TYPE_DOCTOR], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('修改', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
                 <?= Html::a('删除', ['delete', 'id' => $model->id], [
                     'class' => 'btn btn-danger',

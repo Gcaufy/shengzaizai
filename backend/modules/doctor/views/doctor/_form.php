@@ -14,7 +14,12 @@ use yii\helpers\Url;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'hosp_id')->ajaxSelect(Url::to('hospsearch'), ['options' => ['placeholder' => '请选择医院', 'value' => '0']]) ?>
+    <?php
+        $option = ['placeholder' => '请选择医院', 'value' => '0'];
+        if ($hospital)
+            $option['disabled'] = true;
+    ?>
+    <?= $form->field($model, 'hosp_id')->ajaxSelect(Url::to('hospsearch'), ['options' => $option]) ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => 20]) ?>
 

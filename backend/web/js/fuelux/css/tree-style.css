@@ -1,0 +1,29 @@
+.tree .tree-actions {
+    display: none;
+    position: absolute;
+    margin-top: 1px;
+    right: 4px;
+}
+.tree .tree-actions .fa {
+    cursor: pointer;
+}
+
+.tree .tree-item:hover .tree-actions,
+.tree .tree-branch-header:hover .tree-actions {
+    display: inline-block;
+}
+
+.tree .tree-actions > i {
+    font-weight: 300;
+    padding: 1px 3px;
+    text-align: center;
+    font-size: 14px;
+    color: #999;
+    margin-right: 6px;
+    margin-top: 0px;
+    display: inline-block;
+}
+
+.tree .tree-actions > i:hover {
+    color: #666;
+}

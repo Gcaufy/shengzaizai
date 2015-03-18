@@ -164,4 +164,16 @@ class MyActiveRecord extends ActiveRecord
             }
         }
     }
+
+
+    public function attributeLabels() {
+        $arr = [];
+        $arr['id'] = 'ID';
+        $arr['status'] = '状态';
+        $arr['ctime'] = '创建时间';
+        $arr['utime'] = '更新时间';
+        $arr['cid'] = '创建ID';
+        $arr['uid'] = '更新时间';
+        return $arr;
+    }
 }

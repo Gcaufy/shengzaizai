@@ -7,7 +7,14 @@ use yii\helpers\Html;
 /* @var $model backend\modules\doctor\models\Doctor */
 
 $this->title = '添加医生';
-$this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+
+if ($hospital) {
+    $this->params['breadcrumbs'][] = ['label' => '医院列表', 'url' => ['/hospital/hospital/']];
+    $this->params['breadcrumbs'][] = ['label' => '医院信息 - ' . $hospital->name, 'url' => ['/hospital/hospital/view', 'id' => $hospital->id]];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => '医生列表', 'url' => ['index']];
+}
+
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
@@ -19,6 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel-body">
                 <?= $this->render('_form', [
                     'model' => $model,
+                    'hospital' => $hospital,
                 ]) ?>
             </div>
         </section>

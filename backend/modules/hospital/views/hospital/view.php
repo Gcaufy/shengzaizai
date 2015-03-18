@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\grid\GridView;
+use backend\modules\order\models\Order;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\hospital\models\Hospital */
@@ -71,22 +72,32 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'feedback_score',
                                 ['class' => 'yii\grid\ActionColumn',
                                     'headerOptions'=>['width'=>180],
-                                    'template'=>'{view} {update} {delete}',
+                                    'template'=>'{oum} {view} {update} {delete}',
                                     'buttons'=>[
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['/doctor/doctor/view', 'id' => $model->id],[
+                                        'oum' => function ($url, $doc, $key) use ($model) {
+                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/order/number/index',
+                                                    'pid' => $doc->id,
+                                                    'hosp_id' => $model->id,
+                                                    'ptype' => Order::TYPE_DOCTOR
+                                                ],[
+                                                    'title' => '预约号管理',
+                                                    'data-pjax' => '0',
+                                            ]);
+                                        },
+                                        'view' =>  function ($url, $doc, $key) use ($model) {
+                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['/doctor/doctor/view', 'id' => $doc->id, 'hosp_id' => $model->id],[
                                                 'title'=>Yii::t('yii','View'),
                                                 'data-pjax' => '0',
                                             ]);
                                         },
-                                        'update' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['/doctor/doctor/update', 'id' => $model->id],[
+                                        'update' => function ($url, $doc, $key) use ($model) {
+                                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['/doctor/doctor/update', 'id' => $doc->id, 'hosp_id' => $model->id],[
                                                 'title'=>Yii::t('yii','Update'),
                                                 'data-pjax' => '0',
                                             ]);
                                         },
-                                        'delete' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/doctor/doctor/delete', 'id' => $model->id],[
+                                        'delete' => function ($url, $doc, $key) use ($model) {
+                                            return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/doctor/doctor/delete', 'id' => $doc->id, 'hosp_id' => $model->id],[
                                                 'title'=>Yii::t('yii','Delete'),
                                                 'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
                                                 'data-method' => 'post',

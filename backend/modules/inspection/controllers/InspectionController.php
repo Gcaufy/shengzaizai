@@ -63,8 +63,10 @@ class InspectionController extends ShiroController
      */
     public function actionCreate()
     {
+        $parent_id = Yii::$app->request->getQueryParam('parent_id');
+        $parent = Inspection::find()->andWhere(['t.id' => $parent_id])->one();
         $model = new Inspection();
-        $model->parent_id = 0;
+        $model->parent_id = $parent ? $parent_id : 0;
         if ($model->load(Yii::$app->request->post())) {
             if ($model->parent_id == 0) {
                 $model->parent_id = null;
@@ -77,13 +79,17 @@ class InspectionController extends ShiroController
             }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
-                return $this->redirect(['view', 'id' => $model->id]);
+                if (Yii::$app->request->isAjax) {
+                    return $this->actionView($model->id);
+                } else
+                    return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 Yii::$app->session->setFlash('error', '创建失败.');
             }
         }
         return $this->render('create', [
             'model' => $model,
+            'parent' => $parent,
         ]);
     }
 
@@ -125,7 +131,30 @@ class InspectionController extends ShiroController
         return $this->redirect(['index']);
     }
 
+    public function actionSearch($id = null) {
 
+        $query = Inspection::find();
+        if ($id)
+            $query = $query->andWhere(['t.parent_id' => $id]);
+        else
+            $query = $query->andWhere('t.parent_id is null');
+        $models = $query->all();
+        $data = [];
+        foreach ($models as $model) {
+            $attr = [];
+            $attr['id'] = 'tree-id-' . $model->level . '-' . $model->id;
+            $attr['level'] = $model->level;
+            if ($model->isleaf)
+                $attr['data-icon'] = 'glyphicon glyphicon-file';
+            $row = [
+                'name' => $model->name,
+                'type' => $model->isleaf ? 'item' : 'folder',
+                'dataAttributes' => $attr,
+            ];
+            $data[] = $row;
+        }
+        return Json::encode($data);
+    }
 
     public function actionParentsearch($search = null, $id = null)
     {

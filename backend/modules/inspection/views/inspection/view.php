@@ -32,16 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-            'name',
-            'desc',
-            'parent_id',
-            'level',
-            'isleaf',
-            'status',
-            'utime',
-            'uid',
-            'ctime',
-            'cid',
+                    'name',
+                    'desc',
                 ],
             ]) ?>
             </div>

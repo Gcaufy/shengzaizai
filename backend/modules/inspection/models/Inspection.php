@@ -51,7 +51,7 @@ class Inspection extends \common\components\MyActiveRecord
         $arr = parent::attributeLabels();
         $arr['name'] = '检查名';
         $arr['desc'] = '描述';
-        $arr['parent_id'] = '父ID';
+        $arr['parent_id'] = '父级';
         $arr['level'] = '层级';
         $arr['isleaf'] = '是否是子节点';
         return $arr;
