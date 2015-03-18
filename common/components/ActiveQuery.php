@@ -25,14 +25,16 @@ class ActiveQuery extends \yii\db\ActiveQuery
      */
     public function from($tables)
     {
-        if (is_string($tables) && preg_match('/^[\w_]+\s+([\w_]+)$/', $tables, $matches)) {
+        // If it has tablePrefix, it should like {{%user}} t
+        if (is_string($tables) && preg_match('/(^[\w_]+\s+([\w_]+)$)|(^{{%[\w_]+}}\s+([\w_]+)$)/', $tables, $matches)) {
+            $alias = (count($matches) == 5) ? $matches[4] : $matches[2];
             if (is_array($this->where)) {
-                $this->updateCondition($this->where, "{$this->tableAlias}.", "{$matches[1]}.");
+                $this->updateCondition($this->where, "{$this->tableAlias}.", "$alias.");
             }
             if (is_array($this->on)) {
-                $this->updateCondition($this->on, "{$this->tableAlias}.", "{$matches[1]}.");
+                $this->updateCondition($this->on, "{$this->tableAlias}.", "$alias.");
             }
-            $this->tableAlias = $matches[1];
+            $this->tableAlias = $alias;
         }
         return parent::from($tables);
     }
@@ -43,8 +45,9 @@ class ActiveQuery extends \yii\db\ActiveQuery
     public function prepare($builder)
     {
         $query = parent::prepare($builder);
-        return $query;
-        if (is_array($query->join)) {
+
+        // No need to generate active condition for the join part
+        if (false && is_array($query->join)) {
             $allTables = [$this->tableAlias];
             foreach ($query->join as $i => &$join) {
                 $tables = [];
