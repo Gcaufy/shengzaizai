@@ -109,6 +109,8 @@ class BaseController extends \yii\rest\ActiveController
      */
     public function prepareDataProvider()
     {
+        $modelClass = $this->modelClass;
+        $model = new $modelClass;
         $query = $this->getQUery();
 
         $filter = Yii::$app->request->get('filter');
