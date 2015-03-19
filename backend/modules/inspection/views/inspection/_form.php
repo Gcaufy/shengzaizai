@@ -17,6 +17,9 @@ use yii\helpers\Url;
     <?php if (Yii::$app->request->isAjax): ?>
         <?php if ($parent): ?>
             <?= $form->field($model, 'parent_id')->textInput(['value' => $parent->name, 'disabled' => true]); ?>
+            <?php if ($model->isNewRecord):?>
+              <?= Html::activeHiddenInput($model, 'parent_id'); ?>
+            <?php endif; ?>
         <?php else: ?>
             <?= $form->field($model, 'parent_id')->textInput(['value' => '顶级项目', 'disabled' => true]); ?>
         <?php endif; ?>

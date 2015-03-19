@@ -102,19 +102,27 @@ class InspectionController extends ShiroController
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $parent = null;
 
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '更新成功.');
-                return $this->redirect(['view', 'id' => $model->id]);
+                if (Yii::$app->request->isAjax) {
+                    return $this->actionView($model->id);
+                } else
+                    return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
         }
-        if ($model->parent_id == null)
+        if ($model->parent_id == null) {
             $model->parent_id = 0;
-        return $this->render('create', [
+        } else {
+            $parent = Inspection::find()->andWhere(['t.id' => $model->parent_id])->one();
+        }
+        return $this->render('update', [
             'model' => $model,
+            'parent' => $parent,
         ]);
     }
 
@@ -126,9 +134,11 @@ class InspectionController extends ShiroController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
+        $a = $this->findModel($id)->delete();
+        if (Yii::$app->request->isAjax) {
+            return '删除成功';
+        } else
+            return $this->redirect(['index']);
     }
 
     public function actionSearch($id = null) {

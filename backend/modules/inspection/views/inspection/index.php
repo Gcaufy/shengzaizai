@@ -12,6 +12,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 $this->registerJsFile("js/fuelux/js/tree.js", ['depends' => 'backend\assets\AppAsset']);
 $this->registerJsFile("js/inspection.js", ['depends' => 'backend\assets\AppAsset']);
+$this->registerJsFile("js/jquery.mask.js", ['depends' => 'backend\assets\AppAsset']);
 $this->registerCssFile("js/fuelux/css/fuelux.min.css", ['depends' => 'backend\assets\AppAsset']);
 $this->registerCssFile("js/fuelux/css/tree-style.css", ['depends' => 'backend\assets\AppAsset']);
 ?>
@@ -80,6 +81,9 @@ $this->registerCssFile("js/fuelux/css/tree-style.css", ['depends' => 'backend\as
         <section class="panel">
             <header class="panel-heading">
                 <?= Html::encode($this->title) ?>
+                <span class="tools pull-right">
+                    <a class="fa fa-chevron-down" href="javascript:;"></a>
+                </span>
             </header>
             <div class="panel-body">
                                     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -92,20 +96,8 @@ $this->registerCssFile("js/fuelux/css/tree-style.css", ['depends' => 'backend\as
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             'name',
-            'desc',
-            'parent_id',
-            'level',
-            // 'isleaf',
-            // 'status',
-            // 'utime',
-            // 'uid',
-            // 'ctime',
-            // 'cid',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>

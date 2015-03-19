@@ -1,4 +1,73 @@
 (function ($) {
+    var Inspection = window.Inspection || {};
+    function _load(o) {
+        o = $.extend({}, {holder: '.inspection-form'}, o);
+        $('#inspection-right section').mask();
+        $.ajax({
+            data: o.data,
+            url: o.action,
+            success: function (html) {
+                $('#inspection-right section').unmask();
+                if (typeof(o.cb) === 'function')
+                    return o.cb(html);
+
+                $('#inspection-right .panel-body').html($(o.holder, $(html)));
+                if ($('#btn_submit').length)
+                    $('#btn_submit').click(function () {
+                        $.ajax({
+                            data: $('.inspection-form form').serialize(),
+                            url: o.action,
+                            type: 'POST',
+                            success: function (html) {
+                                $('#inspection-right .panel-body').html($('table.detail-view', $(html)));
+                                refreshNode(o.action === 'create' ? o.src : o.src.parents('li:eq(0)'));
+                            }
+                        });
+                        return false;
+                    });
+            }
+        });
+    }
+    function refreshNode(node) {
+        var dom = $(node);
+        dom.find('.tree-branch-children').empty();
+        $('#tree').tree('openFolder', dom);
+    }
+
+    Inspection.view = function (src, id) {
+        _load({
+            src: src,
+            action: 'view',
+            data: {id: id},
+            holder: 'table.detail-view'
+        });
+    }
+    Inspection.create = function (src, id) {
+        _load({
+            src: src,
+            action: 'create',
+            data: {parent_id: id}
+        });
+    }
+    Inspection.update = function (src, id) {
+        _load({
+            src: src,
+            action: 'update',
+            data: {id: id}
+        });
+    }
+    Inspection.del = function (src, id) {
+        _load({
+            src: src,
+            action: 'delete',
+            data: {id: id},
+            cb: function () {
+                $('#inspection-right .panel-body').html('');
+                refreshNode($(src).parents('li:eq(0)'));
+            }
+        });
+    }
+
     function initTreeActions() {
         $('.tree-label').each(function (i) {
             var item = $(this).parents('li').eq(0), id = 0, level = '00';
@@ -12,6 +81,8 @@
             }
         });
     }
+
+
 
     function eventBind() {
         $('#tree').tree({
@@ -50,36 +121,35 @@
             var item = $(this).parents('li:eq(0)'),
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
-            $.ajax({
-                data: {parent_id: id},
-                url: 'create',
-                success: function (html) {
-                    $('#inspection-right .panel-body').html($('.inspection-form', $(html)));
-                    $('#btn_submit').click(function () {
-                        $.ajax({
-                            data: $('.inspection-form form').serialize(),
-                            url: 'create',
-                            type: 'POST',
-                            success: function (html) {
-                                $('#inspection-right .panel-body').html($('table.detail-view', $(html)));
-                            }
-                        });
-                        return false;
-                    });
-                }
-            });
+
+            Inspection.create(item, id);
 
         });
         $(document).on('click', '.fa-pencil', function () {
             var item = $(this).parents('li:eq(0)'),
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
+
+            Inspection.update(item, id);
         });
         $(document).on('click', '.fa-trash-o', function () {
             var item = $(this).parents('li:eq(0)'),
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
+
+            Inspection.del(item, id);
         });
+        $(document).on('click', '.tree-branch-name, .tree-item-name', function (e) {
+            var src = e.srcElement ? e.srcElement : e.target;
+            if ($(src).hasClass('icon-caret'))
+                return;
+            var item = $(this).parents('li:eq(0)'),
+                itemid = item.attr('id'),
+                id = itemid.split('-')[3];
+            if (id > 0)
+                Inspection.view(item, id);
+        });
+
     }
     function pageInit() {
         eventBind();
