@@ -52,7 +52,7 @@
     Inspection.update = function (src, id) {
         _load({
             src: src,
-            action: 'update',
+            action: 'update?id=' + id,
             data: {id: id}
         });
     }
