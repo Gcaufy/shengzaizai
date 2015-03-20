@@ -3,11 +3,12 @@
 namespace wechat\controllers;
 
 use Yii;
+use yii\log\Logger;
 use yii\web\BadRequestHttpException;
 use common\models\LoginAdmin;
 use common\models\Password;
 use wechat\models\UserWechat;
-use Wechat;
+use wechat\components\Wechat;
 
 class SiteController extends BaseController
 {
@@ -16,10 +17,10 @@ class SiteController extends BaseController
     {
         $wechat = Yii::$app->wechat;
         $wechat->valid();
-        var_dump($this->_createMenu());
 
         $defaultMsg = '您好！欢迎您来到蜜蜂家长会！蜜蜂家长会是一个全新的家校沟通平台，在这里，您可以获取最新教育资讯，及时掌握学校通知，随时随地了解学生学习情况，便捷地与老师（家长）沟通。让教育更高效，成长更轻松！如需帮助，请回复“帮助”并加上您的疑问。蜜蜂会及时回复！';
         $type = $wechat->getRev()->getRevType();
+        $reply = '';
         switch ($type) {
             case Wechat::MSGTYPE_EVENT:
                 $event = $wechat->getRevEvent();
@@ -35,7 +36,7 @@ class SiteController extends BaseController
                 break;
         }
 
-        return isset($reply) ? $reply : '';
+        return $reply;
     }
 
     public function actionLogin($code = null, $openid = null, $returnUrl = null)
@@ -121,7 +122,11 @@ class SiteController extends BaseController
         return $this->render('modifypassword');
     }
 
-    public function actionCreateMenu() {
+    public function actionTest() {
+        echo 1;exit;
+        Yii::getLogger()->log('test', Logger::LEVEL_INFO, 'wechat');
+        return;
+
         return Yii::$app->wechat->createMenu([
             [
                 'name' => '孕知识',

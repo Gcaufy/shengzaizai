@@ -45,6 +45,10 @@ return [
             'password' => '<password>',
             'sign' => '生仔仔',
         ],
+        'cache' => [
+            'class' => 'yii\caching\DbCache',
+            'cacheTable' => 'sys_cache',
+        ],
         'urlManager' => [
             'class' => 'common\components\MutilpleDomainUrlManager',
             'domains' => [

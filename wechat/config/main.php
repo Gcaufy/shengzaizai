@@ -28,6 +28,12 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
+                [
+                    'class' => 'yii\log\DbTarget',
+                    'levels' => ['trace', 'info'],
+                    'categories' => ['wechat'],
+                    'logTable' => 'sys_log',
+                ],
             ],
         ],
         'urlManager' => [
