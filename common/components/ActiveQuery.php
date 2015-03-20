@@ -83,7 +83,10 @@ class ActiveQuery extends \yii\db\ActiveQuery
             $tableName = $modelClass::tableName();
             $this->updateCondition($query->where, "{$tableName} {$this->tableAlias}", $this->tableAlias);
         }
-        $query->andFilterWhere(["{$this->tableAlias}.status" => $this->__active]);
+        $modelClass = $this->modelClass;
+        $model = new $modelClass();
+        if ($model->hasAttribute('status'))
+            $query->andFilterWhere(["{$this->tableAlias}.status" => $this->__active]);
         return $query;
     }
 
