@@ -18,7 +18,7 @@ class SiteController extends BaseController
         $wechat = Yii::$app->wechat;
         $wechat->valid();
 
-        $defaultMsg = '您好！欢迎关注生仔仔公众号！';
+        $defaultMsg = '生仔仔欢迎您! 您可以点击下列菜单, 选择服务, 如需咨询医导, 请回复: "资询"+"您的年龄"+"男/女"+"您的问题".';
         $type = $wechat->getRev()->getRevType();
         $reply = '';
         switch ($type) {
@@ -125,11 +125,7 @@ class SiteController extends BaseController
     }
 
     public function actionTest() {
-        echo 1;exit;
-        Yii::getLogger()->log('test', Logger::LEVEL_INFO, 'wechat');
-        return;
-
-        return Yii::$app->wechat->createMenu([
+        $a = Yii::$app->wechat->createMenu([
             [
                 'name' => '孕知识',
                 'type' => 'view',
