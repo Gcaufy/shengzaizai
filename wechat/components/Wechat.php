@@ -555,6 +555,25 @@ class Wechat extends BaseWechat {
     {
         return '<![CDATA['.preg_replace("/[\\x00-\\x08\\x0b-\\x0c\\x0e-\\x1f]/",'',$str).']]>';
     }
+    /**
+     * 转发多客服消息
+     * Example: $obj->transfer_customer_service($customer_account)->reply();
+     * @param string $customer_account 转发到指定客服帐号：test1@test
+     */
+    public function transfer_customer_service($customer_account = '')
+    {
+        $msg = array(
+            'ToUserName' => $this->getRevFrom(),
+            'FromUserName'=>$this->getRevTo(),
+            'CreateTime'=>time(),
+            'MsgType'=>'transfer_customer_service',
+        );
+        if (!$customer_account) {
+            $msg['TransInfo'] = array('KfAccount'=>$customer_account);
+        }
+        $this->Message($msg);
+        return $this;
+    }
 
     /**
      * 数据XML编码
