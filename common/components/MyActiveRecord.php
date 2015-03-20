@@ -132,6 +132,13 @@ class MyActiveRecord extends ActiveRecord
         return $command->execute();
     }
 
+    public function delete($hard = false) {
+        if ($hard)
+            return parent::delete();
+        $this->status = self::STATUS_DELETED;
+        return $this->save();
+    }
+
     public function getCreatedBy()
     {
         return $this->hasAttribute('cid') ?

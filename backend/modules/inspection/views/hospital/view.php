@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\inspection\models\InspectionHospitalMap */
 
-$this->title = $model->name;
+$this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => '医院检查列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>

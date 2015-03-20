@@ -1,16 +1,23 @@
 (function ($) {
-    var Inspection = window.Inspection || {};
+    var InspectionMap = window.InspectionMap || {};
     function _load(o) {
-        o = $.extend({}, {holder: '.inspection-form'}, o);
+        o = $.extend({}, {holder: '.inspection-hospital-map-form'}, o);
         $('#inspection-right section').mask();
         $.ajax({
             data: o.data,
             url: o.action,
             success: function (html) {
+                $('#inspection-right section').unmask();
                 if (typeof(o.cb) === 'function')
-                    return o.cb(html);
-
-                $('#inspection-right .panel-body').html($(o.holder, $(html)));
+                    if(!o.cb(html)) {
+                        return;
+                    }
+                if (o.getrid) {
+                    for (var k in o.getrid) {
+                        html = html.replace(o.getrid[k], '');
+                    }
+                }
+                $('#inspection-right .panel-body').html(html);
                 if ($('#btn_submit').length)
                     $('#btn_submit').click(function () {
                         $('#inspection-right section').mask();
@@ -20,7 +27,7 @@
                             type: 'POST',
                             success: function (html) {
                                 $('#inspection-right .panel-body').html($('table.detail-view', $(html)));
-                                refreshNode(o.action === 'create' ? o.src : o.src.parents('li:eq(0)'));
+                                //refreshNode(o.action === 'create' ? o.src : o.src.parents('li:eq(0)'));
                                 $('#inspection-right section').unmask();
                             }
                         });
@@ -35,7 +42,7 @@
         $('#tree').tree('openFolder', dom);
     }
 
-    Inspection.view = function (src, id) {
+    InspectionMap.view = function (src, id) {
         _load({
             src: src,
             action: 'view',
@@ -43,29 +50,26 @@
             holder: 'table.detail-view'
         });
     }
-    Inspection.create = function (src, id) {
+    InspectionMap.create = function (src, id) {
         _load({
             src: src,
             action: 'create',
             data: {parent_id: id}
         });
     }
-    Inspection.update = function (src, id) {
+    InspectionMap.update = function (src, id, cb) {
         _load({
             src: src,
-            action: 'update?id=' + id,
-            data: {id: id}
+            action: '/inspection/hospital/update?hosp_id=' + InspectionMap.hospitalId + '&insp_id=' + id,
+            cb: cb,
+            getrid: [/\<link.*?bootstrap\.css.*?\>/, /\<script.*?jquery\.js.*?\>/]
         });
     }
-    Inspection.del = function (src, id) {
+    InspectionMap.del = function (src, id, cb) {
         _load({
             src: src,
-            action: 'delete',
-            data: {id: id},
-            cb: function () {
-                $('#inspection-right .panel-body').html('');
-                refreshNode($(src).parents('li:eq(0)'));
-            }
+            action: '/inspection/hospital/update?hosp_id=' + InspectionMap.hospitalId + '&insp_id=' + id,
+            cb: cb
         });
     }
 
@@ -99,7 +103,7 @@
                     data['id'] = id;
                 }
                 $.ajax({
-                    url: '/inspection/inspection/search',
+                    url: '/inspection/hospital/search?hosp_id=' + InspectionMap.hospitalId,
                     data: data,
                     dataType: 'json',
                     success: function (d) {
@@ -110,11 +114,12 @@
             },
             //multiSelect: true,
             //folderSelect: true,
+            itemSelect: false,
             disclosuresUpperLimit: 1,
             cacheItems: true
         });
         $('#tree').tree('discloseAll');
-        $('#tree').on('loaded.fu.tree', function (d) {
+        $('#tree').on('loaded.fu.tree', function (e, p) {
             initTreeActions();
         });
 
@@ -123,7 +128,7 @@
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
 
-            Inspection.create(item, id);
+            InspectionMap.create(item, id);
 
         });
         $(document).on('click', '.fa-pencil', function () {
@@ -131,24 +136,34 @@
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
 
-            Inspection.update(item, id);
+            InspectionMap.update(item, id);
         });
         $(document).on('click', '.fa-trash-o', function () {
             var item = $(this).parents('li:eq(0)'),
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
 
-            Inspection.del(item, id);
+            InspectionMap.del(item, id);
         });
-        $(document).on('click', '.tree-branch-name, .tree-item-name', function (e) {
-            var src = e.srcElement ? e.srcElement : e.target;
-            if ($(src).hasClass('icon-caret'))
+        $(document).on('click', '.tree-item-name', function (e) {
+            var src = $(e.srcElement ? e.srcElement : e.target);
+            if (src.hasClass('icon-caret'))
                 return;
             var item = $(this).parents('li:eq(0)'),
                 itemid = item.attr('id'),
                 id = itemid.split('-')[3];
-            if (id > 0)
-                Inspection.view(item, id);
+            if (id > 0) {
+                if (item.attr('selected') && src.hasClass('item-check')) {
+                    if (confirm('确定要移出此项?'))
+                        InspectionMap.del(item, id, function () {
+                            return item.removeAttr('selected');
+                        });
+                } else {
+                    InspectionMap.update(item, id, function () {
+                        return item.attr('selected', 'selected');
+                    });
+                }
+            }
         });
 
     }

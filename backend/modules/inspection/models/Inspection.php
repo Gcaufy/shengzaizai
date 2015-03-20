@@ -60,8 +60,12 @@ class Inspection extends \common\components\MyActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getInspHospMaps() {
-        return $this->hasMany(InspHospMap::className(), ['insp_id' => 'id']);
+    public function getInspHospMaps($hosp_id = null) {
+        $relation = $this->hasMany(InspectionHospitalMap::className(), ['insp_id' => 'id'])
+            ->from(InspectionHospitalMap::tableName() . ' inspHospMaps');
+        if ($hosp_id)
+            $relation = $relation->onCondition(['hosp_id' => $hosp_id]);
+        return $relation;
     }
 
     /**

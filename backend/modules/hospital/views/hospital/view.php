@@ -8,10 +8,20 @@ use backend\modules\order\models\Order;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\hospital\models\Hospital */
 
+$this->registerJsFile("js/fuelux/js/tree.js", ['depends' => 'backend\assets\AppAsset']);
+$this->registerJsFile("js/hospitalinspection.js", ['depends' => 'backend\assets\AppAsset']);
+$this->registerJsFile("js/jquery.mask.js", ['depends' => 'backend\assets\AppAsset']);
+$this->registerCssFile("js/fuelux/css/fuelux.min.css", ['depends' => 'backend\assets\AppAsset']);
+$this->registerCssFile("js/fuelux/css/tree-style.css", ['depends' => 'backend\assets\AppAsset']);
+
 $this->title = '医院信息 - ' . $model->name;
 $this->params['breadcrumbs'][] = ['label' => '医院列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<script>
+window.InspectionMap = window.InspectionMap || {}
+window.InspectionMap.hospitalId = '<?= $model->id; ?>';
+</script>
 <div class="row" id="hospital-view">
     <div class="col-lg-12">
         <section class="panel">
@@ -110,47 +120,48 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]); ?>
                     </div>
                     <div id="inspection" class="tab-pane">
-                        <p>
-                            <?= Html::a('新增', ['/inspection/inspection/create', 'hosp_id' => $model->id], ['class' => 'btn btn-success']) ?>
-                        </p>
-                        <?= GridView::widget([
-                            'dataProvider' => $inspProvider,
-                            'filterModel' => $searchInsp,
-                            'columns' => [
-                                ['class' => 'yii\grid\SerialColumn'],
-                                'id',
-                                'insp_id',
-                                'hosp_id',
-                                'contact',
-                                'feedback_score',
-                                ['class' => 'yii\grid\ActionColumn',
-                                    'headerOptions'=>['width'=>180],
-                                    'template'=>'{view} {update} {delete}',
-                                    'buttons'=>[
-                                        'view' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['/inspection/inspection/view', 'id' => $model->id],[
-                                                'title'=>Yii::t('yii','View'),
-                                                'data-pjax' => '0',
-                                            ]);
-                                        },
-                                        'update' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>',['/inspection/inspection/update', 'id' => $model->id],[
-                                                'title'=>Yii::t('yii','Update'),
-                                                'data-pjax' => '0',
-                                            ]);
-                                        },
-                                        'delete' => function ($url, $model, $key) {
-                                            return Html::a('<span class="glyphicon glyphicon-trash"></span>',['/inspection/inspection/delete', 'id' => $model->id],[
-                                                'title'=>Yii::t('yii','Delete'),
-                                                'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
-                                                'data-method' => 'post',
-                                                'data-pjax' => '0',
-                                            ]);
-                                        },
-                                    ],
-                                ],
-                            ],
-                        ]); ?>
+
+                        <div class="col-md-6" id="inspection-left">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    检查项目
+                                </header>
+                                <div class="panel-body" style="min-height: 300px;">
+                                    <div class="fuelux">
+                                        <ul class="tree tree-solid-line" role="tree" id="tree" style="min-height: 300px;">
+                                            <li class="tree-branch hide" data-template="treebranch" role="treeitem" aria-expanded="false">
+                                                <div class="tree-branch-header">
+                                                    <button class="tree-branch-name">
+                                                        <i class="glyphicon icon-caret glyphicon-play"></i>
+                                                        <i class="item-check"> </i>
+                                                        <i class="glyphicon icon-folder glyphicon-folder-close"></i>
+                                                        <span class="tree-label"></span>
+                                                    </button>
+                                                </div>
+                                                <ul class="tree-branch-children" role="group"></ul>
+                                                <div class="tree-loader" role="alert">Loading...</div>
+                                            </li>
+                                            <li class="tree-item hide" data-template="treeitem" role="treeitem">
+                                                <button class="tree-item-name">
+                                                    <i class="item-check"> </i>
+                                                    <i class="icon-item"></i>
+                                                    <span class="tree-label"></span>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-md-6" id="inspection-right">
+                            <section class="panel">
+                                <header class="panel-heading">
+                                    详情
+                                </header>
+                                <div class="panel-body" style="min-height: 300px;">
+                                </div>
+                            </section>
+                        </div>
                     </div>
                     <div id="operation" class="tab-pane">
                         <p>

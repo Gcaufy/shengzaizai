@@ -27,3 +27,22 @@
 .tree .tree-actions > i:hover {
     color: #666;
 }
+.tree .item-check {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.tree li.tree-branch .tree-branch-header .item-check:before, .tree li.tree-item .item-check:before {
+    font-family: "fuelux";
+    content: "\e009";
+}
+.tree li.tree-branch[selected] .tree-branch-header .item-check:before, .tree li.tree-item[selected] .item-check:before {
+    font-family: 'Glyphicons Halflings';
+    content: "\e013";
+}

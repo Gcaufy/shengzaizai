@@ -164,9 +164,6 @@
             var $all = this.$element.find('.tree-selected');
             var data = [];
             var $icon = $el.find('.icon-item');
-            var $check = $el.find('.item-check');
-            if ($check)
-                $icon = $check;
 
             if (this.options.multiSelect) {
                 $.each($all, function (index, value) {
@@ -177,7 +174,7 @@
                 });
             } else if ($all[0] !== $el[0]) {
                 $all.removeClass('tree-selected')
-                    .find('.item-check').removeClass('glyphicon-ok').addClass('fueluxicon-bullet');
+                    .find('.glyphicon').removeClass('glyphicon-ok').addClass('fueluxicon-bullet');
                 data.push(selData);
             }
 
