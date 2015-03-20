@@ -121,7 +121,7 @@ class SiteController extends BaseController
         return $this->render('modifypassword');
     }
 
-    private function _createMenu() {
+    public function actionCreateMenu() {
         return Yii::$app->wechat->createMenu([
             [
                 'name' => '孕知识',
