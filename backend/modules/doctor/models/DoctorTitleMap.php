@@ -52,13 +52,15 @@ class DoctorTitleMap extends \common\components\MyActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getDoctor() {
-        return $this->hasOne(Doctor::className(), ['id' => 'doctor_id']);
+        return $this->hasOne(Doctor::className(), ['id' => 'doctor_id'])
+            ->from(Doctor::tableName() . ' doctor');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getTitle() {
-        return $this->hasOne(DoctorTitle::className(), ['id' => 'title_id']);
+        return $this->hasOne(DoctorTitle::className(), ['id' => 'title_id'])
+            ->from(DoctorTitle::tableName() . ' title');
     }
 }

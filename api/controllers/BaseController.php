@@ -134,6 +134,23 @@ class BaseController extends \yii\rest\ActiveController
             }
         }
 
+        $order = Yii::$app->request->get('order');
+        if (is_string($order)) {
+            $orders = explode(',', $order);
+            foreach ($orders as $key => $value) {
+                list($col, $type) = explode('.', $value);
+                $col = trim($col);
+                if ($type === 'asc')
+                    $type = SORT_ASC;
+                else if ($type === 'desc')
+                    $type = SORT_DESC;
+                else $type = false;
+                if ($model->hasAttribute($col) && $type !== false) {
+                    // Can not add t.
+                    $query->addOrderBy(["$col" => $type]);
+                }
+            }
+        }
         return new ActiveDataProvider([
             'query' => $query,
         ]);

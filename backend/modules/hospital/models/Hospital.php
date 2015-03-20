@@ -28,6 +28,7 @@ use Yii;
  */
 class Hospital extends \common\components\MyActiveRecord
  {
+
     /**
      * @inheritdoc
      */
@@ -44,7 +45,7 @@ class Hospital extends \common\components\MyActiveRecord
             [['region_id', 'opened_order', 'active_opened_order', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['addr'], 'string', 'max' => 200],
-            [['tel', 'longitude', 'latitude'], 'string', 'max' => 20]
+            [['tel', 'longitude', 'latitude', 'distance'], 'string', 'max' => 20]
         ];
     }
 
@@ -59,6 +60,7 @@ class Hospital extends \common\components\MyActiveRecord
         $arr['region_id'] = '地区ID';
         $arr['longitude'] = '经度';
         $arr['latitude'] = '纬度';
+        $arr['distance'] = '距离';
         $arr['opened_order'] = '预约号';
         $arr['active_opened_order'] = '可用预约号';
         return $arr;

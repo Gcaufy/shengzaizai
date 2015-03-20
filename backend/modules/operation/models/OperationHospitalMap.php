@@ -57,13 +57,15 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getOpera() {
-        return $this->hasOne(Operation::className(), ['id' => 'opera_id']);
+        return $this->hasOne(Operation::className(), ['id' => 'opera_id'])
+            ->from(Operation::tableName() . ' opera');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getHosp() {
-        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id']);
+        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id'])
+            ->from(Hospital::tableName() . ' hosp');
     }
 }

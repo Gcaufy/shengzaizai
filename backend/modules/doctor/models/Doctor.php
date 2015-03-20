@@ -78,15 +78,17 @@ class Doctor extends \common\components\MyActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDoctorTagMaps() {
-        return $this->hasMany(DoctorTagMap::className(), ['doctor_id' => 'id']);
+    public function getDoctorTagMap() {
+        return $this->hasMany(DoctorTagMap::className(), ['doctor_id' => 'id'])
+            ->from(DoctorTagMap::tableName() . ' doctorTagMap');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDoctorTitleMaps() {
-        return $this->hasMany(DoctorTitleMap::className(), ['doctor_id' => 'id']);
+    public function getDoctorTitleMap() {
+        return $this->hasMany(DoctorTitleMap::className(), ['doctor_id' => 'id'])
+            ->from(DoctorTitleMap::tableName() . ' doctorTitleMap');
     }
     /**
      * @return \yii\db\ActiveQuery

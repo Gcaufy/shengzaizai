@@ -58,13 +58,15 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getHosp() {
-        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id']);
+        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id'])
+            ->from(Hospital::tableName() . ' hosp');
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
     public function getInsp() {
-        return $this->hasOne(Inspection::className(), ['id' => 'insp_id']);
+        return $this->hasOne(Inspection::className(), ['id' => 'insp_id'])
+            ->from(Inspection::tableName() . ' insp');
     }
 }
