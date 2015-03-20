@@ -16,6 +16,7 @@ class SiteController extends BaseController
     {
         $wechat = Yii::$app->wechat;
         $wechat->valid();
+        var_dump($this->_createMenu());
 
         $defaultMsg = '您好！欢迎您来到蜜蜂家长会！蜜蜂家长会是一个全新的家校沟通平台，在这里，您可以获取最新教育资讯，及时掌握学校通知，随时随地了解学生学习情况，便捷地与老师（家长）沟通。让教育更高效，成长更轻松！如需帮助，请回复“帮助”并加上您的疑问。蜜蜂会及时回复！';
         $type = $wechat->getRev()->getRevType();
@@ -118,6 +119,76 @@ class SiteController extends BaseController
         }
 
         return $this->render('modifypassword');
+    }
+
+    private function _createMenu() {
+        return Yii::$app->wechat->createMenu([
+            [
+                'name' => '孕知识',
+                'type' => 'view',
+                'url' => 'http://www.baidu.com',
+            ],
+            [
+                'name' => '预约问诊',
+                'sub_button' => [
+                    [
+                        'type' => 'view',
+                        'name' => '预约特约医生',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '预约医生',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '预约检查',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '预约手术',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '快速预约',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                ],
+            ],
+            [
+                'name' => '我的中心',
+                'sub_button' => [
+                    [
+                        'type' => 'view',
+                        'name' => '绑定账号',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '注册',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '我的预约单',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '我的钱包',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                    [
+                        'type' => 'view',
+                        'name' => '资讯医导',
+                        'url' => 'http://www.baidu.com',
+                    ],
+                ],
+            ],
+        ]);
     }
 
 }
