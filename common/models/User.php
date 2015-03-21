@@ -233,7 +233,8 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password);
+        $str = 'admin|' . $this->authKey . '|' . $password;
+        return Yii::$app->security->generatePasswordHash(md5($str)) === $this->password;
     }
 
     public function setSimplePassword()
@@ -255,9 +256,8 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
             $password = $this->password;
         }
         $this->authkey = Yii::$app->security->generateRandomString();
-        $encrypt = new \common\controllers\EncryptController();
-        $this->password = $encrypt->admin($password, $this->authkey);
-        $this->password = Yii::$app->security->generatePasswordHash($this->password);
+        $str = 'admin|' . $this->authKey . '|' . $password;
+        $this->password = Yii::$app->security->generatePasswordHash(md5($str));
     }
 
     /**
