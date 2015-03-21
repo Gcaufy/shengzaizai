@@ -33,7 +33,7 @@ class WechatHelper {
                 if (count($data) !== 2)
                     $wechat->throwError('您输入的格式不正确, 请回复""您的手机号"[#]"您的登录密码"进行绑定. 如: "13866668888#123456".');
                 $user = User::findByMobile($data[0]);
-                if (!$user || $user->validatePassword($data[1]))
+                if (!$user || !$user->validatePassword($data[1]))
                     $wechat->throwError('您输入的用户名或者密码不对, 请重新输入.');
                 $userWechat->user_id = $user->id;
                 $userWechat->process = UserWechat::PROCESS_BIND;
