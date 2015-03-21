@@ -21,8 +21,8 @@ class WechatHelper {
         $userWechat = UserWechat::findModel($openId);
         $msg = '帮助: 这个是用户随意输入之后的系统自动回复. 可放帮助文字.';
 
-        // 5 分钟输入状态失效.
-        if (time() - $userWechat->utime >= 5 * 60) {
+        // 10 分钟输入状态失效.
+        if (time() - $userWechat->utime >= 10 * 60 && $userWechat->process != UserWechat::PROCESS_BIND) {
             $userWechat->process = UserWechat::PROCESS_NEW;
             if (!$userWechat->save())
                 $wechat->throwError($userWechat->getError());
@@ -94,6 +94,7 @@ class WechatHelper {
 
                 $userWechat->user_id = $user->id;
                 $userWechat->process = UserWechat::PROCESS_BIND;
+                $userWechat->data = '';
                 if (!$userWechat->save())
                     $wechat->throwError($userWechat->getError());
 
