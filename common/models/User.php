@@ -234,7 +234,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         $str = 'admin|' . $this->authKey . '|' . $password;
-        return Yii::$app->security->generatePasswordHash(md5($str)) === $this->password;
+        return Yii::$app->security->validatePassword(md5($str), $this->password);
     }
 
     public function setSimplePassword()
