@@ -88,6 +88,7 @@ class BaseController extends \yii\rest\ActiveController
      */
     public function afterAction($action, $result)
     {
+        header("Access-Control-Allow-Origin: *");
         if ($this->loginRequired) {
             UserToken::updateAccessInfo(Yii::$app->user->identity->id);
         }
