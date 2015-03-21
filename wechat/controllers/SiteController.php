@@ -29,10 +29,6 @@ class SiteController extends BaseController
         $wechat->listen();
         return '';
 
-        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
-        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
-        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
-        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
 
         $defaultMsg = '生仔仔欢迎您! 您可以点击下列菜单, 选择服务, 如需咨询医导, 请回复: "资询"+"您的年龄"+"男/女"+"您的问题".';
         $type = $wechat->getRev()->getRevType();

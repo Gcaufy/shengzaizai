@@ -48,6 +48,8 @@ class Wechat extends BaseWechat {
     private $_text_filter = true;
     private $_msg;
 
+    private $_openId = '';
+
     public function valid($return = false) {
         $encryptStr="";
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -98,12 +100,28 @@ class Wechat extends BaseWechat {
         }
     }
 
-    protected function log($log) {
-        // Do nothing
-        if ($this->debug) {
-            if (is_array($log)) $log = print_r($log,true);
-            Yii::getLogger()->log($log, Logger::LEVEL_INFO, 'wechat');
+
+    public function throwError($msg = null, $toUser = true) {
+        $error = is_array($msg) ? print_r($msg, true) : null;
+        $msg = 'Error: ' . ((is_array($msg) || $msg === null) ? '系统出现错误, 请联系管理员.' : $msg);
+
+        if ($toUser) {
+            echo $this->text($msg)->reply();
         }
+        $this->log($msg . ' ' . $error, Logger::LEVEL_TRACE, 'wechat\error');
+        exit;
+    }
+
+    protected function log($log, $type = Logger::LEVEL_INFO, $category = 'wechat') {
+        // Do nothing
+        if (is_array($log)) $log = print_r($log,true);
+        Yii::getLogger()->log($log, $type, $category);
+    }
+
+    public function getOpenId() {
+        if ($this->_openId)
+            return $this->_openId;
+        $result = $this->getOauth2AccessToken();
     }
 
     /**

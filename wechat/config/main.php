@@ -31,7 +31,7 @@ return [
                 [
                     'class' => 'yii\log\DbTarget',
                     'levels' => ['trace', 'info'],
-                    'categories' => ['wechat'],
+                    'categories' => ['wechat\*'],
                     'logTable' => 'sys_log',
                 ],
             ],
