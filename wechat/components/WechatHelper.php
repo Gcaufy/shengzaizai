@@ -19,7 +19,7 @@ class WechatHelper {
             return;
         }
         $userWechat = UserWechat::findModel($openId);
-        $msg = $content;
+        $msg = '帮助: 这个是用户随意输入之后的系统自动回复. 可放帮助文字.';
 
         // 5 分钟输入状态失效.
         if (time() - $userWechat->utime >= 5 * 60) {
