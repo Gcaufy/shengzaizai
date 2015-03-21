@@ -1,6 +1,8 @@
 <?php
 namespace wechat\components;
 
+use Yii;
+use yii\log\Logger;
 use yii\web\HttpException;
 
 class Wechat extends BaseWechat {
@@ -38,7 +40,7 @@ class Wechat extends BaseWechat {
     const EVENT_CARD_USER_DEL = 'user_del_card';        //卡券 - 用户删除卡券
 
     public $encryptType;
-    public $debug =  false;
+    public $debug =  true;
 
     private $postxml;
     private $_receive;
@@ -52,8 +54,8 @@ class Wechat extends BaseWechat {
             $postStr = file_get_contents("php://input");
             $array = (array)simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $this->encryptType = isset($_GET["encrypt_type"]) ? $_GET["encrypt_type"]: '';
+            $this->log($postStr);
             if ($this->encryptType == 'aes') { //aes加密
-                $this->log($postStr);
                 $encryptStr = $array['Encrypt'];
                 /*$pc = new Prpcrypt($this->encodingAesKey);
                 $array = $pc->decrypt($encryptStr, $this->appId);
@@ -83,6 +85,16 @@ class Wechat extends BaseWechat {
                     return 'Signature is wrong.';
                 throw new HttpException(500, 'Signature is wrong.');
             }
+        }
+    }
+
+
+    public function listen() {
+        $type = $this->getRev()->getRevType();
+        $this->trigger($type);
+        if ($type === self::MSGTYPE_EVENT) {
+            $event = $this->getRevEvent();
+            $this->trigger($event['event']);
         }
     }
 

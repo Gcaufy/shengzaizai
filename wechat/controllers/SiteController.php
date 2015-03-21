@@ -17,6 +17,22 @@ class SiteController extends BaseController
     {
         $wechat = Yii::$app->wechat;
         $wechat->valid();
+        $eventList = [
+            Wechat::MSGTYPE_TEXT => 'onReceiveText',
+            Wechat::EVENT_SUBSCRIBE => 'onSubscribe',
+            Wechat::EVENT_MENU_CLICK => 'onMenuClick',
+        ];
+
+        foreach ($eventList as $key => $handler) {
+            $wechat->on($key, ['wechat\components\WechatHelper', $handler]);
+        }
+        $wechat->listen();
+        return '';
+
+        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
+        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
+        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
+        $wechat->on(Wechat::MSGTYPE_TEXT, ['wechat\components\WechatHelper', 'onReceiveText']);
 
         $defaultMsg = '生仔仔欢迎您! 您可以点击下列菜单, 选择服务, 如需咨询医导, 请回复: "资询"+"您的年龄"+"男/女"+"您的问题".';
         $type = $wechat->getRev()->getRevType();
@@ -26,6 +42,10 @@ class SiteController extends BaseController
                 $event = $wechat->getRevEvent();
                 switch ($event['event']) {
                     case Wechat::EVENT_SUBSCRIBE:
+                        $defaultMsg .= '请先在个人中心绑定您的帐户，然后及时修改您的初始密码';
+                        $reply = $wechat->text($defaultMsg)->reply();
+                        break;
+                    case Wechat::EVENT_MENU_CLICK:
                         $defaultMsg .= '请先在个人中心绑定您的帐户，然后及时修改您的初始密码';
                         $reply = $wechat->text($defaultMsg)->reply();
                         break;
@@ -125,7 +145,8 @@ class SiteController extends BaseController
     }
 
     public function actionTest() {
-        $a = Yii::$app->wechat->createMenu([
+        //return Yii::$app->wechat->deleteMenu();
+        return Yii::$app->wechat->createMenu([
             [
                 'name' => '孕知识',
                 'type' => 'view',
@@ -165,14 +186,14 @@ class SiteController extends BaseController
                 'name' => '我的中心',
                 'sub_button' => [
                     [
-                        'type' => 'view',
+                        'type' => 'click',
                         'name' => '绑定账号',
-                        'url' => 'http://www.baidu.com',
+                        'key' => 'KEY_USE_BIND',
                     ],
                     [
-                        'type' => 'view',
+                        'type' => 'click',
                         'name' => '注册',
-                        'url' => 'http://www.baidu.com',
+                        'key' => 'KEY_USER_REGIST',
                     ],
                     [
                         'type' => 'view',

@@ -39,6 +39,9 @@ class BaseWechat extends Component
      * 获取菜单
      */
     const WECHAT_MENU_GET_URL = '/cgi-bin/menu/get?';
+
+
+    const WECHAT_MENU_DELETE_URL = '/cgi-bin/menu/delete?';
     /**
      * 发送客服消息
      */
