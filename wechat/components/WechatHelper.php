@@ -87,7 +87,7 @@ class WechatHelper {
                 break;
             case UserWechat::PROCESS_VALIDATE:
                 $data = unserialize($userWechat->data);
-                if ($data['captcha'] !== $content)
+                if (false && $data['captcha'] !== $content)
                     $wechat->throwError('您输入的验证码有误, 请重新输入.');
                 $user = new User();
                 $data = ['name' => $data[0], 'mobile' => $data[1]];
