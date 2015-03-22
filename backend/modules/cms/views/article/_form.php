@@ -73,7 +73,7 @@ if (!$model->url)
             <?= $form->field($model, 'pbanner')->widget(FileInput::classname(), [
             'options' => ['accept' => 'image/*', 'name' => 'file', 'target' => 'article-banner'],
             'pluginOptions' => [
-                'uploadUrl' => Url::to(['/file/upload?folder=article']),
+                'uploadUrl' => Url::to(['/file/upload?folder=banner']),
                 'initialPreview' => $model->banner ? [Html::img("/file?id=" . $model->banner, ['class'=>'file-preview-image'])] : [],
                 'initialCaption'=>"已保存图片",
             ]
