@@ -6,6 +6,7 @@ use yii\web\HttpException;
 use common\models\User;
 use common\models\UserWechat;
 use common\models\SmsCaptcha;
+use common\models\File;
 
 class WechatHelper {
 
@@ -40,6 +41,12 @@ class WechatHelper {
                 if (!$userWechat->save())
                     $wechat->throwError($userWechat->getError());
                 $msg = '您的账户已成功绑定.';
+                if (!$user->portrait) {
+                    $info = $wechat->getMemberInfo($openId);
+                    $file = File::download($info['headimgurl'], $user->id, 'portrait');
+                    $user->portrait = $file->id;
+                    $user->save();
+                }
                 break;
             case UserWechat::PROCESS_REGIST:
                 $data = explode('#', $content);
@@ -84,11 +91,16 @@ class WechatHelper {
                     $wechat->throwError('您输入的验证码有误, 请重新输入.');
                 $user = new User();
                 $data = ['name' => $data[0], 'mobile' => $data[1]];
+                //$data = ['name' => 'gc', 'mobile'=> '13590325927'];
                 $user->realname = $data['name'];
                 $user->mobile = $data['mobile'];
                 $user->role = User::ROLE_NORMAL;
                 $password = mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9);
                 $user->setPassword($password);
+                $info = $wechat->getMemberInfo($openId);
+                $file = File::download($info['headimgurl'], $user->id, 'portrait');
+                $user->portrait = $file->id;
+
                 if (!$user->save())
                     $wechat->throwError($user->getErrors());
 
@@ -99,7 +111,6 @@ class WechatHelper {
                     $wechat->throwError($userWechat->getError());
 
                 $msg = "您已注册并且绑定成功, 您的初始登陆密码为$password." ;
-
             default:
                 # code...
                 break;

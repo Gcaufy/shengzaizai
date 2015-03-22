@@ -24,9 +24,9 @@ return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'language'=>'zh-CN',
     'timeZone'=>'Asia/Chongqing',
-    'controllerMap' => [
+    /*'controllerMap' => [
         'file' => 'mdm\\upload\\FileController',
-    ],
+    ],*/
     'components' => [
         'user' => [
             'class' => 'yii\web\User',
