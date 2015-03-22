@@ -7,6 +7,7 @@ use yii\widgets\Breadcrumbs;
 /* @var $content string */
 
 AppAsset::register($this);
+$userModel = Yii::$app->user->identity;
 ?>
 
 <?php $this->beginPage() ?>
@@ -56,7 +57,11 @@ AppAsset::register($this);
             <!-- visible to small devices only -->
             <div class="visible-xs hidden-sm hidden-md hidden-lg">
                 <div class="media logged-user">
-                    <img alt="" src="/img/user-avatar.png" class="media-object">
+                    <?php if ($userModel->portrait): ?>
+                        <img alt="" src="/file?thumb=26x26&id=<?=$userModel->portrait;?>" class="media-object">
+                    <?php else:?>
+                        <img alt="" src="/img/user-avatar.png" class="media-object">
+                    <?php endif;?>
                     <div class="media-body">
                         <h4><a href="#"><?=Yii::$app->user->identity->displayName;?></a></h4>
                         <span>"Hello There..."</span>
@@ -402,13 +407,18 @@ AppAsset::register($this);
                     </li>
                     <li>
                         <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <img src="/img/user-avatar.png" alt="" />
+                            <?php if ($userModel->portrait): ?>
+                                <img alt="" src="/file?thumb=26x26&id=<?=$userModel->portrait;?>" class="media-object">
+                            <?php else:?>
+                                <img alt="" src="/img/user-avatar.png" class="media-object">
+                            <?php endif;?>
                             <?= Yii::$app->user->identity->displayName; ?>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
                             <!--li><a href="#"><i class="fa fa-user"></i>  Profile</a></li>
                             <li><a href="#"><i class="fa fa-cog"></i>  Settings</a></li-->
+                            <li><a href="/user/profile/index"><i class="fa fa-user"></i> 个人资料</a></li>
                             <li><a href="#"><i class="fa fa-sign-out"></i> 退出</a></li>
                         </ul>
                     </li>

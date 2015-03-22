@@ -28,6 +28,9 @@ use Yii;
  */
 class Article extends \common\components\MyActiveRecord
  {
+
+    public $pthumb;
+    public $pbanner;
     /**
      * @inheritdoc
      */
@@ -35,20 +38,24 @@ class Article extends \common\components\MyActiveRecord
         return '{{%cms_article}}';
     }
 
+    public function init() {
+        parent::init();
+    }
+
     /**
      * @inheritdoc
      */
     public function rules() {
         return [
-            [['category_id', 'favor', 'positive', 'banner_position', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['isbanner', 'category_id', 'favor', 'positive', 'banner_position', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['content'], 'string'],
-            [['title'], 'string', 'max' => 200],
+            [['title', 'url'], 'string', 'max' => 200],
             [['short'], 'string', 'max' => 2000],
             [['thumb', 'banner'], 'string', 'max' => 100],
-            [['from'], 'string', 'max' => 50]
+            [['from'], 'string', 'max' => 50],
+            [['url'], 'unique']
         ];
     }
-
     /**
      * @inheritdoc
      */
@@ -60,11 +67,21 @@ class Article extends \common\components\MyActiveRecord
         $arr['content'] = '内容';
         $arr['favor'] = '收藏';
         $arr['positive'] = '点赞';
+        $arr['url'] = '自定义链接';
+        $arr['pthumb'] = '文章缩略图';
         $arr['thumb'] = '文章缩略图';
+        $arr['isbanner'] = '是否是Banner文章';
         $arr['banner'] = 'Banner图';
-        $arr['banner_position'] = 'Banner位置';
+        $arr['pbanner'] = 'Banner图';
+        $arr['banner_position'] = 'Banner轮播位置';
         $arr['from'] = '来自';
         return $arr;
+    }
+
+
+    public function getUrl() {
+        if (!$this->url && $this->id)
+            $this->url = Yii::$app->baseUrl . '/article?id=' . $this->id;
     }
 
     /**

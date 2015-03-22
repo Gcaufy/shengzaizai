@@ -478,6 +478,7 @@ h5.left-nav-title {
     margin-right: 5px;
     vertical-align: middle;
     width: 26px;
+    display: inline-block;
 }
 .notification-menu .dropdown-toggle .caret {
     margin-left: 5px;
@@ -4054,4 +4055,9 @@ ul.iconic-list li a:hover, ul.iconic-list li.active a {
     border-bottom: medium none;
     margin-bottom: 0;
     padding-bottom: 0;
+}
+.hint-block {
+    color: #999;
+    display: inline-block;
+    margin-left: 15px;
 }
