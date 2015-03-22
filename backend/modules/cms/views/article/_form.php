@@ -5,6 +5,8 @@ use backend\components\ActiveForm;
 use yii\helpers\ArrayHelper;
 use Zelenin\yii\widgets\Summernote\Summernote;
 use dosamigos\ckeditor\CKEditor;
+use kartik\widgets\FileInput;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\cms\models\Article */
@@ -27,7 +29,14 @@ use dosamigos\ckeditor\CKEditor;
     <?= $form->field($model, 'content')->widget(Summernote::className(), [
     ]) ?>
 
-    <?= $form->field($model, 'thumb')->textInput() ?>
+    <?= $form->field($model, 'thumb')->widget(FileInput::classname(), [
+        'options' => ['accept' => 'image/*'],
+        'options' => ['name' => 'file'],
+        'pluginOptions' => [
+            'uploadUrl' => Url::to(['/file/upload?folder=article']),
+            'maxFileCount' => 10,
+        ]
+    ]); ?>
 
     <?= $form->field($model, 'banner')->textInput() ?>
 

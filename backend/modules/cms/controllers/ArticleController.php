@@ -87,7 +87,6 @@ class ArticleController extends Controller
     {
         $categories = Category::find()->all();
         $model = $this->findModel($id);
-
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '更新成功.');

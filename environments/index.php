@@ -37,6 +37,7 @@ return [
             'wechat/runtime',
             'wechat/web/assets',
             'images',
+            'data',
         ],
         'setExecutable' => [
             'yii',
@@ -58,6 +59,7 @@ return [
             'wechat/runtime',
             'wechat/web/assets',
             'images',
+            'data',
         ],
         'setExecutable' => [
             'yii',
