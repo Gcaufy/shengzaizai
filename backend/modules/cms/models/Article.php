@@ -47,11 +47,10 @@ class Article extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['isbanner', 'category_id', 'favor', 'positive', 'banner_position', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['isbanner', 'category_id', 'favor', 'positive', 'banner_position', 'status', 'utime', 'uid', 'ctime', 'cid', 'thumb', 'banner'], 'integer'],
             [['content'], 'string'],
             [['title', 'url'], 'string', 'max' => 200],
             [['short'], 'string', 'max' => 2000],
-            [['thumb', 'banner'], 'string', 'max' => 100],
             [['from'], 'string', 'max' => 50],
             [['url'], 'unique']
         ];

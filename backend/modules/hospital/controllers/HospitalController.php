@@ -6,6 +6,7 @@ use Yii;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\hospital\models\HospitalSearch;
 use backend\modules\doctor\models\Doctor;
+use backend\modules\system\models\Region;
 
 use backend\modules\doctor\models\DoctorSearch;
 use backend\modules\inspection\models\InspectionHospitalMapSearch;
@@ -107,6 +108,7 @@ class HospitalController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'regionData' => $this->getRegion(),
         ]);
     }
 
@@ -130,6 +132,7 @@ class HospitalController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'regionData' => $this->getRegion(),
         ]);
     }
 
@@ -160,5 +163,22 @@ class HospitalController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    protected function getRegion() {
+        $arr = Region::find()->joinWith('children')->andWhere('t.parent_id is null')->asArray()->all();
+        foreach ($arr as $item) {
+            $row = [];
+            $carr = $item['children'];
+            $children = [];
+            if ($carr) {
+                foreach ($carr as $citem) {
+                    $children[$citem['id']] = $citem['name'];
+                }
+                $row[$item['name']] = $children;
+            }
+            $rst[] = $row;
+        }
+        return $rst;
     }
 }

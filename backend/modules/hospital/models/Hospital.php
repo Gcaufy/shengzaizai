@@ -28,7 +28,7 @@ use Yii;
  */
 class Hospital extends \common\components\MyActiveRecord
  {
-
+    public $ppic;
     /**
      * @inheritdoc
      */
@@ -42,10 +42,10 @@ class Hospital extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['name'], 'required'],
-            [['region_id', 'opened_order', 'active_opened_order', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['region_id', 'opened_order', 'active_opened_order', 'status', 'utime', 'uid', 'ctime', 'cid', 'pic', 'ordered'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['addr'], 'string', 'max' => 200],
-            [['tel', 'longitude', 'latitude', 'distance'], 'string', 'max' => 20]
+            [['tel', 'longitude', 'latitude'], 'string', 'max' => 20]
         ];
     }
 
@@ -57,11 +57,12 @@ class Hospital extends \common\components\MyActiveRecord
         $arr['name'] = '医院名';
         $arr['addr'] = '地址';
         $arr['tel'] = '电话';
-        $arr['region_id'] = '地区ID';
+        $arr['region_id'] = '地区';
         $arr['longitude'] = '经度';
         $arr['latitude'] = '纬度';
-        $arr['distance'] = '距离';
         $arr['opened_order'] = '预约号';
+        $arr['pic'] = '照片';
+        $arr['ordered'] = '预约次数';
         $arr['active_opened_order'] = '可用预约号';
         return $arr;
     }

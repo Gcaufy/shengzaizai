@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 use yii\web\JsExpression;
 use kartik\widgets\Select2;
 
-class ActiveField extends \yii\widgets\ActiveField
+class ActiveField extends \kartik\form\ActiveField
 {
 	public $template = "{label}\n<div class=\"col-sm-10\">{input}\n{hint}\n{error}</div>";
 	public $labelOptions = ['class' => 'col-sm-2 col-sm-2 control-label'];
@@ -26,7 +26,7 @@ function (element, callback) {
     if (id !== "") {
         \$.ajax("{$url}?id=" + id, {
             dataType: "json"
-        }).done(function(data) { 
+        }).done(function(data) {
         	callback(data.results);
         });
     }
@@ -59,5 +59,11 @@ SCRIPT;
         $this->parts['{input}'] = Select2::widget($options);
 
        	return $this;
+    }
+
+
+    public function initLen($n) {
+        $this->options['class'] .= ' col-md-' . $n;
+        return $this;
     }
 }

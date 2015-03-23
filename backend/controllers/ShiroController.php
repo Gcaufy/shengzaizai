@@ -9,6 +9,7 @@ use backend\modules\doctor\models\Doctor;
 use backend\modules\hospital\models\Hospital;
 use backend\modules\operation\models\Operation;
 use backend\modules\inspection\models\Inspection;
+use backend\modules\system\models\Region;
 
 class ShiroController extends Controller
 {
@@ -195,6 +196,33 @@ class ShiroController extends Controller
 
 
 
+    public function actionRegionsearch($search = null, $id = null)
+    {
+        $output = ['results' => [], 'more' => false];
+        if ($search !== null) {
+            $regions = Region::find()
+                ->andFilterWhere(['like', 't.name', $search])
+                ->andWhere('t.parent_id is null')
+                ->limit(20)
+                ->all();
+        } elseif (strlen($id) > 0) {
+            $region = Region::find()->andWhere(['in', 't.id', explode(',', $id)])->one();
+            $output['results'] = [
+                'id' => $region->id,
+                'text' => $region->name,
+            ];
+
+        }
+        if (!empty($regions)) {
+            $output['results'] = ArrayHelper::getColumn($regions, function($region) {
+                return [
+                    'id' => $region->id,
+                    'text' => $region->name,
+                ];
+            });
+        }
+        return Json::encode($output);
+    }
     public function actionHospsearch($search = null, $id = null)
     {
         $output = ['results' => [], 'more' => false];

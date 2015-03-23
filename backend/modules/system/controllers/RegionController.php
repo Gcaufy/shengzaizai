@@ -8,11 +8,12 @@ use backend\modules\system\models\RegionSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use backend\controllers\ShiroController;
 
 /**
  * RegionController implements the CRUD actions for Region model.
  */
-class RegionController extends Controller
+class RegionController extends ShiroController
 {
     public function behaviors()
     {
@@ -62,6 +63,17 @@ class RegionController extends Controller
     {
         $model = new Region();
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->parent_id == 0) {
+                $model->parent_id = null;
+            } else {
+                $parent = Region::findOne($model->parent_id);
+                if (!$parent)
+                    throw new NotFoundHttpException('The requested page does not exist.');
+                $parent->isleaf = 0;
+                if (!$parent->save())
+                    throw new NotFoundHttpException('DB issue.' . print_r($parent->getErrors(), true));
+                $model->level = $parent->level + 1;
+            }
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
                 return $this->redirect(['view', 'id' => $model->id]);

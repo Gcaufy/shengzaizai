@@ -37,7 +37,7 @@ class Region extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['name'], 'required'],
+            [['name', 'longitude', 'latitude'], 'required'],
             [['parent_id', 'level', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['name'], 'string', 'max' => 50],
             [['longitude', 'latitude'], 'string', 'max' => 20]
@@ -68,7 +68,8 @@ class Region extends \common\components\MyActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getRegions() {
-        return $this->hasMany(Region::className(), ['parent_id' => 'id']);
+    public function getChildren() {
+        return $this->hasMany(Region::className(), ['parent_id' => 'id'])
+            ->from(Region::tableName() . ' children');
     }
 }
