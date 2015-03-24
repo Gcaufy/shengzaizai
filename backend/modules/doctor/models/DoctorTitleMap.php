@@ -21,6 +21,7 @@ use Yii;
  */
 class DoctorTitleMap extends \common\components\MyActiveRecord
  {
+    public $name;
     /**
      * @inheritdoc
      */

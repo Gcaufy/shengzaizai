@@ -64,6 +64,7 @@ return [
                         'doctor',
                         'inspection',
                         'operation',
+                        'openorder',
                     ],
                     'pluralize' => false,
                 ],

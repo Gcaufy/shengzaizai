@@ -4,10 +4,22 @@ use yii\helpers\Html;
 use backend\components\ActiveForm;
 use kartik\rating\StarRating;
 use yii\helpers\Url;
+use kartik\widgets\FileInput;
+use yii\web\JsExpression;
+
 
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\Doctor */
 /* @var $form yii\widgets\ActiveForm */
+$js = "
+$('input[name=file]').on('fileuploaded', function(event, data, previewId, index) {
+    var response = data.response;
+    if (response && response.result && response.result.length === 1) {
+        $('#' + $(this).attr('target')).val(response.result[0]);
+    }
+});
+";
+$this->registerJs($js);
 ?>
 
 <div class="doctor-form">
@@ -46,6 +58,16 @@ use yii\helpers\Url;
     <?= $form->field($model, 'isvip')->checkbox() ?>
 
     <?= $form->field($model, 'type')->radioList(['0' => '可预约医生', '1' => '手术主治医生']) ?>
+
+    <?= $form->field($model, 'pportrait')->widget(FileInput::classname(), [
+        'options' => ['accept' => 'image/*', 'name' => 'file', 'target' => 'model-portrait'],
+        'pluginOptions' => [
+            'uploadUrl' => Url::to(['/file/upload?folder=doctor']),
+            'initialPreview' => $model->portrait ? [Html::img("/file?id=" . $model->portrait, ['class'=>'file-preview-image'])] : [],
+            'initialCaption'=>"已保存图片",
+        ]
+    ]); ?>
+
 
     <div class="form-group right">
         <?= Html::submitButton($model->isNewRecord ? '创建' : '保存', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -33,6 +33,7 @@ use \backend\modules\hospital\models\Hospital;
  */
 class Doctor extends \common\components\MyActiveRecord
  {
+    public $pportrait;
     /**
      * @inheritdoc
      */
@@ -46,7 +47,7 @@ class Doctor extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'name'], 'required'],
-            [['hosp_id', 'feedback_score', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['hosp_id', 'feedback_score', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
             [['normal_reg_cost', 'expert_reg_cost'], 'number'],
             [['name'], 'string', 'max' => 20],
             [['desc'], 'string', 'max' => 2000],
@@ -61,6 +62,8 @@ class Doctor extends \common\components\MyActiveRecord
         $arr = parent::attributeLabels();
         $arr['hosp_id'] = '医院';
         $arr['name'] = '医生名';
+        $arr['pportrait'] = '头像';
+        $arr['portrait'] = '头像';
         $arr['desc'] = '描述';
         $arr['feedback_score'] = '评分';
         $arr['normal_reg_cost'] = '普通挂号费';
@@ -75,10 +78,8 @@ class Doctor extends \common\components\MyActiveRecord
         return $arr;
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDoctorTagMap() {
+
+    public function getTag() {
         return $this->hasMany(DoctorTagMap::className(), ['doctor_id' => 'id'])
             ->from(DoctorTagMap::tableName() . ' doctorTagMap');
     }
@@ -86,7 +87,7 @@ class Doctor extends \common\components\MyActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDoctorTitleMap() {
+    public function getTitle() {
         return $this->hasMany(DoctorTitleMap::className(), ['doctor_id' => 'id'])
             ->from(DoctorTitleMap::tableName() . ' doctorTitleMap');
     }
@@ -96,5 +97,20 @@ class Doctor extends \common\components\MyActiveRecord
     public function getHospital() {
         return $this->hasOne(Hospital::className(), ['id' => 'hosp_id'])
             ->from(Hospital::tableName() . ' hospital');
+    }
+
+    public function __get($name) {
+        $rst = parent::__get($name);
+        if ($name === 'tag' && is_array($rst) && count($rst) > 0 && $rst[0] instanceof DoctorTagMap) {
+            foreach($rst as $item) {
+                $item->name = isset($item->tag) ? $item->tag->name : '2';
+            }
+        }
+        if ($name === 'title' && is_array($rst) && count($rst) > 0 && $rst[0] instanceof DoctorTitleMap) {
+            foreach($rst as $item) {
+                $item->name = isset($item->title) ? $item->title->name : '2';
+            }
+        }
+        return $rst;
     }
 }

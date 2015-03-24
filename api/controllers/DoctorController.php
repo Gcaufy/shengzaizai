@@ -12,7 +12,7 @@ use yii\filters\VerbFilter;
  */
 class DoctorController extends BaseController
 {
-    public $modelClass = '\backend\modules\doctor\models\Doctor';
+    public $modelClass = 'api\models\Doctor';
     protected $loginRequired = false;
 
     public function actions() {
@@ -22,12 +22,8 @@ class DoctorController extends BaseController
     }
 
     protected function getQuery() {
-        $query = parent::getQuery()->joinWith(['doctorTagMap.tag', 'doctorTitleMap.title']);
+        $_GET['expand'] = 'tag,title';
+        $query = parent::getQuery()->joinWith(['tag.tag', 'title.title']);
         return $query;
-    }
-
-    public function actionAll() {
-        $query = parent::getQuery()->joinWith(['doctorTagMap.tag', 'doctorTitleMap.title']);
-        return $query->asArray()->all();
     }
 }
