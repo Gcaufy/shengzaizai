@@ -37,6 +37,8 @@ return [
                 'POST login' => 'site/login',
                 'GET finance/balance' => 'finance/balance',
                 'GET finance/ledger' => 'finance/ledger',
+                'POST finance/charge' => 'finance/charge',
+                'POST finance/expense' => 'finance/expense',
                 'GET system/info' => 'system/info',
                 'GET hospital/inspection' => 'hospital/inspection',
                 'GET hospital/operation' => 'hospital/operation',
