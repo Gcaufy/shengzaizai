@@ -73,9 +73,7 @@ class SiteController extends Controller
                     $user->addError('password',Yii::t('app','Login failed 3 times, locked'));
                     return $this->render('login', ['model' => $user]);
                 }else{
-                    $encrypt = new \common\controllers\EncryptController();
-                    $user->password = $encrypt->admin($user->password,$user->authkey);
-                    if($user->login()){
+                    if($user && $user->validatePassword($model->password) && $user->login()){
                         Yii::$app->session->set('logintimes',0);
                         return $this->goHome();
                     }else{

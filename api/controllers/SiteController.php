@@ -84,16 +84,11 @@ class SiteController extends BaseController
     public function actionLogin() {
         $user = new User();
         $user->load(Yii::$app->request->post(), '');
+        $password = $user->password;
         $user = User::findByMobile($user->mobile);
-        if(isset($user)){
-            $encrypt = new \common\controllers\EncryptController();
-            $user->password = $encrypt->admin($user->password, $user->authkey);
-            if($user->login()){
-                $token = UserToken::updateToken($user->id);
-                return MsgHelper::success('登录成功', ['token' => $token]);
-            } else {
-                return MsgHelper::faile('用户名或者密码错误.');
-            }
+        if($user && $user->validatePassword($password) && $user->login()){
+            $token = UserToken::updateToken($user->id);
+            return MsgHelper::success('登录成功', ['token' => $token]);
         } else {
             return MsgHelper::faile('用户名或者密码错误.');
         }
