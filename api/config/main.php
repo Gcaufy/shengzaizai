@@ -36,6 +36,7 @@ return [
                 'POST register/captcha' => 'site/captcha',
                 'POST login' => 'site/login',
                 'GET finance/balance' => 'finance/balance',
+                'GET finance/ledger' => 'finance/ledger',
                 'GET system/info' => 'system/info',
                 'GET hospital/inspection' => 'hospital/inspection',
                 'GET hospital/operation' => 'hospital/operation',

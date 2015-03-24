@@ -7,14 +7,16 @@ use yii\web\Controller;
 use common\models\User;
 use yii\filters\VerbFilter;
 use \common\models\finance\GeneralLedger;
+use \common\models\finance\Payment;
 use \common\components\Finance;
+use yii\data\ActiveDataProvider;
 
 /**
  * GeneralLedgerController
  */
 class FinanceController extends BaseController
 {
-    public $modelClass = '\common\models\finance\GeneralLedger';
+    public $modelClass = '\common\models\finance\Payment';
     protected $loginRequired = true;
 
     public function actions() {
@@ -31,5 +33,12 @@ class FinanceController extends BaseController
     public function actionBalance() {
         $balance = Finance::getBalance(true);
         return ['amount' => $balance->amount, 'utime' => $balance->utime];
+    }
+
+    public function actionLedger() {
+        $query = GeneralLedger::find()->andWhere(['t.user_id' => Yii::$app->user->identity->id]);
+        return new ActiveDataProvider([
+            'query' => $query,
+        ]);
     }
 }
