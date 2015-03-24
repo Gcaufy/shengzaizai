@@ -29,6 +29,8 @@ use Yii;
  */
 class UserGen extends \common\components\MyActiveRecord
 {
+
+    public $pportrait;
     /**
      * @inheritdoc
      */
@@ -43,7 +45,7 @@ class UserGen extends \common\components\MyActiveRecord
     public function rules()
     {
         return [
-            [['pregnant', 'role', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['pregnant', 'role', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
             [['realname', 'email'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
@@ -61,6 +63,8 @@ class UserGen extends \common\components\MyActiveRecord
             'id' => '用户ID',
             'realname' => '真实姓名',
             'mobile' => '手机号',
+            'pportrait' => '头像',
+            'portrait' => '头像',
             'email' => '邮箱',
             'auth_key' => '密钥',
             'password' => '登陆密码',

@@ -43,6 +43,7 @@ return [
                 'GET hospital/inspection' => 'hospital/inspection',
                 'GET hospital/operation' => 'hospital/operation',
                 'GET doctor/all' => 'doctor/all',
+                'GET user/profile' => 'user/profile',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'article',
