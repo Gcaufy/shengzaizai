@@ -47,11 +47,11 @@ class Doctor extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'name'], 'required'],
-            [['hosp_id', 'feedback_manner', 'feedback_effect', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
-            [['normal_reg_cost', 'expert_reg_cost'], 'number'],
+            [['hosp_id', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
+            [['normal_reg_cost', 'expert_reg_cost', 'feedback_manner', 'feedback_effect'], 'number'],
             [['name'], 'string', 'max' => 20],
             [['desc'], 'string', 'max' => 2000],
-            [['major', 'experience', 'note'], 'string', 'max' => 500]
+            [['major', 'experience', 'note'], 'string', 'max' => 500],
         ];
     }
 

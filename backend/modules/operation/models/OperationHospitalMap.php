@@ -36,7 +36,8 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'opera_id', 'contact'], 'required'],
-            [['hosp_id', 'opera_id', 'feedback_manner', 'feedback_effect', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['hosp_id', 'opera_id', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['feedback_manner', 'feedback_effect'], 'number'],
             [['contact'], 'string', 'max' => 50]
         ];
     }

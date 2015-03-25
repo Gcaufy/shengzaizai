@@ -38,6 +38,7 @@ return [
                 'POST finance/charge' => 'finance/charge',
                 'POST finance/expense' => 'finance/expense',
                 'POST order' => 'order/create',
+                'POST coment' => 'coment/create',
 
                 'GET finance/balance' => 'finance/balance',
                 'GET finance/ledger' => 'finance/ledger',
@@ -69,6 +70,7 @@ return [
                         'operation',
                         'openorder',
                         'order',
+                        'comment',
                     ],
                     'pluralize' => false,
                 ],

@@ -37,7 +37,8 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['insp_id', 'hosp_id', 'feedback_manner', 'feedback_effect', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['insp_id', 'hosp_id', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['feedback_manner', 'feedback_effect'], 'number'],
             [['contact'], 'string', 'max' => 50]
         ];
     }
