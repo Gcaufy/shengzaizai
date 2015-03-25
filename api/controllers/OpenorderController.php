@@ -27,7 +27,7 @@ class OpenorderController extends BaseController
     public function getQuery() {
         $hosp_id = Yii::$app->request->get('hosp_id');
         $date = Yii::$app->request->get('date');
-        $type = Yii::$app->request->get('type');
+        $isvip = Yii::$app->request->get('isvip');
 
         $query = parent::getQuery();
         $arr = ['doctor_id', 'insp_id', 'opera_id'];
@@ -45,8 +45,8 @@ class OpenorderController extends BaseController
 
         if ($date)
             $query = $query->andWhere(['t.date' => $date]);
-        if ($type)
-            $query = $query->andWhere(['t.type' => $type]);
+        if ($isvip)
+            $query = $query->andWhere(['t.isvip' => $isvip]);
 
         return $query;
     }
@@ -58,7 +58,7 @@ class OpenorderController extends BaseController
                 'order_num' => 'sum(t.order_num)',
                 'active_order_num' => 'sum(t.active_order_num)',
                 'date',
-                'type',
+                'isvip',
                 'cost',
                 'week' => 'WEEKDAY(t.date)',
             ])

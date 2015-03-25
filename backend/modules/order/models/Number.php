@@ -17,7 +17,7 @@ use Yii;
  * @property string $date
  * @property string $start_time
  * @property string $end_time
- * @property integer $type
+ * @property integer $isvip
  * @property string $cost
  * @property integer $status
  * @property integer $utime
@@ -46,7 +46,7 @@ class Number extends \common\components\MyActiveRecord
     public function rules()
     {
         return [
-            [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'order_num', 'active_order_num', 'type', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'order_num', 'active_order_num', 'isvip', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number']
         ];
@@ -68,7 +68,7 @@ class Number extends \common\components\MyActiveRecord
             'date' => '日期',
             'start_time' => '起始时间',
             'end_time' => '结束时间',
-            'type' => '预约类型',
+            'isvip' => '预约类型',
             'cost' => '预约价格',
             'status' => '状态',
             'utime' => '修改时间',
