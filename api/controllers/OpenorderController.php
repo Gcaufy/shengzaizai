@@ -2,11 +2,13 @@
 namespace api\controllers;
 
 use Yii;
+use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use common\models\User;
 use yii\filters\VerbFilter;
 use \backend\modules\operation\models\OperationHospitalMap;
+
 
 /**
  * GeneralLedgerController
@@ -47,6 +49,24 @@ class OpenorderController extends BaseController
             $query = $query->andWhere(['t.type' => $type]);
 
         return $query;
+    }
+
+    public function actionCurrentweek() {
+        $query = $this->getQuery();
+        $date = date('Y-m-d');
+        $query->select([
+                'order_num' => 'sum(t.order_num)',
+                'active_order_num' => 'sum(t.active_order_num)',
+                'date',
+                'type',
+                'cost',
+                'week' => 'WEEKDAY(t.date)',
+            ])
+            ->andWhere("DATEDIFF(t.date, '$date') > 0 and DATEDIFF(date, '$date') < 8")
+            ->groupBy('t.date')
+            ->orderBy('t.date desc');
+        $rst = $query->asArray()->all();
+        return $rst;
     }
 
 }
