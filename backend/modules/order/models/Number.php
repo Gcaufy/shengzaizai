@@ -3,6 +3,10 @@
 namespace backend\modules\order\models;
 
 use Yii;
+use backend\modules\hospital\models\Hospital;
+use backend\modules\doctor\models\Doctor;
+use backend\modules\inspection\models\Inspection;
+use backend\modules\operation\models\Operation;
 
 /**
  * This is the model class for table "{{%order_number}}".

@@ -3,6 +3,10 @@
 namespace backend\modules\order\models;
 
 use Yii;
+use backend\modules\hospital\models\Hospital;
+use backend\modules\doctor\models\Doctor;
+use backend\modules\inspection\models\Inspection;
+use backend\modules\operation\models\Operation;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -48,6 +52,19 @@ class Order extends \common\components\MyActiveRecord
     /**
      * @inheritdoc
      */
+
+    public function init() {
+        parent::init();
+        $this->on(self::EVENT_BEFORE_INSERT, [$this, 'evtGeneratOrderNo']);
+    }
+
+    public function evtGeneratOrderNo($evt) {
+        $model = $evt->sender;
+        $evt->isValid = true;
+        $model->generateOrderNo();
+    }
+
+
     public static function tableName()
     {
         return '{{%order}}';
@@ -74,7 +91,7 @@ class Order extends \common\components\MyActiveRecord
     public function rules()
     {
         return [
-            [['id', 'order_no'], 'required'],
+            [['openorder_id'], 'required'],
             [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'type', 'payment_method', 'payment_id', 'refund_id', 'process', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number'],
@@ -116,6 +133,79 @@ class Order extends \common\components\MyActiveRecord
             'ctime' => '创建时间',
             'cid' => '创建人',
         ];
+    }
+
+    public function generateOrderNo() {
+        // 18
+        $timestr = date("YmdHis") . str_pad(floor(microtime()*1000), 4, '0', STR_PAD_LEFT);
+        // 3
+        $rand = mt_rand(0, 9) . mt_rand(0, 9) . mt_rand(0, 9);
+        // 1
+        $orderno = $timestr . $rand . $this->type;
+        if(static::find()->andWhere(['order_no' => $orderno])->one()) {
+            return self::generateOrderNo();
+        }
+        $this->order_no = $orderno;
+        return $orderno;
+    }
+
+    public function checkExist($openorderId) {
+        return static::find()->andWhere(['t.openorder_id' => $openorderId])->one();
+    }
+
+    public function loadOrder($openOrder) {
+        $this->openorder_id = $openOrder->id;
+        $this->hosp_id = $openOrder->hosp_id;
+        $this->doctor_id = $openOrder->doctor_id;
+        $this->insp_id = $openOrder->insp_id;
+        $this->opera_id = $openOrder->opera_id;
+        $this->date = $openOrder->date;
+        $this->start_time = $openOrder->start_time;
+        $this->end_time = $openOrder->end_time;
+        $this->isvip = $openOrder->isvip;
+        $this->cost = $openOrder->cost;
+        if ($this->insp_id)
+            $this->type = Order::TYPE_INSPECTION;
+        else if ($this->opera_id)
+            $this->type = Order::TYPE_OPERATION;
+        else if ($this->doctor_id)
+            $this->type = Order::TYPE_DOCTOR;
+        return $this->fillDups();
+    }
+
+    public function fillDups() {
+        if ($this->hosp_id) {
+            $hosp = Hospital::find()->andWhere(['t.id' => $this->hosp_id])->asArray()->one();
+            if (!$hosp)
+                return false;
+            $this->address = $hosp['addr'];
+        }
+        if ($this->doctor_id) {
+            $doctor = Doctor::find()->joinWith('title.title')->andWhere(['t.id' => $this->doctor_id])->asArray()->one();
+            if (!$doctor)
+                return false;
+            $this->doctor_name = $doctor['name'];
+            $titles = $doctor['title'];
+            $str = '';
+            foreach ($titles as $title) {
+                $str .= (isset($title['title']) && is_array($title['title'])) ? ($title['title']['name'] . ' / ') : '';
+            }
+            if ($str)
+                $this->doctor_job_title = substr($str, 0, strlen($str) - 3);
+        }
+        if ($this->insp_id) {
+            $insp = Inspection::find()->andWhere(['t.id' => $this->insp_id])->asArray()->one();
+            if (!$insp)
+                return false;
+            $this->insp_name = $insp['name'];
+        }
+        if ($this->opera_id) {
+            $opera = Operation::find()->andWhere(['t.id' => $this->opera_id])->asArray()->one();
+            if (!$opera)
+                return false;
+            $this->opera_name = $opera['name'];
+        }
+        return true;
     }
 
     /**
