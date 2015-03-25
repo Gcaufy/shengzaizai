@@ -23,7 +23,8 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'desc') ?>
 
-    <?= $form->field($model, 'feedback_score') ?>
+    <?= $form->field($model, 'feedback_manner') ?>
+    <?= $form->field($model, 'feedback_effect') ?>
 
     <?php // echo $form->field($model, 'normal_reg_cost') ?>
 

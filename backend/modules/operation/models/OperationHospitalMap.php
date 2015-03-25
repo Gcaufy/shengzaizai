@@ -11,7 +11,7 @@ use Yii;
  * @property string $hosp_id
  * @property string $opera_id
  * @property string $contact
- * @property integer $feedback_score
+ * @property integer $feedback_manner
  * @property integer $status
  * @property string $utime
  * @property string $uid
@@ -35,8 +35,8 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['hosp_id', 'opera_id', 'contact', 'feedback_score'], 'required'],
-            [['hosp_id', 'opera_id', 'feedback_score', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['hosp_id', 'opera_id', 'contact'], 'required'],
+            [['hosp_id', 'opera_id', 'feedback_manner', 'feedback_effect', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['contact'], 'string', 'max' => 50]
         ];
     }
@@ -49,7 +49,8 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
         $arr['hosp_id'] = '医院ID';
         $arr['opera_id'] = '手术ID';
         $arr['contact'] = '联系方式';
-        $arr['feedback_score'] = '反馈评分';
+        $arr['feedback_manner'] = '态度评分';
+        $arr['feedback_effect'] = '效果评分';
         return $arr;
     }
 

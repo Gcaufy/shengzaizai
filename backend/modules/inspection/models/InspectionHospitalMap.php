@@ -11,7 +11,8 @@ use Yii;
  * @property string $insp_id
  * @property string $hosp_id
  * @property string $contact
- * @property integer $feedback_score
+ * @property integer $feedback_manner
+ * @property integer $feedback_effect
  * @property integer $isleaf
  * @property integer $status
  * @property string $utime
@@ -36,7 +37,7 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['insp_id', 'hosp_id', 'feedback_score', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['insp_id', 'hosp_id', 'feedback_manner', 'feedback_effect', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['contact'], 'string', 'max' => 50]
         ];
     }
@@ -49,7 +50,8 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
         $arr['insp_id'] = '检查ID';
         $arr['hosp_id'] = '医院ID';
         $arr['contact'] = '联系方式';
-        $arr['feedback_score'] = '反馈评分';
+        $arr['feedback_manner'] = '态度评分';
+        $arr['feedback_effect'] = '效果评分';
         $arr['isleaf'] = '是否是子节点';
         return $arr;
     }

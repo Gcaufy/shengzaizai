@@ -18,7 +18,7 @@ class InspectionHospitalMapSearch extends InspectionHospitalMap
     public function rules()
     {
         return [
-            [['id', 'insp_id', 'hosp_id', 'feedback_score', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['id', 'insp_id', 'hosp_id', 'feedback_manner', 'feedback_effect', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['contact'], 'safe'],
         ];
     }
@@ -59,7 +59,8 @@ class InspectionHospitalMapSearch extends InspectionHospitalMap
             'id' => $this->id,
             'insp_id' => $this->insp_id,
             'hosp_id' => $this->hosp_id,
-            'feedback_score' => $this->feedback_score,
+            'feedback_manner' => $this->feedback_manner,
+            'feedback_effect' => $this->feedback_effect,
             'isleaf' => $this->isleaf,
             'status' => $this->status,
             'utime' => $this->utime,

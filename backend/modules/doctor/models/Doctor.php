@@ -12,7 +12,7 @@ use \backend\modules\hospital\models\Hospital;
  * @property string $hosp_id
  * @property string $name
  * @property string $desc
- * @property string $feedback_score
+ * @property string $feedback_manner
  * @property string $normal_reg_cost
  * @property string $expert_reg_cost
  * @property string $order_num
@@ -47,7 +47,7 @@ class Doctor extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'name'], 'required'],
-            [['hosp_id', 'feedback_score', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
+            [['hosp_id', 'feedback_manner', 'feedback_effect', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
             [['normal_reg_cost', 'expert_reg_cost'], 'number'],
             [['name'], 'string', 'max' => 20],
             [['desc'], 'string', 'max' => 2000],
@@ -65,7 +65,8 @@ class Doctor extends \common\components\MyActiveRecord
         $arr['pportrait'] = '头像';
         $arr['portrait'] = '头像';
         $arr['desc'] = '描述';
-        $arr['feedback_score'] = '评分';
+        $arr['feedback_manner'] = '态度评分';
+        $arr['feedback_effect'] = '效果评分';
         $arr['normal_reg_cost'] = '普通挂号费';
         $arr['expert_reg_cost'] = '专家挂号费';
         $arr['order_num'] = '预约号';

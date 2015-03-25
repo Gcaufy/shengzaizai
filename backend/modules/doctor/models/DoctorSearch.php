@@ -18,7 +18,7 @@ class DoctorSearch extends Doctor
     public function rules()
     {
         return [
-            [['id', 'hosp_id', 'feedback_score', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['id', 'hosp_id', 'feedback_manner', 'feedback_effect', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['name', 'desc', 'major', 'experience', 'note'], 'safe'],
             [['normal_reg_cost', 'expert_reg_cost'], 'number'],
         ];
@@ -61,7 +61,8 @@ class DoctorSearch extends Doctor
         $query->andFilterWhere([
             't.id' => $this->id,
             't.hosp_id' => $this->hosp_id,
-            't.feedback_score' => $this->feedback_score,
+            't.feedback_manner' => $this->feedback_manner,
+            't.feedback_effect' => $this->feedback_effect,
             't.normal_reg_cost' => $this->normal_reg_cost,
             't.expert_reg_cost' => $this->expert_reg_cost,
             't.order_num' => $this->order_num,

@@ -23,7 +23,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'contact') ?>
 
-    <?= $form->field($model, 'feedback_score') ?>
 
     <?php // echo $form->field($model, 'isleaf') ?>
 

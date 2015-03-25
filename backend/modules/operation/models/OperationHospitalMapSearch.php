@@ -18,7 +18,7 @@ class OperationHospitalMapSearch extends OperationHospitalMap
     public function rules()
     {
         return [
-            [['id', 'hosp_id', 'opera_id', 'feedback_score', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['id', 'hosp_id', 'opera_id', 'feedback_manner', 'feedback_effect', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['contact'], 'safe'],
         ];
     }
@@ -59,7 +59,8 @@ class OperationHospitalMapSearch extends OperationHospitalMap
             'id' => $this->id,
             'hosp_id' => $this->hosp_id,
             'opera_id' => $this->opera_id,
-            'feedback_score' => $this->feedback_score,
+            'feedback_manner' => $this->feedback_manner,
+            'feedback_effect' => $this->feedback_effect,
             'status' => $this->status,
             'utime' => $this->utime,
             'uid' => $this->uid,

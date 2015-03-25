@@ -36,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'hosp_id',
             'opera_id',
             'contact',
-            'feedback_score',
             // 'status',
             // 'utime',
             // 'uid',

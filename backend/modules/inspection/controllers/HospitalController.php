@@ -157,7 +157,6 @@ class HospitalController extends ShiroController
             $attr['selected'] = $model->inspHospMaps ? true : false;
             if ($model->isleaf)
                 $attr['data-icon'] = 'glyphicon glyphicon-file';
-            $fb = isset($model->inspHospMaps->feedback_score) ? $model->inspHospMaps->feedback_score : 0;
             $row = [
                 //'name' => $model->name . ($model->isleaf ? " (评分: $fb)" : ''),
                 'name' => $model->name,

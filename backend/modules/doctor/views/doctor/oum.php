@@ -36,7 +36,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'hosp_id',
             'name',
             'desc',
-            'feedback_score',
+            'feedback_manner',
+            'feedback_effect',
 
             ['class' => 'yii\grid\ActionColumn',
                 'headerOptions'=>['width'=>180],

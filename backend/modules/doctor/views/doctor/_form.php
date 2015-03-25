@@ -37,7 +37,10 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'desc')->textInput(['maxlength' => 2000]) ?>
 
-    <?= $form->field($model, 'feedback_score')->widget(StarRating::classname(), [
+    <?= $form->field($model, 'feedback_manner')->widget(StarRating::classname(), [
+        'pluginOptions' => ['step' => 1, 'showCaption' => false, 'showClear' => false, 'size' => 'xs', 'hoverEnabled' => 'false']
+    ]); ?>
+    <?= $form->field($model, 'feedback_effect')->widget(StarRating::classname(), [
         'pluginOptions' => ['step' => 1, 'showCaption' => false, 'showClear' => false, 'size' => 'xs', 'hoverEnabled' => 'false']
     ]); ?>
 
