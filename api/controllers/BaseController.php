@@ -177,8 +177,8 @@ class BaseController extends \yii\rest\ActiveController
      */
     public function findModel($id)
     {
-        $modelClass = $this->modelClass;
-        $model = $modelClass::findOne($id);
+        $query = $this->getQuery();
+        $model = $query->andWhere(['t.id' => $id])->one();
         if (is_null($model)) {
             throw new NotFoundHttpException("Object not found: $id");
         }
