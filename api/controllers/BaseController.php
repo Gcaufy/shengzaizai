@@ -101,7 +101,8 @@ class BaseController extends \yii\rest\ActiveController
         $model = new $modelClass();
         $query = $model::find();
 
-        if ($model->hasAttribute('parent_id')) {
+        $id = Yii::$app->request->get('id');
+        if (!$id && $model->hasAttribute('parent_id')) {
             $parent_id = Yii::$app->request->get('parent_id');
             if (!$parent_id)
                 $query = $query->andWhere('t.parent_id is null');
@@ -180,7 +181,7 @@ class BaseController extends \yii\rest\ActiveController
         $query = $this->getQuery();
         $model = $query->andWhere(['t.id' => $id])->one();
         if (is_null($model)) {
-            throw new NotFoundHttpException("Object not found: $id");
+            throw new NotFoundHttpException("没有找到数据: $id");
         }
         return $model;
     }
