@@ -21,16 +21,15 @@ class OperationController extends BaseController
         unset($actions['update'], $actions['delete'], $actions['create']);
         return $actions;
     }
+
+
     public function getQuery() {
         $query = parent::getQuery();
         $hosp_id = Yii::$app->request->get('hosp_id');
         if ($hosp_id) {
-            $rst = OperationHospitalMap::find()->andWhere(['t.hosp_id' => $hosp_id])->select('t.opera_id')->asArray()->all();
-            $arr = [];
-            foreach ($rst as $key => $value) {
-                $arr[] = $value['opera_id'];
-            }
-            $query = $query->andWhere(['t.id' => $arr]);
+            $query = $query->joinWith(['detail' => function ($query) use ($hosp_id) {
+                return $query->andOnCondition(['detail.hosp_id' => $hosp_id])->andWhere('detail.id is not null');
+            }]);
         }
         return $query;
     }
