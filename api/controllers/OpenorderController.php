@@ -76,13 +76,14 @@ class OpenorderController extends BaseController
         $query = $this->getQuery();
         $month = date('m');
         $year = date('Y');
+        $date = date('Y-m-d');
         $query->select([
                 'order_num' => 'sum(t.order_num)',
                 'active_order_num' => 'sum(t.active_order_num)',
                 'cost',
                 'month' => 'SUBSTR(t.date, 6, 2)',
             ])
-            ->andWhere("SUBSTR(t.date, 1, 4) = $year and SUBSTR(t.date, 6, 2) >= $month and SUBSTR(t.date, 6, 2) <= $month + 1")
+            ->andWhere("SUBSTR(t.date, 1, 4) = $year and DATEDIFF(t.date, '$date') > 0 and SUBSTR(t.date, 6, 2) <= $month + 1")
             ->groupBy('month')
             ->orderBy('month desc');
         $rst = $query->asArray()->all();

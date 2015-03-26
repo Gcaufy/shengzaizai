@@ -66,7 +66,7 @@ class OrderController extends BaseController
 
     public function actionInstruction() {
         $instruction = isset($_POST['instruction']) ? $_POST['instruction'] : null;
-        $id = isset($_POST['id']) ? $_POST['id'] : null;
+        $id = isset($_POST['openorder_id']) ? $_POST['openorder_id'] : null;
         if (!$id || !$instruction || !($model = Order::find()->andWhere(['t.cid' => Yii::$app->user->identity->id, 't.id' => $id])->one()))
             throw new NotFoundHttpException("参数有误");
         $model->instruction = $instruction;
