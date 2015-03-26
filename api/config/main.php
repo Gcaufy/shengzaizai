@@ -49,6 +49,7 @@ return [
                 'GET doctor/all' => 'doctor/all',
                 'GET user/profile' => 'user/profile',
                 'GET openorder/currentweek' => 'openorder/currentweek',
+                'GET openorder/currentmonth' => 'openorder/currentmonth',
                 [
                     'class' => 'yii\rest\UrlRule',
                     'controller' => 'article',

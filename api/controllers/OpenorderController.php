@@ -24,10 +24,11 @@ class OpenorderController extends BaseController
         return $actions;
     }
 
-    public function getQuery() {
+    protected function getQuery() {
         $hosp_id = Yii::$app->request->get('hosp_id');
         $date = Yii::$app->request->get('date');
         $isvip = Yii::$app->request->get('isvip');
+        $month = Yii::$app->request->get('month');
 
         $query = parent::getQuery()->andWhere(['t.hosp_id' => $hosp_id]);
         $arr = ['doctor_id', 'insp_id', 'opera_id'];
@@ -43,12 +44,14 @@ class OpenorderController extends BaseController
         if ($invalid || !$hosp_id)
             throw new InvalidParamException();
 
+        if ($month)
+            $query = $query->andWhere(['SUBSTR(t.date, 6, 2)' => $month * 1]);
         if ($date)
             $query = $query->andWhere(['t.date' => $date]);
         if ($isvip)
             $query = $query->andWhere(['t.isvip' => $isvip]);
 
-        return $query;
+        return $query->andWhere('t.active_order_num > 0');
     }
 
     public function actionCurrentweek() {
@@ -65,6 +68,23 @@ class OpenorderController extends BaseController
             ->andWhere("DATEDIFF(t.date, '$date') > 0 and DATEDIFF(date, '$date') < 8")
             ->groupBy('t.date')
             ->orderBy('t.date desc');
+        $rst = $query->asArray()->all();
+        return $rst;
+    }
+
+    public function actionCurrentmonth() {
+        $query = $this->getQuery();
+        $month = date('m');
+        $year = date('Y');
+        $query->select([
+                'order_num' => 'sum(t.order_num)',
+                'active_order_num' => 'sum(t.active_order_num)',
+                'cost',
+                'month' => 'SUBSTR(t.date, 6, 2)',
+            ])
+            ->andWhere("SUBSTR(t.date, 1, 4) = $year and SUBSTR(t.date, 6, 2) >= $month and SUBSTR(t.date, 6, 2) <= $month + 1")
+            ->groupBy('month')
+            ->orderBy('month desc');
         $rst = $query->asArray()->all();
         return $rst;
     }
