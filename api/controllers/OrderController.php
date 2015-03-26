@@ -64,4 +64,16 @@ class OrderController extends BaseController
         return MsgHelper::faile('数据保存出错', $model->getErrors());
     }
 
+    public function actionInstruction() {
+        $instruction = isset($_POST['instruction']) ? $_POST['instruction'] : null;
+        $id = isset($_POST['id']) ? $_POST['id'] : null;
+        if (!$id || !$instruction || !($model = Order::find()->andWhere(['t.cid' => Yii::$app->user->identity->id, 't.id' => $id])->one()))
+            throw new NotFoundHttpException("参数有误");
+        $model->instruction = $instruction;
+        if ($model->save()) {
+            return MsgHelper::success('医嘱更新成功.');
+        } else {
+            return MsgHelper::faile('数据有误, 请联系管理员.', $model->getErrors());
+        }
+    }
 }

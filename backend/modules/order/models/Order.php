@@ -122,6 +122,7 @@ class Order extends \common\components\MyActiveRecord
             [['order_no'], 'string', 'max' => 12],
             [['opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 200],
+            [['instruction'], 'string', 'max' => 500],
         ];
     }
 
@@ -152,6 +153,7 @@ class Order extends \common\components\MyActiveRecord
             'payment_id' => '付款ID',
             'refund_id' => '退款ID',
             'cost' => '价格',
+            'instruction' => '医嘱',
             'process' => '状态',
             'status' => '状态',
             'utime' => '修改时间',

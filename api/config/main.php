@@ -38,6 +38,7 @@ return [
                 'POST finance/charge' => 'finance/charge',
                 'POST finance/expense' => 'finance/expense',
                 'POST order' => 'order/create',
+                'POST order/instruction' => 'order/instruction',
                 'POST coment' => 'coment/create',
 
                 'GET finance/balance' => 'finance/balance',
