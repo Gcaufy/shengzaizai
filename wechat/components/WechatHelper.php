@@ -100,6 +100,7 @@ class WechatHelper {
                 $info = $wechat->getMemberInfo($openId);
                 $file = File::download($info['headimgurl'], $user->id, 'portrait');
                 $user->portrait = $file->id;
+                $user->from = User::FROM_WECHAT;
 
                 if (!$user->save())
                     $wechat->throwError($user->getErrors());

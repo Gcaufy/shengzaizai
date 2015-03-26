@@ -33,6 +33,12 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     const TYPE_POSTPARTUM = 4;
     const TYPE_OTHER = 5;
 
+
+    const FROM_IOS = 1;
+    const FROM_ANDROID = 2;
+    const FROM_WECHAT = 3;
+    const FROM_OTHER = 0;
+
     public $rememberMe = false;
 
     /**

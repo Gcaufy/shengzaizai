@@ -74,6 +74,7 @@ class SiteController extends BaseController
         $user->mobile = $mobile;
         $user->setPassword($password);
         $user->role = User::ROLE_NORMAL;
+        $user->from = User::FROM_IOS;
         if ($user->save()) {
             return MsgHelper::success('注册成功');
         } else {
