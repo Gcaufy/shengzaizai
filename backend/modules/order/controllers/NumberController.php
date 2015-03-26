@@ -84,8 +84,37 @@ class NumberController extends \backend\controllers\ShiroController
      */
     public function actionView($id)
     {
+        $request = Yii::$app->request;
+        $ptype = $request->getQueryParam('ptype');
+        $pid = $request->getQueryParam('pid');
+        $hosp_id = $request->getQueryParam('hosp_id');
+        $hospital = null;
+        $doctor = null;
+        $inspection = null;
+        $operation = null;
+        if ($hosp_id && $ptype && $pid) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+            switch ($ptype) {
+                case Order::TYPE_DOCTOR:
+                    $doctor = Doctor::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_INSPECTION:
+                    $inspection = Inspection::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_OPERATION:
+                    $operation = Operation::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+            }
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'ptype' => $ptype,
+            'pid' => $pid,
+            'hosp_id' => $hosp_id,
+            'hospital' => $hospital,
+            'doctor' => $doctor,
+            'inspection' => $inspection,
+            'operation' => $operation,
         ]);
     }
 
@@ -100,6 +129,25 @@ class NumberController extends \backend\controllers\ShiroController
         $ptype = $request->getQueryParam('ptype');
         $pid = $request->getQueryParam('pid');
         $hosp_id = $request->getQueryParam('hosp_id');
+        $hospital = null;
+        $doctor = null;
+        $inspection = null;
+        $operation = null;
+
+        if ($hosp_id && $ptype && $pid) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+            switch ($ptype) {
+                case Order::TYPE_DOCTOR:
+                    $doctor = Doctor::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_INSPECTION:
+                    $inspection = Inspection::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_OPERATION:
+                    $operation = Operation::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+            }
+        }
 
         $model = new Number();
         if ($ptype && $pid && $hosp_id) {
@@ -111,6 +159,14 @@ class NumberController extends \backend\controllers\ShiroController
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
+                if ($ptype)
+                    return $this->redirect(['view',
+                        'id' => $model->id,
+                        'ptype' => $ptype,
+                        'pid' => $pid,
+                        'hosp_id' => $hosp_id,
+                    ]);
+
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 var_dump($model->getErrors());exit;
@@ -122,6 +178,10 @@ class NumberController extends \backend\controllers\ShiroController
             'ptype' => $ptype,
             'pid' => $pid,
             'hosp_id' => $hosp_id,
+            'hospital' => $hospital,
+            'doctor' => $doctor,
+            'inspection' => $inspection,
+            'operation' => $operation,
         ]);
     }
 
