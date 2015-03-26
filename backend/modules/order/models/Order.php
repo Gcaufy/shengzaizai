@@ -7,6 +7,7 @@ use backend\modules\hospital\models\Hospital;
 use backend\modules\doctor\models\Doctor;
 use backend\modules\inspection\models\Inspection;
 use backend\modules\operation\models\Operation;
+use \common\models\User;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -46,9 +47,17 @@ use backend\modules\operation\models\Operation;
 class Order extends \common\components\MyActiveRecord
 {
 
+    public $puser;
+    public $pordername;
+
     const TYPE_OPERATION = 1;
     const TYPE_INSPECTION = 2;
     const TYPE_DOCTOR = 3;
+
+    const PROCESS_NEW = 0;
+    const PROCESS_DONE = 1;
+    const PROCESS_CANCEL = 2;
+    const PROCESS_DUE = 3;
     /**
      * @inheritdoc
      */
@@ -84,6 +93,21 @@ class Order extends \common\components\MyActiveRecord
             self::TYPE_DOCTOR => 'doctor_id',
         ];
     }
+    public static function getProcessMap() {
+        return [
+            self::PROCESS_NEW => '新订单',
+            self::PROCESS_DONE => '已完成',
+            self::PROCESS_CANCEL => '被取消',
+            self::PROCESS_DUE => '已过期',
+        ];
+    }
+
+    public function getProcessDesc() {
+        return self::getProcessMap()[$this->process];
+    }
+    public function getTypeDesc() {
+        return self::getTypeMap()[$this->type];
+    }
 
     /**
      * @inheritdoc
@@ -97,7 +121,7 @@ class Order extends \common\components\MyActiveRecord
             [['cost'], 'number'],
             [['order_no'], 'string', 'max' => 12],
             [['opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
-            [['address'], 'string', 'max' => 200]
+            [['address'], 'string', 'max' => 200],
         ];
     }
 
@@ -108,6 +132,8 @@ class Order extends \common\components\MyActiveRecord
     {
         return [
             'id' => 'ID',
+            'puser' => '姓名',
+            'pordername' => '预约',
             'order_no' => '订单号',
             'hosp_id' => '医院ID',
             'opera_id' => '手术ID',
@@ -208,6 +234,7 @@ class Order extends \common\components\MyActiveRecord
         return true;
     }
 
+
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -246,5 +273,10 @@ class Order extends \common\components\MyActiveRecord
     public function getOpera()
     {
         return $this->hasOne(Operation::className(), ['id' => 'opera_id']);
+    }
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'cid'])
+            ->from(User::tableName() . ' user');
     }
 }

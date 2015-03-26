@@ -14,6 +14,9 @@ use yii\filters\VerbFilter;
  */
 class OrderController extends Controller
 {
+
+    public $_grid_button = null;
+
     public function behaviors()
     {
         return [
@@ -32,6 +35,13 @@ class OrderController extends Controller
      */
     public function actionIndex()
     {
+        $id = isset($_POST['id']) ? $_POST['id'] : null;
+        $process = isset($_POST['process']) ? $_POST['process'] : null;
+        if ($id && $process && ($model = Order::findOne($id))) {
+            $model->process = $process;
+            $model->save();
+        }
+
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -124,5 +134,27 @@ class OrderController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+
+
+    public function getProcessGridButton($id) {
+        if (!$this->_grid_button) {
+            $map = Order::getProcessMap();
+            $li = '';
+            $color = [Order::PROCESS_DONE => 'success', Order::PROCESS_DUE => 'warning', Order::PROCESS_CANCEL => 'important', ];
+            foreach ($map as $k => $value) {
+                if ($k === Order::PROCESS_NEW)
+                    continue;
+                $li .= "<li><a data=\"{$k}\" href=\"javascript:;\"><span class=\"badge badge-{$color[$k]}\">&nbsp;</span> &nbsp;$value</a></li>";
+            }
+            $this->_grid_button = "<button class=\"btn btn-default btn-sm dropdown-toggle\" type=\"button\" data-toggle=\"dropdown\">
+                    标记 <span class=\"caret\"></span>
+                </button>
+                <ul class=\"btn_mark dropdown-menu\" role=\"menu\">
+                    $li
+                </ul>";
+        }
+        return "<div class=\"btn-group\" data=\"$id\">" . $this->_grid_button . "</div>";
     }
 }

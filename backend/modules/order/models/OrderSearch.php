@@ -19,7 +19,7 @@ class OrderSearch extends Order
     {
         return [
             [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'type', 'payment_method', 'payment_id', 'refund_id', 'process', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
-            [['order_no', 'opera_name', 'insp_name', 'doctor_job_title', 'doctor_name', 'address', 'date', 'start_time', 'end_time'], 'safe'],
+            [['puser', 'order_no', 'opera_name', 'insp_name', 'doctor_job_title', 'doctor_name', 'address', 'date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number'],
         ];
     }
@@ -42,7 +42,7 @@ class OrderSearch extends Order
      */
     public function search($params)
     {
-        $query = Order::find();
+        $query = Order::find()->joinWith('user');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -79,7 +79,7 @@ class OrderSearch extends Order
         ]);
 
         $query->andFilterWhere(['like', 'order_no', $this->order_no])
-            ->andFilterWhere(['like', 'opera_name', $this->opera_name])
+            ->andFilterWhere(['like', 'user.realname', $this->puser])
             ->andFilterWhere(['like', 'insp_name', $this->insp_name])
             ->andFilterWhere(['like', 'doctor_job_title', $this->doctor_job_title])
             ->andFilterWhere(['like', 'doctor_name', $this->doctor_name])

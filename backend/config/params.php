@@ -99,6 +99,7 @@ return [
         ]],
         ['n'=>'订单模块','m'=>'order','i'=>'fa fa-h-square','s'=>[
             ['n'=>'预约号管理','c'=>'number','m'=>'index','i'=>'fa fa-hospital-o'],
+            ['n'=>'订单管理','c'=>'order','m'=>'index','i'=>'fa fa-hospital-o'],
         ]],
         /*['n'=>'消息中心','m'=>'message','i'=>'fa fa-wechat','s'=>[
             ['n'=>'发送短信','c'=>'sms','m'=>'index','i'=>'fa fa-exchange','s'=>[

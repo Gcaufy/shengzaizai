@@ -228,9 +228,9 @@ $userModel = Yii::$app->user->identity;
             <!--toggle button end-->
 
             <!--search start-->
-            <form class="searchform" action="http://view.jqueryfuns.com/2014/4/10/7_df25ceea231ba5f44f0fc060c943cdae//" method="post">
+            <!--form class="searchform" action="http://view.jqueryfuns.com/2014/4/10/7_df25ceea231ba5f44f0fc060c943cdae//" method="post">
                 <input type="text" class="form-control" name="keyword" placeholder="Search here..." />
-            </form>
+            </form-->
             <!--search end-->
 
             <!--notification menu start -->
