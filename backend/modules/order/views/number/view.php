@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'date',
                     'start_time',
                     'end_time',
-                    'type',
+                    'isvip',
                     'cost',
                 ],
             ]) ?>

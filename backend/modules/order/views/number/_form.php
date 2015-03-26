@@ -41,13 +41,13 @@ use kartik\widgets\TimePicker;
         'options' => [
             'readonly' => true,
         ],
-        'pluginOptions' => ['defaultTime' => false],
+        'pluginOptions' => ['defaultTime' => false, 'showMeridian' => false],
     ]); ?>
     <?= $form->field($model, 'end_time')->widget(TimePicker::classname(), [
         'options' => [
             'readonly' => true,
         ],
-        'pluginOptions' => ['defaultTime' => false],
+        'pluginOptions' => ['defaultTime' => false, 'showMeridian' => false],
     ]); ?>
 
     <?= $form->field($model, 'cost')->textInput(['maxlength' => 10]) ?>
