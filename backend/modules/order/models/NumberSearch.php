@@ -66,7 +66,7 @@ class NumberSearch extends Number
             'date' => $this->date,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
-            'type' => $this->type,
+            'isvip' => $this->isvip,
             'cost' => $this->cost,
             'status' => $this->status,
             'utime' => $this->utime,
