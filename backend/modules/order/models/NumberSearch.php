@@ -18,7 +18,7 @@ class NumberSearch extends Number
     public function rules()
     {
         return [
-            [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'order_num', 'active_order_num', 'type', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'order_num', 'active_order_num', 'isvip', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number'],
         ];
