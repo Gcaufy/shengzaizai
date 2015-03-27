@@ -157,6 +157,8 @@ class NumberController extends \backend\controllers\ShiroController
             $model->hosp_id = $hosp_id;
         }
         if ($model->load(Yii::$app->request->post())) {
+            if (!$model->active_order_num)
+                $model->active_order_num = $model->order_num;
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '创建成功.');
                 if ($ptype)
