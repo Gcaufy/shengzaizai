@@ -8,12 +8,20 @@ use common\models\UserWechat;
 use common\models\SmsCaptcha;
 use common\models\File;
 
+use \backend\modules\doctor\models\Doctor;
+use \backend\modules\doctor\models\DoctorTitle;
+use \backend\modules\doctor\models\DoctorTitleMap;
+use \backend\modules\hospital\models\Hospital;
+use \backend\modules\order\models\Number;
+use \backend\modules\order\models\Order;
+
 class WechatHelper {
 
     public static function onReceiveText($event) {
         $wechat = $event->sender;
         $content = $wechat->getRevContent();
         $openId = $wechat->getRevFrom();
+        $user = Yii::$app->user->identity;
 
         // 此消息来自公共号
         if ($openId === 'gh_f7bf744946a2') {
@@ -112,9 +120,72 @@ class WechatHelper {
                     $wechat->throwError($userWechat->getError());
 
                 $msg = "您已注册并且绑定成功, 您的初始登陆密码为$password." ;
-            default:
-                # code...
+            case UserWechat::PROCESS_ORDER_VIEW:
+                $data = unserialize($userWechat->data);
+                if (!isset($data[$content]))
+                    $wechat->throwError('您输入的序号有误, 请重新输入.');
+
+                $doctor_id = $data[$content]['doctor_id'];
+                $doctor_name = $data[$content]['doctor_name'];
+                $month = date('m');
+                $year = date('Y');
+                $date = date('Y-m-d');
+                $rows = Number::find()->select(['id', 'date', 'cost', 'active_order_num'])
+                    ->andWhere(['doctor_id' => $doctor_id])
+                    ->andWhere("SUBSTR(date, 1, 4) = $year and DATEDIFF(date, '$date') > 0 and SUBSTR(date, 6, 2) <= $month + 1 and active_order_num > 0")
+                    ->asArray()
+                    ->all();
+                $data = [];
+                $msg = '';
+                $total = 0;
+                $cost = 0;
+                foreach ($rows as $key => $value) {
+                    $key++;
+                    $cost = $value['cost'];
+                    $data[$key] = $value['id'];
+                    $total += $value['active_order_num'];
+                    $msg .= "$key {$value['date']} (还剩 {$value['active_order_num']} )\r\n";
+                }
+                $userWechat->process = UserWechat::PROCESS_ORDER_SELECT_DATE;
+                $userWechat->data = serialize($data);
+                if (!$userWechat->save())
+                    $wechat->throwError($userWechat->getError());
+                $msg = "特约医生 {$doctor_name} 本期还有 {$total} 个可用预约号, 费用为 {$cost} 元, 就诊日期如下, 回复日期前的序列号进行选择 : \r\n" . $msg;
                 break;
+            case UserWechat::PROCESS_ORDER_SELECT_DATE:
+                $data = unserialize($userWechat->data);
+                if (!isset($data[$content]))
+                    $wechat->throwError('您输入的序号有误, 请重新输入.');
+
+                $openOrderId = $data[$content];
+
+                $userWechat->process = UserWechat::PROCESS_BIND;
+                $userWechat->data = null;
+                if (!$userWechat->save())
+                    $wechat->throwError($userWechat->getError());
+
+                $rst = Order::createOrder($openOrderId);
+                if ($rst instanceof Order) {
+                    $msg = "
+                        预约成功!
+                        就诊人: {$user->realname}
+                        手机号: {$user->mobile}
+                        医院: {$rst->hosp_name}
+                        医生: {$rst->doctor_name}
+                        就诊日期: {$rst->date}
+                        费用: {$rst->cost}
+                        挂号订单号: {$rst->order_no}
+
+                        您可在 [我的中心]->[我的预约单] 查询或取消本次预约.
+                    ";
+                    break;
+                }
+
+                if ($rst === Order::ERROR_NO_ACTIVE_NUM)
+                    $wechat->throwError('此预约号已被预约完.');
+                if ($rst === Order::ERROR_EXISTS)
+                    $wechat->throwError('已成功预约此项, 请勿重复预约.');
+                $wechat->throwError('系统出错, 请联系管理员.');
         }
         echo $wechat->text($msg)->reply();
     }
@@ -133,10 +204,11 @@ class WechatHelper {
         $wechat = $event->sender;
         $menu = $wechat->getRevEvent();
         $openId = $wechat->getRevFrom();
+        $user = Yii::$app->user->identity;
+        $userWechat = UserWechat::findModel($openId);
         $msg = '您的账户已经绑定.';
         switch ($menu['key']) {
             case 'KEY_USE_BIND':
-                $userWechat = UserWechat::findModel($openId);
                 if ($userWechat->process != UserWechat::PROCESS_BIND) {
                     $userWechat->process = UserWechat::PROCESS_LOGIN;
                     if (!$userWechat->save())
@@ -145,12 +217,49 @@ class WechatHelper {
                 }
                 break;
             case 'KEY_USER_REGIST':
-                $userWechat = UserWechat::findModel($openId);
                 if ($userWechat->process != UserWechat::PROCESS_BIND) {
                     $userWechat->process = UserWechat::PROCESS_REGIST;
                     if (!$userWechat->save())
                         $wechat->throwError($userWechat->getError());
                     $msg = '为确保您能够成功预约, 请回复"您的真实姓名"[#]"您的手机号"来注册绑定账户. 如: "张三#13866668888".';
+                }
+                break;
+            case 'KEY_ORDER':
+                if ($user) {
+                    $userWechat->process = UserWechat::PROCESS_ORDER_VIEW;
+
+                    $month = date('m');
+                    $year = date('Y');
+                    $date = date('Y-m-d');
+                    $rows = (new \yii\db\Query())
+                        ->select(['sd.id', 'doctor_name' => 'sd.name', 'hospital_name' => 'sh.name', 'title_name' => 'group_concat(sdt.name)'])
+                        ->from(Doctor::tableName() . ' sd')
+                        ->leftJoin(Hospital::tableName() . ' sh', 'sd.hosp_id = sh.id')
+                        ->leftJoin(DoctorTitleMap::tableName() . ' sdtm', 'sd.id = sdtm.doctor_id')
+                        ->leftJoin(DoctorTitle::tableName() . ' sdt', 'sdt.id = sdtm.title_id')
+                        ->leftJoin(Number::tableName() . ' son', 'sd.id = son.doctor_id')
+                        ->where(['sd.isvip' => 1])
+                        ->andWhere("SUBSTR(son.date, 1, 4) = $year and DATEDIFF(son.date, '$date') > 0 and SUBSTR(son.date, 6, 2) <= $month + 1")
+                        ->groupBy('sd.id')
+                        ->having('sum(son.active_order_num) > 0')
+                        ->all();
+                    $data = [];
+                    $msg = '';
+                    foreach ($rows as $key => $value) {
+                        $key++;
+                        $data[$key] = ['doctor_id' => $value['id'], 'doctor_name' => $value['doctor_name']];
+                        $msg .= "$key {$value['doctor_name']} ({$value['hospital_name']} {$value['title_name']})\r\n";
+                    }
+                    if ($data) {
+                        $userWechat->data = serialize($data);
+                        if (!$userWechat->save())
+                            $wechat->throwError($userWechat->getError());
+                        $msg = "选择特约医生, 回复医生名字前序号: \r\n" . $msg;
+                    }
+                    else
+                        $msg = "特约医生本期已约满, 下期特约号即将开放, 敬请关注. \r\n或者选择 \"预约医生\" 预约其它医生.";
+                } else {
+                    $msg = '您还没有绑定用户, 为确保您能够成功预约, 请前往[个人中心] 进行绑定或注册.';
                 }
                 break;
         }

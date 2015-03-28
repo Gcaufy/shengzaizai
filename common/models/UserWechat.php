@@ -24,6 +24,9 @@ class UserWechat extends \common\components\MyActiveRecord
     const PROCESS_REGIST = 2;
     const PROCESS_VALIDATE = 3;
     const PROCESS_BIND = 4;
+
+    const PROCESS_ORDER_VIEW = 5;
+    const PROCESS_ORDER_SELECT_DATE = 6;
     /**
      * @inheritdoc
      */
@@ -66,7 +69,8 @@ class UserWechat extends \common\components\MyActiveRecord
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), ['id' => 'user_id'])
+            ->from(User::tableName() . ' user');
     }
 
     public static function findModel($openId) {

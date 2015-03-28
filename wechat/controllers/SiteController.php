@@ -10,12 +10,13 @@ use common\models\Password;
 use wechat\models\UserWechat;
 use wechat\components\Wechat;
 
+
 class SiteController extends BaseController
 {
 
     public function actionIndex()
     {
-        $wechat = Yii::$app->wechat;
+        $wechat = $this->wechat;
         $wechat->valid();
         $eventList = [
             Wechat::MSGTYPE_TEXT => 'onReceiveText',
@@ -152,9 +153,9 @@ class SiteController extends BaseController
                 'name' => '预约问诊',
                 'sub_button' => [
                     [
-                        'type' => 'view',
+                        'type' => 'click',
                         'name' => '预约特约医生',
-                        'url' => 'http://www.baidu.com',
+                        'key' => 'KEY_ORDER',
                     ],
                     [
                         'type' => 'view',

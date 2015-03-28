@@ -5,10 +5,17 @@ namespace wechat\controllers;
 use Yii;
 use common\models\User;
 use common\models\UserActionTrace;
-use wechat\models\UserWechat;
+use common\models\UserWechat;
 
 class BaseController extends \yii\web\Controller
 {
+    private $_wechat;
+
+
+    public function init() {
+        parent::init();
+        $this->on(self::EVENT_BEFORE_ACTION, [$this, 'evtBeforeAction']);
+    }
 
     protected function getOpenId()
     {
@@ -37,6 +44,23 @@ class BaseController extends \yii\web\Controller
             $this->redirect($url);
         }
         Yii::$app->user->switchIdentity($user_wx->user);
+    }
+
+    public function getWechat() {
+        if ($this->_wechat)
+            return $this->_wechat;
+        $this->_wechat = Yii::$app->wechat;
+        return $this->_wechat;
+    }
+
+    public function evtBeforeAction($event) {
+        $controller = $event->sender;
+        $wechat = $controller->wechat->getRev();
+        $openId = $wechat->getRevFrom();
+        $model = UserWechat::find()->joinWith('user')->andWhere(['t.open_id' => $openId])->one();
+        if ($model && $model->user)
+            Yii::$app->user->identity = $model->user;
+        $event->isValid = true;
     }
 
     /**
