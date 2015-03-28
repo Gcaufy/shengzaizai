@@ -25,7 +25,7 @@ class OrderController extends BaseController
 
     public function actions() {
         $actions = parent::actions();
-        unset($actions['update'], $actions['delete'], $actions['create']);
+        unset($actions['update'], $actions['create']);
         return $actions;
     }
 
