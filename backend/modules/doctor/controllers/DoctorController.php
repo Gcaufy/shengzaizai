@@ -74,6 +74,7 @@ class DoctorController extends ShiroController
         $model = $this->findModel($id);
         $hospital = null;
         $hosp_id = Yii::$app->request->getQueryParam('hosp_id');
+        $hosp_id = $model->hosp_id;
         if ($hosp_id) {
             $model->hosp_id = $hosp_id;
             $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();

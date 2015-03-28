@@ -199,6 +199,26 @@ class NumberController extends \backend\controllers\ShiroController
         $ptype = $request->getQueryParam('ptype');
         $pid = $request->getQueryParam('pid');
         $hosp_id = $request->getQueryParam('hosp_id');
+        $hospital = null;
+        $doctor = null;
+        $inspection = null;
+        $operation = null;
+
+        if ($hosp_id && $ptype && $pid) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+            switch ($ptype) {
+                case Order::TYPE_DOCTOR:
+                    $doctor = Doctor::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_INSPECTION:
+                    $inspection = Inspection::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+                case Order::TYPE_OPERATION:
+                    $operation = Operation::find()->andWhere(['t.id' => $pid])->one();
+                    break;
+            }
+        }
+
 
         $model = $this->findModel($id);
 
@@ -210,11 +230,15 @@ class NumberController extends \backend\controllers\ShiroController
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
         }
-        return $this->render('create', [
+        return $this->render('update', [
             'model' => $model,
             'ptype' => $ptype,
             'pid' => $pid,
             'hosp_id' => $hosp_id,
+            'hospital' => $hospital,
+            'doctor' => $doctor,
+            'inspection' => $inspection,
+            'operation' => $operation,
         ]);
     }
 

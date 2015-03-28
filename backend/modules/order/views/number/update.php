@@ -34,6 +34,13 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="panel-body">
                 <?= $this->render('_form', [
                     'model' => $model,
+                    'ptype' => $ptype,
+                    'pid' => $pid,
+                    'hosp_id' => $hosp_id,
+                    'hospital' => $hospital,
+                    'doctor' => $doctor,
+                    'inspection' => $inspection,
+                    'operation' => $operation,
                 ]) ?>
             </div>
         </section>
