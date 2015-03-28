@@ -128,7 +128,7 @@ class Order extends \common\components\MyActiveRecord
             [['id', 'hosp_id', 'opera_id', 'insp_id', 'doctor_id', 'type', 'payment_method', 'payment_id', 'refund_id', 'process', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
             [['date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number'],
-            [['order_no'], 'string', 'max' => 12],
+            [['order_no'], 'string', 'max' => 22],
             [['hosp_name','opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 200],
             [['instruction'], 'string', 'max' => 500],

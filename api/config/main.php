@@ -39,6 +39,7 @@ return [
                 'POST finance/expense' => 'finance/expense',
                 'POST order' => 'order/create',
                 'POST order/instruction' => 'order/instruction',
+                'POST order/cancel' => 'order/cancel',
                 'POST coment' => 'coment/create',
 
                 'GET finance/balance' => 'finance/balance',

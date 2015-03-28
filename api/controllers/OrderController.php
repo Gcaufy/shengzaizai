@@ -34,10 +34,19 @@ class OrderController extends BaseController
         return $query->andWhere(['t.cid' => Yii::$app->user->identity->id]);
     }
 
+    public function actionCancel() {
+        $orderId = isset($_POST['order_id']) ? $_POST['order_id'] : null;
+        if (!$orderId || !($model = $this->getQuery()->andWhere(['t.id' => $orderId])->one()))
+            throw new NotFoundHttpException("数据不存在: $id");
+
+        if ($model->delete())
+            return MsgHelper::success('删除成功.');
+        else
+            return MsgHelper::faile('删除失败.', $model->getErrors());
+    }
 
 
     public function actionCreate() {
-        $model = new Order();
         $openorderId = isset($_POST['openorder_id']) ? $_POST['openorder_id'] : null;
 
         if (!$openorderId)
@@ -50,7 +59,7 @@ class OrderController extends BaseController
         if ($rst === Order::ERROR_NO_ACTIVE_NUM)
             return MsgHelper::faile('预约号已用完.');
         if ($rst === Order::ERROR_EXISTS)
-            return MsgHelper::faile('已成功预约此项, 请勿重复预约');
+            return MsgHelper::faile('已成功预约此项, 请勿重复预约.');
         return MsgHelper::faile('数据有误, 请联系管理员.');
     }
 
