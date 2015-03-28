@@ -39,29 +39,19 @@ class OrderController extends BaseController
     public function actionCreate() {
         $model = new Order();
         $openorderId = isset($_POST['openorder_id']) ? $_POST['openorder_id'] : null;
-        if ($model->checkExist($openorderId)) {
-            return MsgHelper::faile('已成功预约此项, 请勿重复预约.');
-        }
-        if (!$openorderId || !($openOrder = OrderOpen::findOne($openorderId)))
-            throw new NotFoundHttpException("Object not found: $id");
-        if ($openOrder->active_order_num <= 0) {
+
+        if (!$openorderId)
+            throw new NotFoundHttpException("数据不存在: $id");
+
+        $rst = Order::createOrder($openorderId);
+        if ($rst instanceof Order)
+            return $rst;
+
+        if ($rst === Order::ERROR_NO_ACTIVE_NUM)
             return MsgHelper::faile('预约号已用完.');
-        }
-        if (!($hosp = $openOrder->hosp)) {
-            return MsgHelper::faile('数据有误, 请联系管理员.');
-        }
-        if (!$model->loadOrder($openOrder)) {
-            return MsgHelper::faile('数据有误, 请联系管理员.');
-        }
-        $tran = Yii::$app->db->beginTransaction();
-        $hosp->active_opened_order--;
-        $openOrder->active_order_num--;
-        if ($hosp->save() && $openOrder->save() && $model->save()) {
-            $tran->commit();
-            return $model;
-        }
-        $tran->rollback();
-        return MsgHelper::faile('数据保存出错', $model->getErrors());
+        if ($rst === Order::ERROR_EXISTS)
+            return MsgHelper::faile('已成功预约此项, 请勿重复预约');
+        return MsgHelper::faile('数据有误, 请联系管理员.');
     }
 
     public function actionInstruction() {
