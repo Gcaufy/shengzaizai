@@ -166,18 +166,15 @@ class WechatHelper {
 
                 $rst = Order::createOrder($openOrderId);
                 if ($rst instanceof Order) {
-                    $msg = "
-                        预约成功!
-                        就诊人: {$user->realname}
-                        手机号: {$user->mobile}
-                        医院: {$rst->hosp_name}
-                        医生: {$rst->doctor_name}
-                        就诊日期: {$rst->date}
-                        费用: {$rst->cost}
-                        挂号订单号: {$rst->order_no}
-
-                        您可在 [我的中心]->[我的预约单] 查询或取消本次预约.
-                    ";
+                    $msg = "预约成功!\r\n" .
+                        "就诊人: {$user->realname}\r\n" .
+                        "手机号: {$user->mobile}\r\n" .
+                        "医院: {$rst->hosp_name}\r\n" .
+                        "医生: {$rst->doctor_name}\r\n" .
+                        "就诊日期: {$rst->date}\r\n" .
+                        "费用: {$rst->cost}\r\n" .
+                        "挂号订单号: {$rst->order_no}\r\n\r\n" .
+                        "您可在 [我的中心]->[我的预约单] 查询或取消本次预约.";
                     break;
                 }
 
