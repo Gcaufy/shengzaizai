@@ -58,6 +58,15 @@ class Order extends \common\components\MyActiveRecord
     const PROCESS_DONE = 1;
     const PROCESS_CANCEL = 2;
     const PROCESS_DUE = 3;
+
+
+    const ERROR_INVALID_OPENORDER = 1;
+    const ERROR_NO_ACTIVE_NUM = 2;
+    const ERROR_DB_REF = 3;
+    const ERROR_DB_SAVE = 4;
+    const ERROR_EXISTS = 5;
+
+
     /**
      * @inheritdoc
      */
@@ -120,7 +129,7 @@ class Order extends \common\components\MyActiveRecord
             [['date', 'start_time', 'end_time'], 'safe'],
             [['cost'], 'number'],
             [['order_no'], 'string', 'max' => 12],
-            [['opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
+            [['hosp_name','opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 200],
             [['instruction'], 'string', 'max' => 500],
         ];
@@ -137,6 +146,7 @@ class Order extends \common\components\MyActiveRecord
             'pordername' => '预约',
             'order_no' => '订单号',
             'hosp_id' => '医院ID',
+            'hosp_name' => '医院地址',
             'opera_id' => '手术ID',
             'opera_name' => '手术名称',
             'insp_id' => '检查ID',
@@ -178,8 +188,43 @@ class Order extends \common\components\MyActiveRecord
     }
 
     public function checkExist($openorderId) {
-        return static::find()->andWhere(['t.openorder_id' => $openorderId])->one();
+        return static::find()->andWhere(['t.openorder_id' => $openorderId, 't.cid' => Yii::$app->user->identity->id])->one();
     }
+
+    public static function createOrder($openOrder) {
+        $model = new static;
+        if (!($openOrder instanceof Number)) {
+            $openOrder = Number::findOne($openOrder);
+        }
+        if (!$openOrder)
+            return self::ERROR_INVALID_OPENORDER;
+
+        if (static::find()->andWhere(['t.openorder_id' => $openOrder->id, 't.cid' => Yii::$app->user->identity->id])->one())
+            return self::ERROR_EXISTS;
+        // No active order number
+        if ($openOrder->active_order_num <= 0)
+            return self::ERROR_NO_ACTIVE_NUM;
+
+        // Load faile
+        if (!$model->loadOrder($openOrder))
+            return self::ERROR_DB_REF;
+
+        // No hospital
+        if (!($hosp = $openOrder->hosp))
+            return self::ERROR_DB_REF;
+
+        $hosp->active_opened_order--;
+        $openOrder->active_order_num--;
+
+        $tran = Yii::$app->db->beginTransaction();
+        if ($hosp->save() && $openOrder->save() && $model->save()) {
+            $tran->commit();
+            return $model;
+        }
+        $tran->rollback();
+        return self::ERROR_DB_SAVE;
+    }
+
 
     public function loadOrder($openOrder) {
         $this->openorder_id = $openOrder->id;
@@ -207,6 +252,7 @@ class Order extends \common\components\MyActiveRecord
             if (!$hosp)
                 return false;
             $this->address = $hosp['addr'];
+            $this->hosp_name = $hosp['name'];
         }
         if ($this->doctor_id) {
             $doctor = Doctor::find()->joinWith('title.title')->andWhere(['t.id' => $this->doctor_id])->asArray()->one();
