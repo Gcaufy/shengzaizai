@@ -229,11 +229,14 @@ class WechatHelper {
                     $year = date('Y');
                     $date = date('Y-m-d');
                     $rows = (new \yii\db\Query())
-                        ->select(['sd.id', 'doctor_name' => 'sd.name', 'hospital_name' => 'sh.name', 'title_name' => 'group_concat(sdt.name)'])
+                        ->select(['sd.id', 'doctor_name' => 'sd.name',
+                            'hospital_name' => 'sh.name',
+                            //'title_name' => 'group_concat(sdt.name)'
+                        ])
                         ->from(Doctor::tableName() . ' sd')
                         ->leftJoin(Hospital::tableName() . ' sh', 'sd.hosp_id = sh.id')
-                        ->leftJoin(DoctorTitleMap::tableName() . ' sdtm', 'sd.id = sdtm.doctor_id')
-                        ->leftJoin(DoctorTitle::tableName() . ' sdt', 'sdt.id = sdtm.title_id')
+                        //->leftJoin(DoctorTitleMap::tableName() . ' sdtm', 'sd.id = sdtm.doctor_id')
+                        //->leftJoin(DoctorTitle::tableName() . ' sdt', 'sdt.id = sdtm.title_id')
                         ->leftJoin(Number::tableName() . ' son', 'sd.id = son.doctor_id')
                         ->where(['sd.isvip' => 1])
                         ->andWhere("SUBSTR(son.date, 1, 4) = $year and DATEDIFF(son.date, '$date') > 0 and SUBSTR(son.date, 6, 2) <= $month + 1")
@@ -245,7 +248,7 @@ class WechatHelper {
                     foreach ($rows as $key => $value) {
                         $key++;
                         $data[$key] = ['doctor_id' => $value['id'], 'doctor_name' => $value['doctor_name']];
-                        $msg .= "$key {$value['doctor_name']} ({$value['hospital_name']} {$value['title_name']})\r\n";
+                        $msg .= "$key {$value['doctor_name']} ({$value['hospital_name']})\r\n";
                     }
                     if ($data) {
                         $userWechat->data = serialize($data);
