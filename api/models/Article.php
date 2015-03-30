@@ -17,4 +17,10 @@ class Article extends \backend\modules\cms\models\Article {
         $this->urlGenerator = ['thumb' => '160x160', 'banner' => '640x300'];
     }
 
+    public function fields() {
+        $fields = $this->initFields();
+        $fields['ctime'] = 'ctime';
+        return $fields;
+    }
+
 }
