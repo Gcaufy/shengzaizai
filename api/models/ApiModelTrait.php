@@ -11,7 +11,8 @@ trait ApiModelTrait {
     public $urlGenerator = [];
 
     public function getPortrait_url() {
-        return 'http:' . Yii::$app->urlManager->baseUrl . '/file?thumb=160x160&id=' . $this->portrait;
+        return 'http:' . Yii::$app->urlManager->createUrl('www', ['/file', 'thumb' => '160x160', 'id' => $this->portrait]);
+        //return 'http:' . Yii::$app->urlManager->baseUrl . '/file?thumb=160x160&id=' . $this->portrait;
     }
 
     public function fields() {
@@ -44,7 +45,8 @@ trait ApiModelTrait {
             $first = substr($name, 0, $len - 4);
             if ($last4 === '_url' && array_key_exists($first, $this->urlGenerator)) {
                 if ($this->$first)
-                    return 'http:' . Yii::$app->urlManager->baseUrl . '/file?thumb=' . $this->urlGenerator[$first] . '&id=' . $this->$first;
+                    return 'http:' . Yii::$app->urlManager->createUrl('www', ['/file', 'thumb' => $this->urlGenerator[$first], 'id' => $this->$first]);
+                    //return 'http:' . Yii::$app->urlManager->baseUrl . '/file?thumb=' . $this->urlGenerator[$first] . '&id=' . $this->$first;
                 else
                     return null;
             }
