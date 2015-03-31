@@ -29,6 +29,7 @@ class SiteController extends BaseController
         if (!isset($params['mobile'])) {
             return MsgHelper::faile('手机号不能为空.');
         }
+        $type = (isset($_GET['action']) && $_GET['action'] == 'reset') ? SmsCaptcha::TYPE_RESET_PASSWORD : SmsCaptcha::TYPE_REGISTER;
         $captcha = new SmsCaptcha();
         $captcha->mobile = $params['mobile'];
         $captcha->type = SmsCaptcha::TYPE_REGISTER;
@@ -92,6 +93,30 @@ class SiteController extends BaseController
             return MsgHelper::success('登录成功', ['token' => $token]);
         } else {
             return MsgHelper::faile('用户名或者密码错误.');
+        }
+    }
+
+    public function actionReset() {
+        $captcha = $params['captcha'];
+        $mobile = $params['mobile'];
+        $password = $params['password'];
+        $model = SmsCaptcha::getCaptcha($captcha, $mobile, SmsCaptcha::TYPE_RESET_PASSWORD);
+        if (!$model) {
+            return MsgHelper::faile('验证码出错.');
+        }
+        // captcha expired after 3 mins
+        if (time() - $model->ctime > 60 * 3) {
+            return MsgHelper::faile('验证码已过期.');
+        }
+        $user = User::findByMobile($mobile);
+        if (!$user) {
+            return MsgHelper::faile('用户不存在.');
+        }
+        $user->setPassword($password);
+        if ($user->save()) {
+            return MsgHelper::success('修改密码成功');
+        } else {
+            return MsgHelper::faile('修改密码失败', ['error' => $user->getErrors()]);
         }
     }
 }

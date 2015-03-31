@@ -32,6 +32,7 @@ return [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST reset' => 'site/reset',
                 'POST register' => 'site/register',
                 'POST register/captcha' => 'site/captcha',
                 'POST login' => 'site/login',

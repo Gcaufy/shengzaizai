@@ -21,6 +21,7 @@ class SmsCaptcha extends \common\components\MyActiveRecord
 {
 
     const TYPE_REGISTER = 1;
+    const TYPE_RESET_PASSWORD = 2;
 
     /**
      * @inheritdoc
