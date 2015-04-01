@@ -191,7 +191,7 @@ class Order extends \common\components\MyActiveRecord
         return static::find()->andWhere(['t.openorder_id' => $openorderId, 't.cid' => Yii::$app->user->identity->id])->one();
     }
 
-    public static function createOrder($openOrder) {
+    public static function createOrder($openOrder, $doctorId = null) {
         $model = new static;
         if (!($openOrder instanceof Number)) {
             $openOrder = Number::findOne($openOrder);
@@ -206,7 +206,7 @@ class Order extends \common\components\MyActiveRecord
             return self::ERROR_NO_ACTIVE_NUM;
 
         // Load faile
-        if (!$model->loadOrder($openOrder))
+        if (!$model->loadOrder($openOrder, $doctorId))
             return self::ERROR_DB_REF;
 
         // No hospital
@@ -226,10 +226,13 @@ class Order extends \common\components\MyActiveRecord
     }
 
 
-    public function loadOrder($openOrder) {
+    public function loadOrder($openOrder, $doctorId = null) {
         $this->openorder_id = $openOrder->id;
         $this->hosp_id = $openOrder->hosp_id;
-        $this->doctor_id = $openOrder->doctor_id;
+        if ($doctorId)
+            $this->doctor_id = $doctorId;
+        else
+            $this->doctor_id = $openOrder->doctor_id;
         $this->insp_id = $openOrder->insp_id;
         $this->opera_id = $openOrder->opera_id;
         $this->date = $openOrder->date;

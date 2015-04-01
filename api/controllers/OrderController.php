@@ -48,11 +48,12 @@ class OrderController extends BaseController
 
     public function actionCreate() {
         $openorderId = isset($_POST['openorder_id']) ? $_POST['openorder_id'] : null;
+        $doctorId = isset($_POST['doctor_id']) ? $_POST['doctor_id'] : null;
 
         if (!$openorderId)
             throw new NotFoundHttpException("数据不存在: $id");
 
-        $rst = Order::createOrder($openorderId);
+        $rst = Order::createOrder($openorderId, $doctorId);
         if ($rst instanceof Order)
             return $rst;
 
