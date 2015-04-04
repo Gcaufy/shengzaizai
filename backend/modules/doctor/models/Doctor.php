@@ -33,7 +33,10 @@ use \backend\modules\hospital\models\Hospital;
  */
 class Doctor extends \common\components\MyActiveRecord
  {
+
+
     public $pportrait;
+
     /**
      * @inheritdoc
      */
@@ -50,7 +53,7 @@ class Doctor extends \common\components\MyActiveRecord
             [['hosp_id', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait'], 'integer'],
             [['normal_reg_cost', 'expert_reg_cost', 'feedback_manner', 'feedback_effect'], 'number'],
             [['name'], 'string', 'max' => 20],
-            [['desc'], 'string', 'max' => 2000],
+            [['desc', 'tag', 'title', 'operas'], 'string', 'max' => 2000],
             [['major', 'experience', 'note'], 'string', 'max' => 500],
         ];
     }
@@ -65,6 +68,9 @@ class Doctor extends \common\components\MyActiveRecord
         $arr['pportrait'] = '头像';
         $arr['portrait'] = '头像';
         $arr['desc'] = '描述';
+        $arr['tag'] = '标签';
+        $arr['title'] = '职称';
+        $arr['operas'] = '手术';
         $arr['feedback_manner'] = '态度评分';
         $arr['feedback_effect'] = '效果评分';
         $arr['normal_reg_cost'] = '普通挂号费';

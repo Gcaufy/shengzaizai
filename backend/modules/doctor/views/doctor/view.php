@@ -19,6 +19,8 @@ if ($hospital) {
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="doctor-view">
+
+
     <div class="col-lg-12">
         <section class="panel">
             <header class="panel-heading">
@@ -37,27 +39,102 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]) ?>
             </p>
 
-            <?= DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'hosp_id',
-                    'name',
-                    'desc',
-                    'feedback_manner',
-                    'feedback_effect',
-                    'normal_reg_cost',
-                    'expert_reg_cost',
-                    'order_num',
-                    'active_order_num',
-                    'major',
-                    'experience',
-                    'note',
-                    'isvip',
-                    'type',
-                ],
-            ]) ?>
             </div>
         </section>
     </div>
+    <div class="col-md-4">
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="profile-pic text-center">
+                        <img src="/file?thumb=150x150&id=<?= $model->portrait; ?>" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="panel">
+                <div class="panel-body">
+
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'hosp_id',
+                            'name',
+                            'tag',
+                            'title',
+                            //'desc',
+                            'feedback_manner',
+                            'feedback_effect',
+                            'normal_reg_cost',
+                            'expert_reg_cost',
+                            'order_num',
+                            'active_order_num',
+                            //'major',
+                            //'experience',
+                            //'note',
+                            'isvip',
+                            'type',
+                        ],
+                    ]) ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?= $model->attributeLabels()['desc'];?>
+                    </header>
+                    <div class="panel-body">
+                        <?= $model->desc;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?= $model->attributeLabels()['major'];?>
+                    </header>
+                    <div class="panel-body">
+                        <?= $model->major;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?= $model->attributeLabels()['experience'];?>
+                    </header>
+                    <div class="panel-body">
+                        <?= $model->experience;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?= $model->attributeLabels()['note'];?>
+                    </header>
+                    <div class="panel-body">
+                        <?= $model->note;?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 </div>

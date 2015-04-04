@@ -15,6 +15,16 @@ class Doctor extends \backend\modules\doctor\models\Doctor {
         $this->urlGenerator = ['portrait' => '160x160'];
     }
 
+    public function fields() {
+        $denied = [];
+        if ($this->type == 0) {
+            $denied = ['operas'];
+        }
+        $this->deniedFields = ArrayHelper::merge($this->deniedFields, $denied);
+        $fields = $this->initFields();
+        return $fields;
+    }
+
     public function getTag() {
         return $this->hasMany(DoctorTagMap::className(), ['doctor_id' => 'id'])
             ->from(DoctorTagMap::tableName() . ' doctorTagMap');
