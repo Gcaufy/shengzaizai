@@ -3,6 +3,7 @@
 namespace api\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use \backend\modules\doctor\models\DoctorTag;
 use \backend\modules\doctor\models\DoctorTitle;
 
