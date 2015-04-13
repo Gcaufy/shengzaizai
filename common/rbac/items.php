@@ -31,10 +31,12 @@ return [
         'menu.user.view',
         'menu.user.profile.index.view',
         'menu.user.account.index.view',
+        'menu.user.favor.index.view',
     ]],
     'menu.user.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '个人中心'],
     'menu.user.profile.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '个人中心-我的资料'],
     'menu.user.account.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '个人中心-我的账户'],
+    'menu.user.favor.index.view' => ['type' => Item::TYPE_PERMISSION, 'description' => '个人中心-我的收藏'],
 
 
     'menu.member.viewall' => ['type' => Item::TYPE_PERMISSION, 'description' => '用户模块', 'children' => [

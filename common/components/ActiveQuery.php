@@ -106,6 +106,10 @@ class ActiveQuery extends \yii\db\ActiveQuery
         return $this;
     }
 
+    public function me($col = 'cid') {
+        return $this->andWhere(['t.' . $col => Yii::$app->user->identity->id]);
+    }
+
     protected function updateCondition(&$where, $before, $after)
     {
         foreach ($where as $key => $value) {

@@ -60,6 +60,9 @@ return [
             ['n'=>'我的账户','c'=>'account','m'=>'index','i'=>'fa fa-newspaper-o','s'=>[
                 ['n'=>'查看','m'=>'view'],
             ]],
+            ['n'=>'我的收藏','c'=>'favor','m'=>'index','i'=>'fa fa-newspaper-o','s'=>[
+                ['n'=>'查看','m'=>'view'],
+            ]],
             /*['n'=>'动态提醒','c'=>'classes','m'=>'index','i'=>'fa fa-random','s'=>[
                 ['n'=>'创建','m'=>'create'],
                 ['n'=>'查看','m'=>'view'],

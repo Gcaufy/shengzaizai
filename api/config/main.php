@@ -42,6 +42,7 @@ return [
                 'POST order/instruction' => 'order/instruction',
                 'POST order/cancel' => 'order/cancel',
                 'POST coment' => 'coment/create',
+                'POST article/positive' => 'article/positive',
 
                 'GET finance/balance' => 'finance/balance',
                 'GET finance/ledger' => 'finance/ledger',
@@ -75,6 +76,7 @@ return [
                         'openorder',
                         'order',
                         'comment',
+                        'favor',
                     ],
                     'pluralize' => false,
                 ],
