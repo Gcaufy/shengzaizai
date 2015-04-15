@@ -6,8 +6,14 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\operation\models\OperationHospitalMap */
 
-$this->title = $model->id;
-$this->params['breadcrumbs'][] = ['label' => '医院手术列表', 'url' => ['index']];
+$this->title = $model->opera->name;
+
+if ($hospital) {
+    $this->params['breadcrumbs'][] = ['label' => '医院列表', 'url' => ['/hospital/hospital/']];
+    $this->params['breadcrumbs'][] = ['label' => '医院信息 - ' . $hospital->name, 'url' => ['/hospital/hospital/view', 'id' => $hospital->id]];
+} else {
+    $this->params['breadcrumbs'][] = ['label' => '医院手术列表', 'url' => ['index']];
+}
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="operation-hospital-map-view">

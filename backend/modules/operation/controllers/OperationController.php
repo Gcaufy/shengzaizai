@@ -60,6 +60,11 @@ class OperationController extends Controller
      */
     public function actionCreate()
     {
+        $hosp_id = Yii::$app->request->get('hosp_id');
+        $hospital = null;
+        if ($hosp_id) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+        }
         $model = new Operation();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
@@ -71,6 +76,7 @@ class OperationController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'hospital' => $hospital,
         ]);
     }
 
@@ -84,6 +90,11 @@ class OperationController extends Controller
     {
         $model = $this->findModel($id);
 
+        $hosp_id = Yii::$app->request->get('hosp_id');
+        $hospital = null;
+        if ($hosp_id) {
+            $hospital = Hospital::find()->andWhere(['t.id' => $hosp_id])->one();
+        }
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '更新成功.');
@@ -94,6 +105,7 @@ class OperationController extends Controller
         }
         return $this->render('create', [
             'model' => $model,
+            'hospital' => $hospital,
         ]);
     }
 

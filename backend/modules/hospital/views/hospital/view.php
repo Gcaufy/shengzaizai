@@ -166,7 +166,7 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                     </div>
                     <div id="operation" class="tab-pane">
                         <p>
-                            <?= Html::a('新增', ['/operation/operation/create', 'hosp_id' => $model->id], ['class' => 'btn btn-success']) ?>
+                            <?= Html::a('新增', ['/operation/hospital/create', 'hosp_id' => $model->id], ['class' => 'btn btn-success']) ?>
                         </p>
                         <?= GridView::widget([
                             'dataProvider' => $operaProvider,
@@ -180,8 +180,18 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                                     'feedback_effect',
                                 ['class' => 'yii\grid\ActionColumn',
                                     'headerOptions'=>['width'=>180],
-                                    'template'=>'{view} {update} {delete}',
+                                    'template'=>'{oum} {view} {update} {delete}',
                                     'buttons'=>[
+                                        'oum' => function ($url, $operaMap, $key) use ($model) {
+                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/order/number/index',
+                                                    'hosp_id' => $model->id,
+                                                    'pid' => $operaMap->opera_id,
+                                                    'ptype' => Order::TYPE_OPERATION,
+                                                ],[
+                                                    'title' => '预约号管理',
+                                                    'data-pjax' => '0',
+                                            ]);
+                                        },
                                         'view' => function ($url, $model, $key) {
                                             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>',['/operation/operation/view', 'id' => $model->id],[
                                                 'title'=>Yii::t('yii','View'),
