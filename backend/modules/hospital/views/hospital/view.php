@@ -86,7 +86,7 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                                     'template'=>'{oum} {view} {update} {delete}',
                                     'buttons'=>[
                                         'oum' => function ($url, $doc, $key) use ($model) {
-                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/order/number/index',
+                                            return Html::a('<span class="fa fa-bars"></span>', ['/order/number/index',
                                                     'pid' => $doc->id,
                                                     'hosp_id' => $model->id,
                                                     'ptype' => Order::TYPE_DOCTOR
@@ -183,7 +183,7 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                                     'template'=>'{oum} {view} {update} {delete}',
                                     'buttons'=>[
                                         'oum' => function ($url, $operaMap, $key) use ($model) {
-                                            return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', ['/order/number/index',
+                                            return Html::a('<span class="fa fa-bars"></span>', ['/order/number/index',
                                                     'hosp_id' => $model->id,
                                                     'pid' => $operaMap->opera_id,
                                                     'ptype' => Order::TYPE_OPERATION,
