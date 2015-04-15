@@ -22,7 +22,7 @@
                     $('#btn_submit').click(function () {
                         $('#inspection-right section').mask();
                         $.ajax({
-                            data: $('.inspection-form form').serialize(),
+                            data: $('.inspection-hospital-map-form form').serialize(),
                             url: o.action,
                             type: 'POST',
                             success: function (html) {
