@@ -19,7 +19,7 @@ class OperationHospitalMapSearch extends OperationHospitalMap
     {
         return [
             [['id', 'hosp_id', 'opera_id', 'feedback_manner', 'feedback_effect', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
-            [['contact'], 'safe'],
+            [['contact', 'hosp_id'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class OperationHospitalMapSearch extends OperationHospitalMap
      */
     public function search($params)
     {
-        $query = OperationHospitalMap::find();
+        $query = OperationHospitalMap::find()->joinWith('opera');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

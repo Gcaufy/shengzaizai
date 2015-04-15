@@ -174,8 +174,7 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                             'columns' => [
                                 ['class' => 'yii\grid\SerialColumn'],
                                     'id',
-                                    'hosp_id',
-                                    'opera_id',
+                                    'opera.name',
                                     'contact',
                                     'feedback_manner',
                                     'feedback_effect',

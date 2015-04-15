@@ -73,10 +73,13 @@ class HospitalController extends Controller
 
 
         $searchDoctor = new DoctorSearch();
+        $searchDoctor->hosp_id = $id;
         $doctorProvider = $searchDoctor->search($p);
         $searchInsp = new InspectionHospitalMapSearch();
+        $searchInsp->hosp_id = $id;
         $inspProvider = $searchInsp->search($p);
         $searchOpera = new OperationHospitalMapSearch();
+        $searchOpera->hosp_id = $id;
         $operaProvider = $searchOpera->search($p);
 
         return $this->render('view', [
