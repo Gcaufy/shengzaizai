@@ -41,6 +41,9 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
 
     public $rememberMe = false;
 
+    public $new_password = '';
+    public $confirm_password = '';
+
     /**
      * @inheritdoc
      */
@@ -48,7 +51,19 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     {
         $rules = parent::rules();
         $rules[] = ['mobile', 'required'];
+        $rules[] = [['realname', 'email', 'pregnant'], 'safe', 'on' => 'update_profile'];
+        $rules[] = [['new_password', 'confirm_password'], 'safe', 'on' => 'update_password'];
+        $rules[] = [['new_password', 'confirm_password'], 'required', 'on' => 'update_password'];
+        $rules[] = [['new_password',], 'compare', 'compareAttribute' => 'confirm_password', 'message'=>'两次密码必须一致', 'on' => 'update_password'];
         return $rules;
+    }
+
+
+    public function scenarios() {
+        $scenarios = parent::scenarios();
+        $scenarios['update_profile'] = ['realname', 'email', 'pregnant'];
+        $scenarios['update_password'] = ['new_password', 'confirm_password'];
+        return $scenarios;
     }
 
     /**
@@ -57,7 +72,7 @@ class User extends \common\models\UserGen implements \yii\web\IdentityInterface
     public function fields()
     {
         $fields = parent::fields();
-        $unsafe_fields = ['authkey', 'password'];
+        $unsafe_fields = ['authkey'];
         return array_diff($fields, $unsafe_fields);
     }
 

@@ -42,7 +42,10 @@ return [
                 'POST order/instruction' => 'order/instruction',
                 'POST order/cancel' => 'order/cancel',
                 'POST coment' => 'coment/create',
+                'POST feedback' => 'feedback/create',
                 'POST article/positive' => 'article/positive',
+                'PUT user/profile' => 'user/update',
+                'PUT user/password' => 'user/password',
 
                 'GET finance/balance' => 'finance/balance',
                 'GET finance/ledger' => 'finance/ledger',
