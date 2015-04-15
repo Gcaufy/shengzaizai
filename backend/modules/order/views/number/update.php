@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 
+use backend\modules\order\models\Order;
+
 /* @var $this yii\web\View */
 /* @var $model backend\modules\order\models\Number */
 $typeMap = Order::getTypeMap();
