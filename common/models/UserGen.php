@@ -45,7 +45,7 @@ class UserGen extends \common\components\MyActiveRecord
     public function rules()
     {
         return [
-            [['pregnant', 'role', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait', 'from'], 'integer'],
+            [['pregnant', 'role', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait', 'from', 'gender', 'age'], 'integer'],
             [['realname', 'email'], 'string', 'max' => 50],
             [['mobile'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
@@ -62,6 +62,8 @@ class UserGen extends \common\components\MyActiveRecord
         return [
             'id' => '用户ID',
             'realname' => '真实姓名',
+            'gender' => '性别',
+            'age' => '年龄',
             'mobile' => '手机号',
             'pportrait' => '头像',
             'portrait' => '头像',
