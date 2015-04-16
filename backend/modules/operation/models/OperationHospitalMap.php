@@ -36,7 +36,7 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'opera_id', 'contact'], 'required'],
-            [['hosp_id', 'opera_id', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['hosp_id', 'opera_id', 'status', 'utime', 'uid', 'ctime', 'cid', 'ordered'], 'integer'],
             [['feedback_manner', 'feedback_effect'], 'number'],
             [['contact'], 'string', 'max' => 50],
             [['cost'], 'number'],
@@ -52,6 +52,7 @@ class OperationHospitalMap extends \common\components\MyActiveRecord
         $arr['opera_id'] = '手术ID';
         $arr['contact'] = '联系方式';
         $arr['cost'] = '费用';
+        $arr['ordered'] = '已预约';
         $arr['feedback_manner'] = '态度评分';
         $arr['feedback_effect'] = '效果评分';
         return $arr;

@@ -37,7 +37,7 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
      */
     public function rules() {
         return [
-            [['insp_id', 'hosp_id', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid'], 'integer'],
+            [['insp_id', 'hosp_id', 'isleaf', 'status', 'utime', 'uid', 'ctime', 'cid', 'ordered'], 'integer'],
             [['feedback_manner', 'feedback_effect'], 'number'],
             [['contact'], 'string', 'max' => 50],
             [['cost'], 'number'],
@@ -53,6 +53,7 @@ class InspectionHospitalMap extends \common\components\MyActiveRecord
         $arr['hosp_id'] = '医院ID';
         $arr['contact'] = '联系方式';
         $arr['cost'] = '费用';
+        $arr['ordered'] = '已预约';
         $arr['feedback_manner'] = '态度评分';
         $arr['feedback_effect'] = '效果评分';
         $arr['isleaf'] = '是否是子节点';

@@ -7,6 +7,8 @@ use backend\modules\hospital\models\Hospital;
 use backend\modules\doctor\models\Doctor;
 use backend\modules\inspection\models\Inspection;
 use backend\modules\operation\models\Operation;
+use backend\modules\inspection\models\InspectionHospitalMap;
+use backend\modules\operation\models\OperationHospitalMap;
 
 /**
  * This is the model class for table "{{%order_number}}".
@@ -112,5 +114,16 @@ class Number extends \common\components\MyActiveRecord
     public function getOpera()
     {
         return $this->hasOne(Operation::className(), ['id' => 'opera_id']);
+    }
+
+    public function getEntity() {
+        if ($this->opera_id)
+            return OperationHospitalMap::find()->andWhere(['hosp_id' => $this->hosp_id, 'opera_id' => $this->opera_id])->one();
+        else if ($this->insp_id)
+            return InspectionHospitalMap::find()->andWhere(['hosp_id' => $this->hosp_id, 'insp_id' => $this->insp_id])->one();
+        else if ($this->doctor_id)
+            return Doctor::findOne($this->doctor_id);
+        else
+            return null;
     }
 }

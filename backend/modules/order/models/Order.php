@@ -7,6 +7,8 @@ use backend\modules\hospital\models\Hospital;
 use backend\modules\doctor\models\Doctor;
 use backend\modules\inspection\models\Inspection;
 use backend\modules\operation\models\Operation;
+use backend\modules\inspection\models\InspectionHospitalMap;
+use backend\modules\operation\models\OperationHospitalMap;
 use \common\models\User;
 
 /**
@@ -214,10 +216,15 @@ class Order extends \common\components\MyActiveRecord
             return self::ERROR_DB_REF;
 
         $hosp->active_opened_order--;
+        $hosp->ordered++;
         $openOrder->active_order_num--;
+        $entity = $openOrder->getEntity();
+        if (!$entity)
+            return self::ERROR_DB_REF;
+        $entity->ordered++;
 
         $tran = Yii::$app->db->beginTransaction();
-        if ($hosp->save() && $openOrder->save() && $model->save()) {
+        if ($entity->save() && $hosp->save() && $openOrder->save() && $model->save()) {
             $tran->commit();
             return $model;
         }
