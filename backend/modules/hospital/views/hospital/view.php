@@ -58,12 +58,13 @@ window.InspectionMap.hospitalId = '<?= $model->id; ?>';
                         <?= DetailView::widget([
                             'model' => $model,
                             'attributes' => [
-                        'name',
-                        'addr',
-                        'tel',
-                        'region_id',
-                        'opened_order',
-                        'active_opened_order',
+                            'name',
+                            'addr',
+                            'tel',
+                            'region_id',
+                            'opened_order',
+                            'active_opened_order',
+                            'hot',
                             ],
                         ]) ?>
                     </div>

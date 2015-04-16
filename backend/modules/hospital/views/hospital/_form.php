@@ -122,11 +122,8 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'addr', ['autoPlaceholder' => true])->textInput(['maxlength' => 200])->initLen(8) ?>
 
-    <?= $form->field($model, 'opened_order', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
+    <?= $form->field($model, 'hot', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
 
-    <?= $form->field($model, 'active_opened_order', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
-
-    <?= $form->field($model, 'ordered', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
 
 
 
