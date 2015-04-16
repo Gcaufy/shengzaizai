@@ -104,10 +104,13 @@ class BaseController extends \yii\rest\ActiveController
         $id = Yii::$app->request->get('id');
         if (!$id && $model->hasAttribute('parent_id')) {
             $parent_id = Yii::$app->request->get('parent_id');
-            if (!$parent_id)
-                $query = $query->andWhere('t.parent_id is null');
-            else
-                $query = $query->andWhere(['t.parent_id' => $parent_id]);
+            $all = Yii::$app->request->get('all');
+            if (!$all) {
+                if (!$parent_id)
+                    $query = $query->andWhere('t.parent_id is null');
+                else
+                    $query = $query->andWhere(['t.parent_id' => $parent_id]);
+            }
         }
 
         if ($model->hasAttribute('hosp_id')) {
