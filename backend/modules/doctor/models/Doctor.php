@@ -82,7 +82,7 @@ class Doctor extends \common\components\MyActiveRecord
         $arr['experience'] = '从业经验';
         $arr['note'] = '医生贴士';
         $arr['isvip'] = '是否为特约';
-        $arr['type'] = '类型';
+        $arr['type'] = '手术主治医生';
         return $arr;
     }
 

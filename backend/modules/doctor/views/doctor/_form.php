@@ -24,18 +24,16 @@ $('input[name=file]').on('fileuploaded', function(event, data, previewId, index)
     }
 
 });
-function operaInit(val) {
-    val = val || $('#doctor-type input[checked]').val();
-    if (val == 0) {
+function operaInit() {
+    elem = $('#doctor-type');
+    if (!elem.attr('checked')) {
         $('#doctor-opera').hide().find('input').attr('disabled' ,'disabled');
-    } else if (val == 1) {
+    } else {
         $('#doctor-opera').show().find('input').removeAttr('disabled');
     }
 }
 
-$('#doctor-type input').change(function () {
-    operaInit($(this).val());
-});
+$('#doctor-type').change(operaInit);
 operaInit();
 ";
 $this->registerJs($js);
@@ -63,14 +61,14 @@ $this->registerJs($js);
             'initialPreview' => $model->portrait ? [Html::img("/file?id=" . $model->portrait, ['class'=>'file-preview-image'])] : [],
             'initialCaption'=>"已保存图片",
         ]
-    ])->initLen(3); ?>
+    ])->initLen(4); ?>
 
     <?php
         $option = ['placeholder' => '请选择医院', 'value' => '0'];
         if ($hospital)
             $option['disabled'] = true;
     ?>
-    <?= $form->field($model, 'hosp_id', ['autoPlaceholder' => true])->ajaxSelect(Url::to('hospsearch'), ['options' => $option])->initLen(3) ?>
+    <?= $form->field($model, 'hosp_id', ['autoPlaceholder' => true])->ajaxSelect(Url::to('hospsearch'), ['options' => $option])->initLen(5) ?>
 
     <?= $form->field($model, 'name', ['autoPlaceholder' => true])->textInput(['maxlength' => 20])->initLen(2)  ?>
 
@@ -81,18 +79,13 @@ $this->registerJs($js);
         'pluginOptions' => ['step' => 1, 'showCaption' => false, 'showClear' => false, 'size' => 'xs', 'hoverEnabled' => 'false']
     ])->initLen(2)->hint($model->attributeLabels()['feedback_effect']);; ?>
 
+    <?= $form->field($model, 'normal_reg_cost', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
 
-    <?= $form->field($model, 'normal_reg_cost', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(1) ?>
+    <?= $form->field($model, 'expert_reg_cost', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(2) ?>
 
-    <?= $form->field($model, 'expert_reg_cost', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(1) ?>
+    <?= $form->field($model, 'isvip', ['autoPlaceholder' => true])->checkbox()->initLen(2) ?>
 
-    <?= $form->field($model, 'order_num', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(1) ?>
-
-    <?= $form->field($model, 'active_order_num', ['autoPlaceholder' => true])->textInput(['maxlength' => 10])->initLen(1) ?>
-
-    <?= $form->field($model, 'isvip', ['autoPlaceholder' => true])->checkbox()->initLen(1) ?>
-
-    <?= $form->field($model, 'type', ['autoPlaceholder' => true])->radioList(['0' => '可预约医生', '1' => '手术主治医生'])->initLen(1) ?>
+    <?= $form->field($model, 'type', ['autoPlaceholder' => true])->checkbox()->initLen(2) ?>
 
     <div id="doctor-opera">
     <?= $form->field($model, 'operas', ['autoPlaceholder' => true])->widget(Select2::classname(), [
