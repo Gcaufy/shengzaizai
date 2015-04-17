@@ -51,11 +51,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'refund_id',
             'cost',
             'process',
-            'status',
             'utime:datetime',
-            'uid',
             'ctime:datetime',
-            'cid',
                 ],
             ]) ?>
             </div>

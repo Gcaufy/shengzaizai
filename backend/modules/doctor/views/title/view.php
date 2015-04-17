@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model backend\modules\doctor\models\DoctorTitle */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Doctor Titles', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => '职称列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="doctor-title-view">
@@ -32,12 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'model' => $model,
                 'attributes' => [
                     'id',
-            'name',
-            'status',
-            'utime',
-            'uid',
-            'ctime',
-            'cid',
+                    'name',
+                    'utime:datetime',
+                    'ctime:datetime',
                 ],
             ]) ?>
             </div>

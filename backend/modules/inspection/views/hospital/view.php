@@ -38,11 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'feedback_manner',
             'feedback_effect',
             'isleaf',
-            'status',
-            'utime',
-            'uid',
-            'ctime',
-            'cid',
+            'utime:datetime',
+            'ctime:datetime',
                 ],
             ]) ?>
             </div>

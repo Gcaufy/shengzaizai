@@ -37,11 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:email',
             'pregnant',
             'role',
-            'status',
             'utime:datetime',
-            'uid',
             'ctime:datetime',
-            'cid',
                 ],
             ]) ?>
             </div>

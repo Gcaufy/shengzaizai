@@ -38,11 +38,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'parent_id',
             'level',
             'isleaf',
-            'status',
-            'utime',
-            'uid',
-            'ctime',
-            'cid',
+            'utime:datetime',
+            'ctime:datetime',
                 ],
             ]) ?>
             </div>

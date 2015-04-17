@@ -9,7 +9,9 @@ use backend\modules\order\models\Order;
 $typeMap = Order::getTypeMap();
 $label = $ptype ? $typeMap[$ptype] : '';
 
-$this->title = '添加 ' . $label . '预约号';
+$name = $doctor ? $doctor->name : ($inspection ? $inspection->name : ($operation ? $operation->name : ''));
+
+$this->title = "添加预约号 -  $name ($label)";
 
 if ($hospital) {
     $this->params['breadcrumbs'][] = ['label' => '医院列表', 'url' => ['/hospital/hospital/']];

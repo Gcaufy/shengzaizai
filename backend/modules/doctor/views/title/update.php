@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\DoctorTitle */
 
-$this->title = '修改 Doctor Title #' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Doctor Titles', 'url' => ['index']];
+$this->title = '修改 职称 #' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => '职称列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

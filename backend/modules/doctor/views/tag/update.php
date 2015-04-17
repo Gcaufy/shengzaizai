@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\DoctorTag */
 
-$this->title = '修改 Doctor Tag #' . ' ' . $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Doctor Tags', 'url' => ['index']];
+$this->title = '修改 标签 #' . ' ' . $model->name;
+$this->params['breadcrumbs'][] = ['label' => '标签列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>

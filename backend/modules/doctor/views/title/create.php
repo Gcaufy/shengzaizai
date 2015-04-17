@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\doctor\models\DoctorTitle */
 
-$this->title = '添加 Doctor Title';
-$this->params['breadcrumbs'][] = ['label' => 'Doctor Titles', 'url' => ['index']];
+$this->title = '添加 职称';
+$this->params['breadcrumbs'][] = ['label' => '职称列表', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">

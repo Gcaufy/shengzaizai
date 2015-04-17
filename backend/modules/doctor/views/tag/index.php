@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\modules\doctor\models\DoctorTagSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Doctor Tags';
+$this->title = '标签列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row" id="doctor-tag-index">
@@ -34,11 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'name',
-            'status',
-            'utime',
-            'uid',
-            // 'ctime',
-            // 'cid',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

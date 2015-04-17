@@ -36,9 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'user_id',
                     'content',
                     'utime:datetime',
-                    'uid',
                     'ctime:datetime',
-                    'cid',
                 ],
             ]) ?>
             </div>
