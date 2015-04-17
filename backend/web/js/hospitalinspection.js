@@ -26,7 +26,13 @@
                             url: o.action,
                             type: 'POST',
                             success: function (html) {
-                                $('#inspection-right .panel-body').html($('table.detail-view', $(html)));
+                                if (o.getrid) {
+                                    for (var k in o.getrid) {
+                                        html = html.replace(o.getrid[k], '');
+                                    }
+                                }
+                                $('#inspection-right .panel-body').html(html);
+                                //$('#inspection-right .panel-body').html($('table.detail-view', $(html)));
                                 //refreshNode(o.action === 'create' ? o.src : o.src.parents('li:eq(0)'));
                                 $('#inspection-right section').unmask();
                             }

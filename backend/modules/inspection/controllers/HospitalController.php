@@ -113,9 +113,8 @@ class HospitalController extends ShiroController
         if ($model->load(Yii::$app->request->post())) {
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', '更新成功.');
-                if ($isAjax)
-                    return '更新成功';
-                return $this->redirect(['view', 'id' => $model->id]);
+                if (!$isAjax)
+                    return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 Yii::$app->session->setFlash('error', '更新失败.');
             }
