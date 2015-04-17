@@ -40,7 +40,7 @@ return [
                 'POST finance/expense' => 'finance/expense',
                 'POST order' => 'order/create',
                 'POST order/instruction' => 'order/instruction',
-                'POST order/cancel' => 'order/cancel',
+                'DELETE order/<id:\d+>' => 'order/cancel',
                 'POST coment' => 'coment/create',
                 'POST feedback' => 'feedback/create',
                 'POST article/positive' => 'article/positive',

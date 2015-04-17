@@ -34,15 +34,20 @@ class OrderController extends BaseController
         return $query->andWhere(['t.cid' => Yii::$app->user->identity->id]);
     }
 
-    public function actionCancel() {
-        $orderId = isset($_POST['order_id']) ? $_POST['order_id'] : null;
-        if (!$orderId || !($model = $this->getQuery()->andWhere(['t.id' => $orderId])->one()))
+    public function actionCancel($id) {
+        if (!$id || !($model = $this->getQuery()->andWhere(['t.id' => $id, 't.cid' => Yii::$app->user->identity->id])->one()))
             throw new NotFoundHttpException("数据不存在: $id");
-
+        if (!$model->start_time)
+            $model->start_time = '00:00:00';
+        $starttime = strtotime($model->date . ' ' . $model->start_time);
+        // Can not cancle the order whichis in 12 hours
+        if ($starttime - time() < 60 * 60 * 12) {
+            return MsgHelper::faile('12小时内的订单无法取消.');
+        }
         if ($model->delete())
-            return MsgHelper::success('删除成功.');
+            return MsgHelper::success('取消订单成功.');
         else
-            return MsgHelper::faile('删除失败.', $model->getErrors());
+            return MsgHelper::faile('取消订单失败.', $model->getErrors());
     }
 
 
