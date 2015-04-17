@@ -7,6 +7,7 @@
             data: o.data,
             url: o.action,
             success: function (html) {
+                $('#inspection-right section').unmask();
                 if (typeof(o.cb) === 'function')
                     return o.cb(html);
 
