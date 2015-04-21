@@ -29,6 +29,8 @@ class BaseController extends \yii\rest\ActiveController
      */
     protected $loginRequired = true;
 
+    protected $allowGuestActions = [];
+
     /**
      * @var array actions which are not be allowed to be performed by current user
      */
@@ -55,7 +57,8 @@ class BaseController extends \yii\rest\ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        if ($this->loginRequired) {
+
+        if ($this->loginRequired && !in_array($this->action->id, $this->allowGuestActions)) {
             $behaviors['authenticator'] = [
                 'class' => QueryParamAuth::className(),
                 'tokenParam' => 'token',
@@ -89,7 +92,7 @@ class BaseController extends \yii\rest\ActiveController
     public function afterAction($action, $result)
     {
         header("Access-Control-Allow-Origin: *");
-        if ($this->loginRequired) {
+        if ($this->loginRequired && !in_array($this->action->id, $this->allowGuestActions)) {
             UserToken::updateAccessInfo(Yii::$app->user->identity->id);
         }
         return parent::afterAction($action, $result);

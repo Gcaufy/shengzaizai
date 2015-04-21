@@ -16,6 +16,7 @@ class CommentController extends BaseController
 {
     public $modelClass = 'api\models\Comment';
     protected $loginRequired = true;
+    protected $allowGuestActions = ['index'];
 
     public function actions() {
         $actions = parent::actions();
