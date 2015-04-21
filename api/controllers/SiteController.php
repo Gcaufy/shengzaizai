@@ -68,7 +68,7 @@ class SiteController extends BaseController
             return MsgHelper::faile('验证码出错.');
         }
         // captcha expired after 3 mins
-        if (time() - $model->ctime > 60 * 3) {
+        if (time() - $model->ctime > 60 * 30) {
             return MsgHelper::faile('验证码已过期.');
         }
         $user = new User();
