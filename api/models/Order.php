@@ -20,6 +20,7 @@ class Order extends \backend\modules\order\models\Order {
         }
         $this->deniedFields = ArrayHelper::merge($this->deniedFields, $denied);
         $fields = $this->initFields();
+        $fields['ctime'] = 'ctime';
         return $fields;
     }
 }

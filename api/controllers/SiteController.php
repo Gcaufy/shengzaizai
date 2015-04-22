@@ -4,7 +4,7 @@ namespace api\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use common\models\User;
+use api\models\User;
 use common\models\UserToken;
 use yii\filters\VerbFilter;
 use common\models\SmsCaptcha;
@@ -90,7 +90,9 @@ class SiteController extends BaseController
         $user = User::findByMobile($user->mobile);
         if($user && $user->validatePassword($password) && $user->login()){
             $token = UserToken::updateToken($user->id);
-            return MsgHelper::success('登录成功', ['token' => $token]);
+            $arr = $user->toArray();
+            $arr['token'] = $token;
+            return $arr;
         } else {
             return MsgHelper::faile('用户名或者密码错误.');
         }

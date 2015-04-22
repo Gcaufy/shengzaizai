@@ -133,7 +133,7 @@ class Order extends \common\components\MyActiveRecord
             [['order_no'], 'string', 'max' => 22],
             [['hosp_name','opera_name', 'insp_name', 'doctor_job_title', 'doctor_name'], 'string', 'max' => 50],
             [['address'], 'string', 'max' => 200],
-            [['instruction'], 'string', 'max' => 500],
+            [['instruction', 'diagnosis'], 'string', 'max' => 500],
         ];
     }
 
