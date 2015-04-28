@@ -11,6 +11,7 @@ class Doctor extends \backend\modules\doctor\models\Doctor {
 
     use ApiModelTrait;
 
+
     public function init () {
         parent::init();
         $this->urlGenerator = ['portrait' => '160x160'];
@@ -23,7 +24,12 @@ class Doctor extends \backend\modules\doctor\models\Doctor {
         }
         $this->deniedFields = ArrayHelper::merge($this->deniedFields, $denied);
         $fields = $this->initFields();
+        $fields['hospital_name'] = 'hospital_name';
         return $fields;
+    }
+
+    public function getHospital_name() {
+        return $this->hospital->name;
     }
 
     public function getTag() {
@@ -35,6 +41,12 @@ class Doctor extends \backend\modules\doctor\models\Doctor {
         return $this->hasMany(DoctorTitleMap::className(), ['doctor_id' => 'id'])
             ->from(DoctorTitleMap::tableName() . ' doctorTitleMap');
     }
+
+    public function getHospital() {
+        return $this->hasOne(Hospital::className(), ['id' => 'hosp_id'])
+            ->from(Hospital::tableName() . ' hospital');
+    }
+
 }
 
 

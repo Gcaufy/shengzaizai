@@ -24,7 +24,7 @@ class DoctorController extends BaseController
 
     protected function getQuery() {
         $_GET['expand'] = 'tag,title';
-        $query = parent::getQuery()->joinWith(['tag.tag', 'title.title']);
+        $query = parent::getQuery()->joinWith(['hospital', 'tag.tag', 'title.title']);
         $opera_id = Yii::$app->request->get('opera_id');
         if ($opera_id) {
             $rst = DoctorOperaMap::find()->andWhere(['t.opera_id' => $opera_id])->select('t.doctor_id')->asArray()->all();
