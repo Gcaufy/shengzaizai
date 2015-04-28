@@ -36,6 +36,7 @@ class Doctor extends \common\components\MyActiveRecord
 
 
     public $pportrait;
+    public $pbanner;
 
     /**
      * @inheritdoc
@@ -50,7 +51,7 @@ class Doctor extends \common\components\MyActiveRecord
     public function rules() {
         return [
             [['hosp_id', 'name'], 'required'],
-            [['hosp_id', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait', 'ordered'], 'integer'],
+            [['hosp_id', 'order_num', 'active_order_num', 'isvip', 'type', 'status', 'utime', 'uid', 'ctime', 'cid', 'portrait', 'ordered', 'isbanner', 'banner', 'banner_position'], 'integer'],
             [['normal_reg_cost', 'expert_reg_cost', 'feedback_manner', 'feedback_effect'], 'number'],
             [['name'], 'string', 'max' => 20],
             [['desc', 'tag', 'title', 'operas'], 'string', 'max' => 2000],
@@ -78,6 +79,7 @@ class Doctor extends \common\components\MyActiveRecord
         $arr['expert_reg_cost'] = '专家挂号费';
         $arr['order_num'] = '预约号';
         $arr['active_order_num'] = '可用预约号';
+        $arr['banner_position'] = 'Banner 图位置';
         $arr['major'] = '主要擅长';
         $arr['experience'] = '从业经验';
         $arr['note'] = '医生贴士';

@@ -10,6 +10,16 @@ use kartik\widgets\TimePicker;
 /* @var $this yii\web\View */
 /* @var $model backend\modules\order\models\Number */
 /* @var $form yii\widgets\ActiveForm */
+$js = "
+$('#number-isvip').click(function() {
+    if ($(this).attr('checked'))
+        $('#number-cost').val($('#hf_expert_cost').val());
+    else
+        $('#number-cost').val($('#hf_normal_cost').val());
+});
+
+";
+$this->registerJs($js);
 ?>
 
 <div class="number-form">
@@ -49,7 +59,11 @@ use kartik\widgets\TimePicker;
         ],
         'pluginOptions' => ['defaultTime' => false, 'showMeridian' => false],
     ]); ?>
-
+    <?php if($ptype == Order::TYPE_DOCTOR && $doctor && $doctor->isvip == 0): ?>
+        <?= $form->field($model, 'isvip')->checkbox(['maxlength' => 10])->hint('专家号？') ?>
+        <input type='hidden' id="hf_normal_cost" value="<?=$doctor->normal_reg_cost?>"/>
+        <input type='hidden' id="hf_expert_cost" value="<?=$doctor->expert_reg_cost?>"/>
+    <?php endif; ?>
     <?= $form->field($model, 'cost')->textInput(['maxlength' => 10]) ?>
 
     <div class="form-group right">

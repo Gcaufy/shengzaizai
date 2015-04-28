@@ -155,6 +155,8 @@ class NumberController extends \backend\controllers\ShiroController
             $key = $keyMap[$ptype];
             $model->$key = $pid;
             $model->hosp_id = $hosp_id;
+            if ($ptype == Order::TYPE_DOCTOR && $doctor)
+                $model->cost = $doctor->normal_reg_cost;
         }
         if ($model->load(Yii::$app->request->post())) {
             if (!$model->active_order_num)

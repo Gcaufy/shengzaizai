@@ -35,6 +35,17 @@ function operaInit() {
 
 $('#doctor-type').change(operaInit);
 operaInit();
+
+
+
+$('#doctor-isbanner').click(function () {
+    if ($(this).attr('checked')) {
+        $('#banner-panel').show().find('input').removeAttr('disabled');
+    } else {
+        $('#banner-panel').hide().find('input').attr('disabled', 'disabled');
+    }
+});
+
 ";
 $this->registerJs($js);
 ?>
@@ -55,7 +66,7 @@ $this->registerJs($js);
 
 
     <?= $form->field($model, 'pportrait', ['autoPlaceholder' => true])->widget(FileInput::classname(), [
-        'options' => ['accept' => 'image/*', 'name' => 'file', 'target' => 'model-portrait'],
+        'options' => ['accept' => 'image/*', 'name' => 'file', 'target' => 'doctor-portrait'],
         'pluginOptions' => [
             'uploadUrl' => Url::to(['/file/upload?folder=doctor']),
             'initialPreview' => $model->portrait ? [Html::img("/file?id=" . $model->portrait, ['class'=>'file-preview-image'])] : [],
@@ -129,7 +140,25 @@ $this->registerJs($js);
 
     <?= $form->field($model, 'note', ['autoPlaceholder' => true])->textArea(['maxlength' => 500]) ?>
 
-
+    <?= $form->field($model, 'isbanner')->checkbox([], false)->hint('如果此文章希望在Banner处显示, 则勾选此项.') ?>
+    <?php
+        $options = [];
+        $style = $model->isbanner ? "display: block;" : "display: none;";
+        if (!$model->isbanner)
+            $options['disabled'] = 'disabled';
+    ?>
+    <div id="banner-panel" style="<?= $style ?>">
+        <?= $form->field($model, 'pbanner')->widget(FileInput::classname(), [
+        'options' => ['accept' => 'image/*', 'name' => 'file', 'target' => 'doctor-banner'],
+        'pluginOptions' => [
+            'uploadUrl' => Url::to(['/file/upload?folder=banner']),
+            'initialPreview' => $model->banner ? [Html::img("/file?id=" . $model->banner, ['class'=>'file-preview-image'])] : [],
+            'initialCaption'=>"已保存图片",
+        ]
+    ]); ?>
+        <?= Html::activeHiddenInput($model, 'banner'); ?>
+        <?= $form->field($model, 'banner_position', ['autoPlaceholder' => true])->textInput($options) ?>
+    </div>
 
 
     <div class="form-group right">
