@@ -218,10 +218,14 @@ class Order extends \common\components\MyActiveRecord
         $hosp->active_opened_order--;
         $hosp->ordered++;
         $openOrder->active_order_num--;
+
+
         $entity = $openOrder->getEntity();
         if (!$entity)
             return self::ERROR_DB_REF;
         $entity->ordered++;
+        if ($entity->hasAttribute('active_order_num'))
+            $entity->active_order_num--;
 
         $tran = Yii::$app->db->beginTransaction();
         if ($entity->save() && $hosp->save() && $openOrder->save() && $model->save()) {
@@ -246,6 +250,8 @@ class Order extends \common\components\MyActiveRecord
         $hosp->active_opened_order++;
         $hosp->ordered--;
         $openOrder->active_order_num++;
+        if ($entity->hasAttribute('active_order_num'))
+            $entity->active_order_num++;
         $tran = Yii::$app->db->beginTransaction();
         if ($entity->save() && $hosp->save() && $openOrder->save() && $this->delete()) {
             $tran->commit();
