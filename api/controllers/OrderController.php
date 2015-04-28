@@ -44,7 +44,7 @@ class OrderController extends BaseController
         if ($starttime - time() < 60 * 60 * 12) {
             return MsgHelper::faile('12小时内的订单无法取消.');
         }
-        if ($model->delete())
+        if ($model->cancel())
             return MsgHelper::success('取消订单成功.');
         else
             return MsgHelper::faile('取消订单失败.', $model->getErrors());

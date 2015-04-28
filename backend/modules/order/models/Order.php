@@ -232,6 +232,29 @@ class Order extends \common\components\MyActiveRecord
         return self::ERROR_DB_SAVE;
     }
 
+    public function cancel() {
+        $openOrder = $this->openOrder;
+        if (!$openOrder)
+            return self::ERROR_INVALID_OPENORDER;
+        $entity = $openOrder->getEntity();
+        if (!$entity)
+            return self::ERROR_DB_REF;
+        // No hospital
+        if (!($hosp = $openOrder->hosp))
+            return self::ERROR_DB_REF;
+        $entity->ordered--;
+        $hosp->active_opened_order++;
+        $hosp->ordered--;
+        $openOrder->active_order_num++;
+        $tran = Yii::$app->db->beginTransaction();
+        if ($entity->save() && $hosp->save() && $openOrder->save() && $this->delete()) {
+            $tran->commit();
+            return $this;
+        }
+        $tran->rollback();
+        return self::ERROR_DB_SAVE;
+    }
+
 
     public function loadOrder($openOrder, $doctorId = null) {
         $this->openorder_id = $openOrder->id;
@@ -323,6 +346,10 @@ class Order extends \common\components\MyActiveRecord
     public function getInsp()
     {
         return $this->hasOne(Inspection::className(), ['id' => 'insp_id']);
+    }
+    public function getOpenOrder()
+    {
+        return $this->hasOne(Number::className(), ['id' => 'openorder_id']);
     }
 
     /**
