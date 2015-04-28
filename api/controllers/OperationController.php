@@ -26,10 +26,14 @@ class OperationController extends BaseController
     public function getQuery() {
         $query = parent::getQuery();
         $hosp_id = Yii::$app->request->get('hosp_id');
+        $opera_id = Yii::$app->request->get('opera_id');
         if ($hosp_id) {
             $query = $query->joinWith(['detail' => function ($query) use ($hosp_id) {
                 return $query->andOnCondition(['detail.hosp_id' => $hosp_id])->andWhere('detail.id is not null');
             }]);
+        }
+        if ($opera_id) {
+            $query->andWhere(['t.id' => $opera_id]);
         }
         return $query;
     }
