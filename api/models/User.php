@@ -16,4 +16,9 @@ class User extends \common\models\User {
         $this->deniedFields[] = 'payment_password';
         $this->deniedFields[] = 'role';
     }
+    public function fields() {
+        $fields = $this->initFields();
+        $fields['status'] = 'status';
+        return $fields;
+    }
 }
