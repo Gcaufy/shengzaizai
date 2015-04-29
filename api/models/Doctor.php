@@ -15,6 +15,7 @@ class Doctor extends \backend\modules\doctor\models\Doctor {
     public function init () {
         parent::init();
         $this->urlGenerator = ['portrait' => '160x160'];
+        $this->urlGenerator = ['banner' => '640x300'];
     }
 
     public function fields() {
