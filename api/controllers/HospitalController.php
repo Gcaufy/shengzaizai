@@ -41,6 +41,21 @@ class HospitalController extends BaseController
         $latitude = isset($_GET['latitude']) ? $_GET['latitude'] : null;
         $longitude = isset($_GET['longitude']) ? $_GET['longitude'] : null;
         $longitude = isset($_GET['longitude']) ? $_GET['longitude'] : null;
+        $opera_id = Yii::$app->request->get('opera_id');
+        $insp_id = Yii::$app->request->get('insp_id');
+        $rst = [];
+        $arr = [];
+        if ($opera_id) {
+            $rst = OperationHospitalMap::find()->select('hosp_id')->andWhere(['t.opera_id' => $opera_id])->asArray()->all();
+        } else if ($insp_id) {
+            $rst = InspectionHospitalMap::find()->select('hosp_id')->andWhere(['t.insp_id' => $insp_id])->asArray()->all();
+        }
+        $arr = [];
+        foreach ($rst as $key => $value) {
+            $arr[] = $value['hosp_id'];
+        }
+        if ($arr)
+            $query->andWhere(['t.id' => $arr]);
         if ($latitude && $longitude)
             $query->addSelect(['t.*', 'distance' => "round(6378.138*2*asin(sqrt(pow(sin( ($latitude*pi()/180-t.latitude*pi()/180)/2),2)+cos($latitude*pi()/180)*cos(t.latitude*pi()/180)* pow(sin( ($longitude*pi()/180-t.longitude*pi()/180)/2),2)))*1000)"]);
         return $query;

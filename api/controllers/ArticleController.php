@@ -64,8 +64,10 @@ class ArticleController extends BaseController
         $article->positive++;
         if ($article->save() && $ap->save()) {
             $tran->commit();
+            return MsgHelper::faile('点赞成功');
         } else {
             $tran->rollback();
+            return MsgHelper::faile('点赞失败', $article->getErrors());
         }
     }
 }

@@ -66,6 +66,7 @@ class OrderController extends BaseController
             return MsgHelper::faile('预约号已用完.');
         if ($rst === Order::ERROR_EXISTS)
             return MsgHelper::faile('已成功预约此项, 请勿重复预约.');
+        var_dump($rst);exit;
         return MsgHelper::faile('数据有误, 请联系管理员.');
     }
 
