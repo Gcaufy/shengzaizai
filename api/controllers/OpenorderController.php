@@ -29,6 +29,7 @@ class OpenorderController extends BaseController
         $date = Yii::$app->request->get('date');
         $isvip = Yii::$app->request->get('isvip');
         $month = Yii::$app->request->get('month');
+        $year = Yii::$app->request->get('year');
 
         $query = parent::getQuery()->andWhere(['t.hosp_id' => $hosp_id]);
         $arr = ['doctor_id', 'insp_id', 'opera_id'];
@@ -44,8 +45,9 @@ class OpenorderController extends BaseController
         if ($invalid || !$hosp_id)
             throw new InvalidParamException();
 
-        if ($month)
-            $query = $query->andWhere(['SUBSTR(t.date, 6, 2)' => $month * 1]);
+        if ($month && $year)
+            $query = $query->andWhere(['SUBSTR(t.date, 1, 4)' => $year, 'SUBSTR(t.date, 6, 2)' => [$month + 1, $month + 2]]);
+
         if ($date)
             $query = $query->andWhere(['t.date' => $date]);
         if ($isvip)
