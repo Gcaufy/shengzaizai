@@ -30,6 +30,7 @@ class OpenorderController extends BaseController
         $isvip = Yii::$app->request->get('isvip');
         $month = Yii::$app->request->get('month');
         $year = Yii::$app->request->get('year');
+        $year = date('Y');
 
         $query = parent::getQuery()->andWhere(['t.hosp_id' => $hosp_id]);
         $arr = ['doctor_id', 'insp_id', 'opera_id'];
