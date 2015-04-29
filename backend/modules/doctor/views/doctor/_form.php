@@ -73,7 +73,7 @@ $this->registerJs($js);
             'initialCaption'=>"已保存图片",
         ]
     ])->initLen(4); ?>
-
+    <?= Html::activeHiddenInput($model, 'portrait'); ?>
     <?php
         $option = ['placeholder' => '请选择医院', 'value' => '0'];
         if ($hospital)
